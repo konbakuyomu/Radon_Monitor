@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "cwd": "${workspaceRoot}",
+      "type": "cortex-debug",
+      "request": "launch",
+      "name": "Debug: JLINK (JTAG)",
+      "servertype": "jlink",
+      "interface": "jtag",
+      "executable": "build/${config:projectName}.elf",
+      "svdFile": "Core/svd/HC32F460PETB.svd",
+      "runToEntryPoint": "main",
+      "device": "${config:mcu.device}",
+      "liveWatch": {
+        "enabled": true,
+        "samplesPerSecond": 10
+      }
+    },
+    {
+      "cwd": "${workspaceRoot}",
+      "type": "cortex-debug",
+      "request": "launch",
+      "name": "Debug: JLINK (SWD)",
+      "servertype": "jlink",
+      "interface": "swd",
+      "executable": "build/${config:projectName}.elf",
+      "svdFile": "Core/svd/HC32F460PETB.svd",
+      "runToEntryPoint": "main",
+      "device": "${config:mcu.device}",
+      "liveWatch": {
+        "enabled": true,
+        "samplesPerSecond": 10
+      }
+    }
+  ]
+}

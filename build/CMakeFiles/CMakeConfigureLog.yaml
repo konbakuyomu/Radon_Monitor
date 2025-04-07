@@ -1,0 +1,100 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake:200 (message)"
+      - "CMakeLists.txt:87 (project)"
+    message: |
+      The target system is: Generic -  - Cortex-M4.fp.sp
+      The host system is: Windows - 10.0.26100 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:87 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: D:/keil_v5/ARM/ARMCLANG/bin/armclang.exe 
+      Build flags: --target=arm-arm-none-eabi;-mcpu=cortex-m4;-mfpu=fpv4-sp-d16;-mfloat-abi=hard;-xc;-std=c11;-mlittle-endian;-gdwarf-4;-O3;-ffunction-sections;-fno-rtti;-funsigned-char;-fshort-enums;-fshort-wchar;-Wno-packed;-Wno-missing-variable-declarations;-Wno-missing-prototypes;-Wno-missing-noreturn;-Wno-sign-conversion;-Wno-nonportable-include-path;-Wno-reserved-id-macro;-Wno-unused-macros;-Wno-documentation-unknown-command;-Wno-documentation;-Wno-license-management;-Wno-parentheses-equality;-Wno-reserved-identifier;-DHC32F460;-DUSE_DDL_DRIVER;-D__DEBUG;-D__UVISION_VERSION=538
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is ARMClang, found in:
+        D:/MCU_Workspace/HC32_Projects/HC32F460_Projects/Radon_Monitor/build/CMakeFiles/3.29.0-rc2/CompilerIdC/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:87 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: D:/keil_v5/ARM/ARMCLANG/bin/armclang.exe 
+      Build flags: --target=arm-arm-none-eabi;-mcpu=cortex-m4;-mfpu=fpv4-sp-d16;-mfloat-abi=hard;-xc++;-std=c++14;-mlittle-endian;-gdwarf-4;-O3;-ffunction-sections;-fno-exceptions;-fno-rtti;-funsigned-char;-fshort-enums;-fshort-wchar;-Wno-packed;-Wno-missing-variable-declarations;-Wno-missing-noreturn;-Wno-sign-conversion;-Wno-nonportable-include-path;-Wno-reserved-id-macro;-Wno-unused-macros;-Wno-documentation-unknown-command;-Wno-documentation;-Wno-license-management;-Wno-parentheses-equality;-Wno-reserved-identifier;-DHC32F460;-DUSE_DDL_DRIVER;-D__DEBUG;-D__UVISION_VERSION=538
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is ARMClang, found in:
+        D:/MCU_Workspace/HC32_Projects/HC32F460_Projects/Radon_Monitor/build/CMakeFiles/3.29.0-rc2/CompilerIdCXX/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1176 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineASMCompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:87 (project)"
+    message: |
+      Checking whether the ASM compiler is GNU using "--version" did not match "(GNU assembler)|(GCC)|(Free Software Foundation)":
+      Warning: A1950W: The legacy armasm assembler is deprecated. Consider using the armclang integrated assembler instead.
+      Fatal error: A3900U: Unrecognized option '--version'.
+      1 Error, 1 Warning
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1176 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineASMCompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:87 (project)"
+    message: |
+      Checking whether the ASM compiler is AppleClang using "--version" did not match "(Apple (clang|LLVM) version)":
+      Warning: A1950W: The legacy armasm assembler is deprecated. Consider using the armclang integrated assembler instead.
+      Fatal error: A3900U: Unrecognized option '--version'.
+      1 Error, 1 Warning
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1176 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineASMCompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:87 (project)"
+    message: |
+      Checking whether the ASM compiler is Clang using "--version" did not match "(clang version)":
+      Warning: A1950W: The legacy armasm assembler is deprecated. Consider using the armclang integrated assembler instead.
+      Fatal error: A3900U: Unrecognized option '--version'.
+      1 Error, 1 Warning
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1163 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CMakeDetermineASMCompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:87 (project)"
+    message: |
+      Checking whether the ASM compiler is ARMClang using "--version" matched "armclang":
+      Warning: A1950W: The legacy armasm assembler is deprecated. Consider using the armclang integrated assembler instead.
+      Fatal error: A3900U: Unrecognized option '--version'.
+      1 Error, 1 Warning
+...

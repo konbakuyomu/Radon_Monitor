@@ -1,0 +1,6 @@
+r
+halt
+loadfile "d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\build\Radon_Monitor\Radon_Monitor.hex"
+r
+go
+exit

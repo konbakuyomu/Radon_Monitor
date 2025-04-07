@@ -1,0 +1,6 @@
+r
+h
+loadfile "build/Radon_Monitor.hex"
+r
+g
+q

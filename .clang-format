@@ -1,0 +1,35 @@
+---
+BasedOnStyle: WebKit
+
+# 缩进相关
+UseTab: Never                          # 不使用制表符，使用空格
+IndentWidth: 4                         # 缩进宽度为 4 个空格
+TabWidth: 4                            # 制表符宽度为 4 个空格
+NamespaceIndentation: None             # 命名空间内容不缩进
+IndentExternBlock: NoIndent            # extern 块不缩进
+IndentPPDirectives: None               # 预处理指令不缩进
+
+# 大括号换行设置
+BreakBeforeBraces: Linux               # 使用 Linux 风格的大括号规则
+BraceWrapping:
+  AfterClass: false                    # 类定义后不换行
+  AfterControlStatement: false         # 控制语句后不换行
+  AfterFunction: true                  # 函数定义后换行
+  AfterNamespace: false                # 命名空间定义后不换行
+  AfterExternBlock: false              # extern 块后不换行
+  AfterEnum: false                     # 枚举定义后不换行
+  BeforeElse: false                    # else 前不换行
+
+# 对齐相关
+AlignConsecutiveMacros: true           # 对齐连续的宏定义
+AlignTrailingComments: true            # 对齐尾随注释
+
+# 行长度设置
+ColumnLimit: 85                        # 每行最大 70 字符
+
+# 参数格式化
+BinPackArguments: false                # 禁止将函数实参打包放在同一行
+BinPackParameters: false               # 禁止将函数形参打包放在同一行
+AlignAfterOpenBracket: Align           # 多行参数与第一个参数对齐
+AllowAllArgumentsOnNextLine: true      # 允许所有实参在下一行
+AllowAllParametersOfDeclarationOnNextLine: true  # 允许所有形参在下一行

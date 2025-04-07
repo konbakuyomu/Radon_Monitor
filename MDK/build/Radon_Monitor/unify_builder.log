@@ -1,0 +1,333 @@
+[2025-03-08 00:20:03]	[info] incremental build: 75 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\hal.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Core\startup\startup_hc32f460.s': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Core\system\system_hc32f460.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_adc.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_aes.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_aos.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_can.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_clk.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_cmp.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_crc.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_dbgc.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_dcu.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_dma.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_efm.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_emb.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_event_port.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_fcg.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_fcm.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_gpio.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_hash.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_i2c.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_i2s.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_icg.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_interrupts.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_keyscan.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_mpu.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_ots.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_pwc.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_qspi.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_rmu.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_rtc.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_sdioc.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_spi.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_sram.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_swdt.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_tmr0.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_tmr4.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_tmr6.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_tmra.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_trng.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_usart.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_utility.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32_ll_wdt.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\HC32F460_Driver\source\hc32f460_ll_interrupts_share.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\USER_Driver\source\24cxx.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\USER_Driver\source\ev_hc32f460_lqfp100_v2.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\USER_Driver\source\ev_hc32f460_lqfp100_v2_24cxx.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\USER_Driver\source\ev_hc32f460_lqfp100_v2_w25qxx.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\USER_Driver\source\ev_hc32f460_lqfp100_v2_wm8731.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\USER_Driver\source\w25qxx.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Drivers\USER_Driver\source\wm8731.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\GCC\ARM_CM4F\port.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\MemMang\heap_4.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\croutine.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\event_groups.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\list.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\queue.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\stream_buffer.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\tasks.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\timers.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\appManage.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\beatTask.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\bmp280.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\button.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\keyValueTransation.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\ringBuffer.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\wire.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': object (.o) file not exist
+
+[2025-03-08 00:20:54]	[done]
+	build successfully !
+
+[2025-03-08 00:24:22]	[info] incremental build: 1 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+
+[2025-03-08 00:24:23]	[done]
+	build successfully !
+
+[2025-03-08 00:25:45]	[done]
+	build successfully !
+
+[2025-03-08 00:49:03]	[info] incremental build: 16 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\GCC\ARM_CM4F\port.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\MemMang\heap_4.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\croutine.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\event_groups.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\list.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\queue.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\stream_buffer.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\tasks.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\timers.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\freeRTOS\include\FreeRTOSConfig.h' has been changed.
+
+[2025-03-08 00:49:06]	[done]
+	build successfully !
+
+[2025-03-08 00:50:56]	[info] incremental build: 1 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': source file has been changed.
+
+[2025-03-08 00:50:57]	[done]
+	build successfully !
+
+[2025-03-13 10:46:16]	[info] incremental build: 16 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\GCC\ARM_CM4F\port.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\MemMang\heap_4.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\croutine.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\event_groups.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\list.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\queue.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\stream_buffer.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\tasks.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\timers.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': source file has been changed.
+
+[2025-03-13 10:46:19]	link failed !, exit code: 1
+   at unify_builder.Program.Main(String[] args_)
+---
+Error: L6218E: Undefined symbol USART1_Init (referred from drvHal.o).
+Not enough information to list image symbols.
+Finished: 1 information, 0 warning and 1 error messages.
+
+
+[2025-03-13 10:48:47]	[info] incremental build: 1 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': object (.o) file not exist
+
+[2025-03-13 10:48:48]	[done]
+	build successfully !
+
+[2025-03-13 10:50:43]	[done]
+	build successfully !
+
+[2025-03-13 11:02:30]	[info] incremental build: 1 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': source file has been changed.
+
+[2025-03-13 11:02:31]	[done]
+	build successfully !
+
+[2025-03-13 11:16:12]	[info] incremental build: 4 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': source file has been changed.
+
+[2025-03-13 11:16:14]	[done]
+	build successfully !
+
+[2025-03-13 11:17:48]	[info] incremental build: 2 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': source file has been changed.
+
+[2025-03-13 11:17:50]	[done]
+	build successfully !
+
+[2025-03-13 11:19:36]	[info] incremental build: 17 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\GCC\ARM_CM4F\port.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\MemMang\heap_4.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\croutine.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\event_groups.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\list.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\queue.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\stream_buffer.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\tasks.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\timers.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+
+[2025-03-13 11:19:40]	[done]
+	build successfully !
+
+[2025-03-13 14:45:00]	[info] incremental build: 7 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+
+[2025-03-13 14:45:03]	[done]
+	build successfully !
+
+[2025-03-13 15:50:22]	[info] incremental build: 17 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\GCC\ARM_CM4F\port.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\MemMang\heap_4.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\croutine.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\event_groups.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\list.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\queue.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\stream_buffer.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\tasks.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\timers.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+
+[2025-03-13 15:50:26]	[done]
+	build successfully !
+
+[2025-03-13 15:56:21]	[info] incremental build: 7 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+
+[2025-03-13 15:56:24]	[done]
+	build successfully !
+
+[2025-03-13 17:10:38]	[info] incremental build: 7 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+
+[2025-03-13 17:10:41]	[done]
+	build successfully !
+
+[2025-03-13 17:42:21]	[info] incremental build: 19 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\beatTaskConfig.c': object (.o) file not exist
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Configs\globalConfig.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\GCC\ARM_CM4F\port.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\MemMang\heap_4.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\croutine.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\event_groups.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\list.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\queue.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\stream_buffer.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\tasks.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\timers.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\beatTask.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\qf_lib\include\beatTask.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': source file has been changed.
+
+[2025-03-13 17:42:24]	[done]
+	build successfully !
+
+[2025-03-15 01:37:50]	[info] incremental build: 19 source files changed
+These source files will be recompiled
+---
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Application\taskFactory.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\beatTaskConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\cpuUtilization.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\drvHal.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\keyConfig.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\ledConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Board_Support_Package\source\usart1Config.c': source file has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Configs\globalConfig.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\GCC\ARM_CM4F\port.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\portable\MemMang\heap_4.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\croutine.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\event_groups.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\list.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\queue.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\stream_buffer.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\tasks.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\freeRTOS\source\timers.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Board_Support_Package\include\cpuUtilization.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Middlewares\qf_lib\source\beatTask.c': dependence 'd:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\MDK\..\Middlewares\qf_lib\include\beatTask.h' has been changed.
+'d:\MCU_Workspace\HC32_Projects\HC32F460_Projects\Radon_Monitor\Source\main.cpp': source file has been changed.
+
+[2025-03-15 01:37:52]	[done]
+	build successfully !
+

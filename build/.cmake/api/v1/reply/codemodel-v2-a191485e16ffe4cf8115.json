@@ -1,0 +1,167 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "Core",
+					"jsonFile" : "directory-Core-Debug-b3854b2db255c35a81c1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Core"
+				},
+				{
+					"build" : "Middlewares",
+					"jsonFile" : "directory-Middlewares-Debug-04fa9981e4b447bfc319.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Middlewares"
+				},
+				{
+					"build" : "MessageBus",
+					"jsonFile" : "directory-MessageBus-Debug-0aefdd68c757e45dc038.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "MessageBus"
+				},
+				{
+					"build" : "Board_Support_Package",
+					"jsonFile" : "directory-Board_Support_Package-Debug-7d70b03e2560e4a65831.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Board_Support_Package"
+				},
+				{
+					"build" : "Drivers",
+					"jsonFile" : "directory-Drivers-Debug-0ab3e5550521ce5b9b75.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Drivers"
+				},
+				{
+					"build" : "Application",
+					"jsonFile" : "directory-Application-Debug-3f164fa072234d0a0467.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Application"
+				},
+				{
+					"build" : "Configs",
+					"jsonFile" : "directory-Configs-Debug-6f199f3cc7811593e1a5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Configs"
+				},
+				{
+					"build" : "Source",
+					"jsonFile" : "directory-Source-Debug-93ebefb0dc4084c9ccf4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Source"
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					],
+					"name" : "Radon_Monitor",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Radon_Monitor::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Radon_Monitor-Debug-288475031d62336fa09e.json",
+					"name" : "Radon_Monitor",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/MCU_Workspace/HC32_Projects/HC32F460_Projects/Radon_Monitor/build",
+		"source" : "D:/MCU_Workspace/HC32_Projects/HC32F460_Projects/Radon_Monitor"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

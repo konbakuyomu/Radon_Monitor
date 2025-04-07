@@ -1,0 +1,111 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "JLink Download(JTAG)",
+            "type": "shell",
+            "command": "C:\\Users\\dxt98\\.eide\\tools\\jlink\\JLink.exe",
+            "args": [
+                "-device", "${config:mcu.device}",
+                "-if", "JTAG",
+                "-speed", "8000",
+                "-autoconnect", "1",
+                "-jtagconf", "-1,-1",
+                "-CommanderScript", "${workspaceFolder}/tools/jlink/download.jlink"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "JLink Download(SWD)",
+            "type": "shell",
+            "command": "C:\\Users\\dxt98\\.eide\\tools\\jlink\\JLink.exe",
+            "args": [
+                "-device", "${config:mcu.device}",
+                "-if", "SWD",
+                "-speed", "8000",
+                "-autoconnect", "1",
+                "-CommanderScript", "${workspaceFolder}/tools/jlink/download.jlink"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "JLink Reset(JTAG)",
+            "type": "shell",
+            "command": "C:\\Users\\dxt98\\.eide\\tools\\jlink\\JLink.exe",
+            "args": [
+                "-device", "${config:mcu.device}",
+                "-if", "JTAG",
+                "-speed", "8000",
+                "-autoconnect", "1",
+                "-jtagconf", "-1,-1",
+                "-CommanderScript", "${workspaceFolder}/tools/jlink/reset.jlink"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "JLink Reset(SWD)",
+            "type": "shell",
+            "command": "C:\\Users\\dxt98\\.eide\\tools\\jlink\\JLink.exe",
+            "args": [
+                "-device", "${config:mcu.device}",
+                "-if", "SWD",
+                "-speed", "8000",
+                "-autoconnect", "1",
+                "-CommanderScript", "${workspaceFolder}/tools/jlink/reset.jlink"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "JLink Erase(JTAG)",
+            "type": "shell",
+            "command": "C:\\Users\\dxt98\\.eide\\tools\\jlink\\JLink.exe",
+            "args": [
+                "-device", "${config:mcu.device}",
+                "-if", "JTAG",
+                "-speed", "8000",
+                "-autoconnect", "1",
+                "-jtagconf", "-1,-1",
+                "-CommanderScript", "${workspaceFolder}/tools/jlink/erase.jlink"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "JLink Erase(SWD)",
+            "type": "shell",
+            "command": "C:\\Users\\dxt98\\.eide\\tools\\jlink\\JLink.exe",
+            "args": [
+                "-device", "${config:mcu.device}",
+                "-if", "SWD",
+                "-speed", "8000",
+                "-autoconnect", "1",
+                "-CommanderScript", "${workspaceFolder}/tools/jlink/erase.jlink"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean Build",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c", 
+                "if exist ${workspaceFolder}\\build (del /f /s /q ${workspaceFolder}\\build\\* && rmdir /s /q ${workspaceFolder}\\build)"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            }
+        }
+    ]
+}

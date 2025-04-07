@@ -1,0 +1,65 @@
+###############################################################################
+#                            Clangd 诊断抑制配置                              
+# 作用：直接控制 clangd 静态分析行为（与编译器无关）                          
+###############################################################################
+Diagnostics:
+  Suppress:
+    # === 嵌入式开发专用抑制 ===
+    - int-to-pointer-cast        # 允许整型转指针（常见于寄存器地址操作)
+    - pointer-to-int-cast        # 允许指针转整型（内存地址计算场景)
+    - pp_file_not_found          # 抑制找不到配置文件的警告
+    - typename_nested_not_found  # 抑制嵌套模板类型查找失败的警告
+    - nested_name_spec_non_tag   # 抑制嵌套命名空间规范错误
+    - template_arg_list_different_arity # 抑制模板参数数量不匹配
+    - template_instantiate_undefined    # 抑制未定义模板实例化错误
+    - no_member                  # 抑制成员不存在警告
+    - ovl_no_viable_function_in_call    # 抑制无匹配函数调用警告
+    - member_redeclared_in_instantiation # 抑制模板实例化成员重定义错误
+    - init_conversion_failed # 抑制初始化转换失败警告
+    - typecheck_nonviable_condition  # 抑制函数指针到std::function转换报错
+    - override_keyword_only_allowed_on_virtual_member_functions # 抑制override关键字仅在虚函数上使用警告
+    - undeclared_var_use # 抑制未声明变量使用警告
+
+    # === 工程结构抑制 ===
+    - unused-includes                   # 抑制未使用头文件警告（兼容多层级头文件包含)
+    - pp_including_mainfile_in_preamble # 忽略主文件被包含的警告
+    - macro-redefined                   # 抑制宏重定义警告（专门用于 FreeRFreeRTOSConfig.h 的宏）
+
+###############################################################################
+#                            Clangd 编译参数配置                              
+# 作用：模拟编译器行为，影响代码解析逻辑                                     
+###############################################################################
+CompileFlags:
+  Add:
+    # === 编译器标识 ===
+    - "--target=arm-arm-none-eabi"   # 指定目标平台
+    
+    # === 包含路径配置 ===
+    - "-ID:/keil_v5/ARM/ARMCLANG/include"   # 添加 Keil 的 include 路径
+    - "-ID:/keil_v5/ARM/ARMCLANG/include/libcxx"
+    - "-ID:/keil_v5/ARM/ARMCLANG/include/libcxx/__algorithm"
+    - "-ID:/keil_v5/ARM/ARMCLANG/include/__external_threading"
+    - "-I${workspaceFolder}/Middlewares/qf_lib/include"
+    - "-I${workspaceFolder}/Middlewares/FreeRTOS/include"
+    - "-I${workspaceFolder}/Configs"
+    - "-I${workspaceFolder}/Drivers/HC32F460_Driver/include"
+    
+    # === 错误限制配置 ===
+    - "-ferror-limit=0"              # 禁用错误限制
+
+    # === 强制包含配置 ===
+    - "-include"                     # 强制在所有文件前包含 FreeRTOS.h
+    - "FreeRTOS.h"
+    
+    # === ARM特定配置 ===
+    - "-D__ARM_ARCH_7EM__=1"         # 定义ARM架构
+    - "-DHC32F460"                   # 定义芯片型号
+    - "-DUSE_DDL_DRIVER"            # 启用DDL驱动
+  
+  Remove:
+    # === 可能导致问题的选项 ===
+    - "-fno-tree-switch-conversion"
+    - "-fno-shrink-wrap"
+    - "-mlongcalls"
+    - "-mtext-section-literals"
+    - "-fstrict-volatile-bitfields"
