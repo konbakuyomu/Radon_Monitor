@@ -256,15 +256,20 @@ void USART1Driver::sendRxDataMessage(size_t bytesReceived) noexcept
         // 清空DMA缓冲区，准备下一次接收
         dmaBuffer.fill(0);
 
-        // 获取消息总线实例
-        MessageBus& messageBus = MessageBus::getInstance();
+        static MsgBusSystemMessage msg;
+        msg.message = MSGBUS_MSG_UART1_RECEIVE;
+        msg.payload.usartData = pdTRUE;
+        msgbus_publish_from_isr(&msg, &higherPriorityTaskWoken);
 
-        // 初始化消息
-        usart1DriverMessage.message = Message::UART1_RECEIVE;
-        usart1DriverMessage.payload.usartData = pdTRUE;
+        // // 获取消息总线实例
+        // MessageBus& messageBus = MessageBus::getInstance();
 
-        // 从ISR中发布消息到总线
-        messageBus.publishFromISR(usart1DriverMessage, &higherPriorityTaskWoken);
+        // // 初始化消息
+        // usart1DriverMessage.message = Message::UART1_RECEIVE;
+        // usart1DriverMessage.payload.usartData = pdTRUE;
+
+        // // 从ISR中发布消息到总线
+        // messageBus.publishFromISR(usart1DriverMessage, &higherPriorityTaskWoken);
 
         // 在所有可能引起任务唤醒的操作之后检查是否需要任务切换
         portYIELD_FROM_ISR(higherPriorityTaskWoken);

@@ -92,6 +92,8 @@
   ..\Board_Support_Package\include\halTypes.h \
   ..\Board_Support_Package\include\drvHal.h \
   ..\Board_Support_Package\include\hal.h ..\Application\taskFactory.h \
+  ..\MessageBus\message_bus.h \
+  ..\Middlewares\freeRTOS\include\message_buffer.h \
   ..\Application\include\commandProcessorBase.hpp \
   ..\Application\include\messageBusProcessor.hpp \
   ..\Application\include\uartProtocolProcessor.hpp \

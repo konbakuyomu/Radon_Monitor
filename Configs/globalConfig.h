@@ -60,6 +60,8 @@ extern "C" {
 #include "drvHal.h"
 #include "hal.h"
 #include "taskFactory.h"
+#include "message_bus.h"
+#include "usart1Driver.h"
 
 /* 枚举
  * -------------------------------------------------------------*/

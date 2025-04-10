@@ -25,8 +25,9 @@ static void drvInitSystem(void)
     configureKeyTimer();
     configureBeatTimer();
 
-    // 初始化USART1
+    // 初始化USART1底层和驱动
     USART1_Init();
+    USART1Driver_Init();
 
     // 初始化LED
     ledConfigInit();
@@ -44,6 +45,9 @@ static void drvInitSystem(void)
     startCpuUsageStatistics();
     startKeyTimer();
     startBeatTimer();
+
+    // 初始化消息总线
+    msgbus_init();
 
     // 锁定外设寄存器
     LL_PERIPH_WP(LL_PERIPH_ALL);

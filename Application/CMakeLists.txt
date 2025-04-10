@@ -3,6 +3,7 @@
 
 # 应用源文件
 set(APP_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/command_processor_c.c    
     ${CMAKE_CURRENT_SOURCE_DIR}/source/messageBusProcessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/uartProtocolProcessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/usartTask.cpp

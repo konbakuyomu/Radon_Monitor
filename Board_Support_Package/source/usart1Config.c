@@ -69,11 +69,11 @@ static void ReconfigureUartDma(void)
     (void)DMA_StructInit(&stcDmaInit);
     stcDmaInit.u32IntEn = DMA_INT_ENABLE;
     stcDmaInit.u32BlockSize = 1UL;
-    stcDmaInit.u32TransCount = USART1_GetDmaBufferSize();
+    stcDmaInit.u32TransCount = USART1_GetDmaBufferSize_use_c();
     stcDmaInit.u32DataWidth = DMA_DATAWIDTH_8BIT;
 
     // 使用C++驱动提供的DMA缓冲区
-    stcDmaInit.u32DestAddr = (uint32_t)USART1_GetDmaBufferPtr();
+    stcDmaInit.u32DestAddr = (uint32_t)USART1_GetDmaBufferPtr_use_c();
 
     stcDmaInit.u32SrcAddr = (uint32_t)(&USART1_UNIT->RDR);
     stcDmaInit.u32SrcAddrInc = DMA_SRC_ADDR_FIX;
@@ -93,7 +93,7 @@ static void USART1_RxTimeout_IrqCallback(void)
 
     if (bytesReceived <= MAX_RECV_BUFSIZE) {
         // 使用外部接口处理接收到的数据(这里是缓冲区未满的情况)
-        USART1_ProcessReceivedData(bytesReceived);
+        USART1_ProcessReceivedData_use_c(bytesReceived);
 
         // 重新配置DMA接收
         ReconfigureUartDma();
@@ -129,7 +129,7 @@ static void USART1_RxError_IrqCallback(void)
 static void USART1_RX_DMA_TC_IrqCallback(void)
 {
     // 使用外部接口处理接收到的数据(这里是缓冲区已满的情况)
-    USART1_ProcessReceivedData(MAX_RECV_BUFSIZE);
+    USART1_ProcessReceivedData_use_c(MAX_RECV_BUFSIZE);
     // 重新配置DMA接收
     ReconfigureUartDma();
 
@@ -165,8 +165,8 @@ static void USART1_TxComplete_IrqCallback(void)
     // 关闭发送功能和中断
     USART_FuncCmd(USART1_UNIT, (USART_TX | USART_INT_TX_CPLT), DISABLE);
     
-    // 通知 C++ 驱动发送完成
-    USART1_NotifyTxComplete();
+    // 通知串口1驱动发送完成
+    USART1_NotifyTxComplete_use_c();
 }
 
 /**
@@ -222,9 +222,9 @@ static int32_t USART1_DMA_Config(void)
     (void)DMA_StructInit(&stcDmaInit);
     stcDmaInit.u32IntEn = DMA_INT_ENABLE;
     stcDmaInit.u32BlockSize = 1UL;
-    stcDmaInit.u32TransCount = USART1_GetDmaBufferSize();
+    stcDmaInit.u32TransCount = USART1_GetDmaBufferSize_use_c();
     stcDmaInit.u32DataWidth = DMA_DATAWIDTH_8BIT;
-    stcDmaInit.u32DestAddr = (uint32_t)USART1_GetDmaBufferPtr();
+    stcDmaInit.u32DestAddr = (uint32_t)USART1_GetDmaBufferPtr_use_c();
     stcDmaInit.u32SrcAddr = (uint32_t)(&USART1_UNIT->RDR);
     stcDmaInit.u32SrcAddrInc = DMA_SRC_ADDR_FIX;
     stcDmaInit.u32DestAddrInc = DMA_DEST_ADDR_INC;

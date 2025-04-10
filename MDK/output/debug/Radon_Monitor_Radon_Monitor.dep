@@ -917,8 +917,8 @@ I (..\Drivers\USER_Driver\include\wm8731.h)(0x67653D0B)
 I (..\Drivers\HC32F460_Driver\include\hc32_ll_def.h)(0x67653D0D)
 I (D:\keil_v5\ARM\ARMCLANG\include\stddef.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdint.h)(0x63884908)
-F (..\Drivers\USER_Driver\source\usartDriver.cpp)(0x67E13D93)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/usartdriver.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+F (..\Drivers\USER_Driver\source\usartDriver.cpp)(0x67F77CC6)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/usartdriver.o -MD)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -1023,6 +1023,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -1593,16 +1595,15 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Drivers\USER_Driver\source\commonDriver.cpp)(0x67E13D7C)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/commondriver.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -1707,6 +1708,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -2277,16 +2280,15 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\MessageBus\messageBus.cpp)(0x67E01B9B)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/messagebus.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -2391,6 +2393,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -2961,11 +2965,119 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
+I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
+I (..\Application\include\commonControl.hpp)(0x67E01360)
+I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
+F (..\MessageBus\message_bus.c)(0x67F77B26)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/message_bus.o -MD)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\FreeRTOS.h)(0x654B7687)
+I (D:\keil_v5\ARM\ARMCLANG\include\stddef.h)(0x63884908)
+I (D:\keil_v5\ARM\ARMCLANG\include\stdint.h)(0x63884908)
+I (..\Middlewares\freeRTOS\include\FreeRTOSConfig.h)(0x67CB236E)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_def.h)(0x67653D0D)
+I (..\Core\system\hc32f4xx.h)(0x67653D0C)
+I (..\Core\system\hc32f460.h)(0x67653D0C)
+I (..\Core\system\core_cm4.h)(0x67653D0D)
+I (..\Core\system\cmsis_version.h)(0x67653D0C)
+I (..\Core\system\cmsis_compiler.h)(0x67653D0C)
+I (..\Core\system\cmsis_armclang.h)(0x67653D0C)
+I (D:\keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x63884908)
+I (D:\keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x63884908)
+I (..\Core\system\mpu_armv7.h)(0x67653D0D)
+I (..\Core\system\system_hc32f460.h)(0x67653D0C)
+I (..\Core\system\hc32f4xx_conf.h)(0x67C969DD)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_adc.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_aes.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_aos.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_can.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_clk.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_cmp.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_crc.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_dbgc.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_dcu.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_dma.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_efm.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_emb.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_event_port.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_fcg.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_fcm.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_gpio.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_hash.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_i2c.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_i2s.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_icg.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_interrupts.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32f460_ll_interrupts_share.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_keyscan.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_mpu.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_ots.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_pwc.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_qspi.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_rmu.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_rtc.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_sdioc.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_spi.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_sram.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_swdt.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_tmr0.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_tmr4.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_tmr6.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_tmra.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_trng.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_usart.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_utility.h)(0x67653D0D)
+I (..\Drivers\HC32F460_Driver\include\hc32_ll_wdt.h)(0x67653D0D)
+I (..\Board_Support_Package\include\cpuUtilization.h)(0x67E01ADD)
+I (..\Middlewares\freeRTOS\include\projdefs.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\include\portable.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\include\deprecated_definitions.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\portable\GCC\ARM_CM4F\portmacro.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\include\mpu_wrappers.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\include\stream_buffer.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\include\queue.h)(0x67E2DBAC)
+I (..\Middlewares\freeRTOS\include\task.h)(0x67DBC521)
+I (..\Middlewares\freeRTOS\include\list.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\include\semphr.h)(0x64020E50)
+I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
+I (..\Configs\globalConfig.h)(0x67F77B17)
+I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
+I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
+I (D:\keil_v5\ARM\ARMCLANG\include\stdio.h)(0x63884908)
+I (D:\keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x63884908)
+I (D:\keil_v5\ARM\ARMCLANG\include\string.h)(0x63884908)
+I (..\Drivers\USER_Driver\include\ev_hc32f460_lqfp100_v2_bsp.h)(0x67653D0B)
+I (..\Drivers\USER_Driver\include\ev_hc32f460_lqfp100_v2.h)(0x67CA496A)
+I (..\Drivers\USER_Driver\include\ev_hc32f460_lqfp100_v2_24cxx.h)(0x67653D0B)
+I (..\Drivers\USER_Driver\include\24cxx.h)(0x67653D0B)
+I (..\Drivers\USER_Driver\include\ev_hc32f460_lqfp100_v2_wm8731.h)(0x67653D0B)
+I (..\Drivers\USER_Driver\include\wm8731.h)(0x67653D0B)
+I (..\Drivers\USER_Driver\include\ev_hc32f460_lqfp100_v2_w25qxx.h)(0x67653D0B)
+I (..\Drivers\USER_Driver\include\w25qxx.h)(0x67653D0B)
+I (..\Middlewares\freeRTOS\include\event_groups.h)(0x64020E50)
+I (..\Middlewares\freeRTOS\include\timers.h)(0x64020E50)
+I (..\Middlewares\qf_lib\include\beatTask.h)(0x67DC293E)
+I (..\Middlewares\qf_lib\include\button.h)(0x67CB12A2)
+I (..\Middlewares\qf_lib\include\keyValueTransation.h)(0x67CAF3C4)
+I (..\Board_Support_Package\include\beatTaskConfig.h)(0x67E01A80)
+I (..\Board_Support_Package\include\keyConfig.h)(0x67E01B36)
+I (..\Board_Support_Package\include\ledConfig.h)(0x67E01B3F)
+I (..\Board_Support_Package\include\usart1Config.h)(0x67E01B4A)
+I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
+I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
+I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
+I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
+I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
+I (..\Application\include\buttonControl.hpp)(0x67DA837B)
+I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
@@ -3027,8 +3139,8 @@ I (..\Drivers\HC32F460_Driver\include\hc32_ll_trng.h)(0x67653D0D)
 I (..\Drivers\HC32F460_Driver\include\hc32_ll_usart.h)(0x67653D0D)
 I (..\Drivers\HC32F460_Driver\include\hc32_ll_utility.h)(0x67653D0D)
 I (..\Drivers\HC32F460_Driver\include\hc32_ll_wdt.h)(0x67653D0D)
-F (..\Board_Support_Package\source\drvHal.c)(0x67DEC553)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/drvhal.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+F (..\Board_Support_Package\source\drvHal.c)(0x67F77402)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/drvhal.o -MD)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
@@ -3125,17 +3237,19 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Board_Support_Package\source\hal.c)(0x67DEC865)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/hal.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
@@ -3232,17 +3346,19 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Board_Support_Package\source\ledConfig.c)(0x67D2804C)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/ledconfig.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
@@ -3339,17 +3455,19 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Board_Support_Package\source\keyConfig.c)(0x67D46951)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/keyconfig.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
@@ -3446,17 +3564,19 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Board_Support_Package\source\usart1Config.c)(0x67DAA02F)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/usart1config.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
@@ -3553,17 +3673,19 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Board_Support_Package\source\beatTaskConfig.c)(0x67DAF15B)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/beattaskconfig.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
@@ -3660,17 +3782,19 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Application\source\buttonControl.cpp)(0x67E019A1)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/buttoncontrol.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -3775,6 +3899,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -4345,16 +4471,15 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Application\source\commonControl.cpp)(0x67E019BF)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/commoncontrol.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -4459,6 +4584,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -5029,16 +5156,15 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Application\source\messageBusProcessor.cpp)(0x67E019EC)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/messagebusprocessor.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -5143,6 +5269,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -5713,16 +5841,15 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
-F (..\Application\source\uartProtocolProcessor.cpp)(0x67E164E3)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/uartprotocolprocessor.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+F (..\Application\source\uartProtocolProcessor.cpp)(0x67F4E8C5)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/uartprotocolprocessor.o -MD)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -5827,6 +5954,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -6397,16 +6526,15 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
-F (..\Application\source\usartTask.cpp)(0x67E13FB2)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/usarttask.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+F (..\Application\source\usartTask.cpp)(0x67F77C03)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/usarttask.o -MD)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -6511,6 +6639,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -7081,16 +7211,15 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
 F (..\Application\taskFactory.c)(0x67E01A54)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/taskfactory.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
@@ -7187,12 +7316,14 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
@@ -7857,7 +7988,7 @@ I (..\Middlewares\qf_lib\include\wire.h)(0x67CAE5C9)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdint.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x63884908)
 F (..\Configs\globalConfig.c)(0x67E01B53)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/globalconfig.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x63884908)
@@ -7954,17 +8085,19 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)
-F (..\Source\main.cpp)(0x67E2D4FA)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/main.o -MD)
-I (..\Configs\globalConfig.h)(0x67E10EB0)
+F (..\Source\main.cpp)(0x67EA5728)(-xc++ -std=c++14 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-mlittle-endian -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/system -I ../Drivers/HC32F460_Driver/include -I ../Drivers/USER_Driver/include -I ../Configs -I ../Middlewares/freeRTOS/include -I ../Middlewares/freeRTOS/portable/GCC/ARM_CM4F -I ../Middlewares/qf_lib/include -I ../MessageBus -I ../Board_Support_Package/include -I ../Application -I ../Application/include-ID:/keil_v5/Packs/HDSC/HC32F460/1.0.11/Device/Include-D__UVISION_VERSION="538" -D__DEBUG -DHC32F460 -DUSE_DDL_DRIVER-o ./output/debug/main.o -MD)
+I (..\Configs\globalConfig.h)(0x67F77B17)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\limits.h)(0x63884908)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x63884902)
 I (D:\keil_v5\ARM\ARMCLANG\include\limits.h)(0x63884908)
@@ -8069,6 +8202,8 @@ I (..\Board_Support_Package\include\halTypes.h)(0x67E01B1B)
 I (..\Board_Support_Package\include\drvHal.h)(0x67E01B00)
 I (..\Board_Support_Package\include\hal.h)(0x67E01B0B)
 I (..\Application\taskFactory.h)(0x67E01A6C)
+I (..\MessageBus\message_bus.h)(0x67E2DAA2)
+I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (..\Application\include\commandProcessorBase.hpp)(0x67E12C4D)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\any)(0x63884906)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__assert)(0x63884902)
@@ -8639,11 +8774,10 @@ I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\__functional\unary_negate.h)(0x6388490
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\typeindex)(0x63884908)
 I (..\Application\include\messageBusProcessor.hpp)(0x67E10EB0)
 I (..\MessageBus\messageBus.hpp)(0x67E13E1B)
-I (..\Middlewares\freeRTOS\include\message_buffer.h)(0x64020E50)
 I (D:\keil_v5\ARM\ARMCLANG\include\libcxx\unordered_set)(0x63884908)
-I (..\Application\include\uartProtocolProcessor.hpp)(0x67E13996)
+I (..\Application\include\uartProtocolProcessor.hpp)(0x67F4E82A)
 I (..\Application\include\buttonControl.hpp)(0x67DA837B)
-I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67E13E3E)
+I (..\Drivers\USER_Driver\include\usartDriver.hpp)(0x67F4E86D)
 I (..\Application\include\usartTask.hpp)(0x67DA7E9F)
 I (..\Application\include\commonControl.hpp)(0x67E01360)
 I (..\Drivers\USER_Driver\include\commonDriver.hpp)(0x67E015F1)

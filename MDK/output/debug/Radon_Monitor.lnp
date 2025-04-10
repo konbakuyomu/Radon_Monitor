@@ -53,6 +53,7 @@
 ".\output\debug\usartdriver.o"
 ".\output\debug\commondriver.o"
 ".\output\debug\messagebus.o"
+".\output\debug\message_bus.o"
 ".\output\debug\cpuutilization.o"
 ".\output\debug\drvhal.o"
 ".\output\debug\hal.o"

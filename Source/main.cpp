@@ -33,11 +33,8 @@ static TaskHandle_t AppTaskCreate_Handle = NULL;
  */
 void task1_callback(btask_event_t* e)
 {
-    // 获取USART1驱动实例
-    USART1Driver& usart1Driver = USART1Driver::getInstance();
-
     // 发送测试数据
-    usart1Driver.sendTestDataMessage(0x123456);
+    // USART1Driver_SendTestDataMessage(0x123456);
 }
 
 /**

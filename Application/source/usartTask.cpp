@@ -32,49 +32,36 @@ static uint8_t uart1QueueStorage[10 * sizeof(SystemMessage)];
  * @brief 处理UART1发送命令
  * @param [in] msg 系统消息结构体
  */
-static void handleUart1Transmit(const SystemMessage& msg)
+static void handleUart1Transmit(const MsgBusSystemMessage& msg)
 {
-    // 获取USART1实例
-    USART1Driver& usart1Driver = USART1Driver::getInstance();
-    usart1Driver.send();
+    // // 获取USART1实例
+    // USART1Driver& usart1Driver = USART1Driver::getInstance();
+    // usart1Driver.send();
+    USART1Driver_Send();
 }
 
 /**
  * @brief 处理UART1接收命令
  * @param [in] msg 系统消息结构体
  */
-static void handleUart1Receive(const SystemMessage& msg)
+static void handleUart1Receive(const MsgBusSystemMessage& msg)
 {
-    // 获取USART1实例
-    USART1Driver& usart1Driver = USART1Driver::getInstance();
-
-    // 获取协议解析器实例
-    UartProtocolProcessor& uartProtocolProcessor
-        = UartProtocolProcessor::getInstance();
-
-    // 从 procBuffer 消息缓冲区中读取串口数据
-    UartData usart1Data = usart1Driver.receive();
-
-    // 解析串口数据
-    uartProtocolProcessor.parseAndExecute(usart1Data.data(), usart1Data.size());
+    UartData_t usart1Data = USART1Driver_Receive();
 
     // 这里做回显测试
-    // usart1Data.data()[0] = 0xbf;
-    // usart1Data.data()[1] = 0x7f;
-    // usart1Driver.sendTxDataMessage(usart1Data);
+    usart1Data.data[0] = 0xbf;
+    usart1Data.data[1] = 0x7f;
+    USART1Driver_SendTxDataMessage(usart1Data.data, usart1Data.size);
 }
 
 /**
  * @brief 处理UART1测试命令
  * @param [in] msg 系统消息结构体
  */
-static void handleUart1Test(const SystemMessage& msg)
+static void handleUart1Test(const MsgBusSystemMessage& msg)
 {
-    // 获取USART1实例
-    USART1Driver& usart1Driver = USART1Driver::getInstance();
-
     // 将消息总线发来的测试数据存储到usart1Driver的testData成员变量中
-    usart1Driver.saveTestData(msg.payload.testData);
+    USART1Driver_SaveTestData(msg.payload.testData);
 }
 
 /* 函数实现
@@ -101,23 +88,7 @@ void usart1Task(void* pvParameters)
     (void)pvParameters;
 
     // 创建本地消息实例，用于接收消息队列中的数据
-    SystemMessage usart1TaskMessage;
-
-    // 获取全局消息总线单例实例
-    // 消息总线用于管理不同组件间的通信
-    MessageBus& messageBus = MessageBus::getInstance();
-
-    // 获取命令处理器单例实例
-    // 负责将消息路由到对应的处理函数
-    MessageBusProcessor& cmdProcessor = MessageBusProcessor::getInstance();
-
-    // 注册消息类型与处理函数的映射关系
-    // UART1发送消息 -> handleUart1Transmit函数
-    // UART1接收消息 -> handleUart1Receive函数
-    // 测试消息 -> handleUart1Test函数
-    cmdProcessor.registerHandler(Message::UART1_TRANSMIT, handleUart1Transmit);
-    cmdProcessor.registerHandler(Message::UART1_RECEIVE, handleUart1Receive);
-    cmdProcessor.registerHandler(Message::TEST_MESSAGE, handleUart1Test);
+    MsgBusSystemMessage usart1TaskMessage;
 
     // 静态创建FreeRTOS消息队列（仅在首次运行时创建）
     // 队列长度10，消息大小为SystemMessage结构体大小
@@ -129,20 +100,26 @@ void usart1Task(void* pvParameters)
                                         &uart1QueueBuffer);    // 队列控制块
     }
 
-    // 向消息总线订阅本任务关心的消息类型
-    // 这些消息将被路由到uart1Queue队列
-    messageBus.subscribe(Message::UART1_TRANSMIT, uart1Queue); // UART发送消息
-    messageBus.subscribe(Message::UART1_RECEIVE, uart1Queue);  // UART接收消息
-    messageBus.subscribe(Message::TEST_MESSAGE, uart1Queue);   // 测试消息
+    msgbus_subscribe(MSGBUS_MSG_UART1_TRANSMIT, uart1Queue);
+    msgbus_subscribe(MSGBUS_MSG_UART1_RECEIVE, uart1Queue);
+    msgbus_subscribe(MSGBUS_MSG_TEST_MESSAGE, uart1Queue);
+
+    // // 向消息总线订阅本任务关心的消息类型
+    // // 这些消息将被路由到uart1Queue队列
+    // messageBus.subscribe(Message::UART1_TRANSMIT, uart1Queue); // UART发送消息
+    // messageBus.subscribe(Message::UART1_RECEIVE, uart1Queue);  // UART接收消息
+    // messageBus.subscribe(Message::TEST_MESSAGE, uart1Queue);   // 测试消息
 
     // 主任务循环
     for (;;) {
         // 阻塞等待消息队列中的新消息
-        if (messageBus.waitForMessage(uart1Queue, usart1TaskMessage)) {
-            // 执行消息对应的处理函数
-            if (!cmdProcessor.executeCommand(usart1TaskMessage)) {
-                // 处理函数未找到时的默认逻辑
-                // 当前为空实现，可根据需要添加日志或错误处理
+        if (msgbus_wait_for_message(uart1Queue, &usart1TaskMessage)) {
+            if (usart1TaskMessage.message == MSGBUS_MSG_UART1_TRANSMIT) {
+                handleUart1Transmit(usart1TaskMessage);
+            } else if (usart1TaskMessage.message == MSGBUS_MSG_UART1_RECEIVE) {
+                handleUart1Receive(usart1TaskMessage);
+            } else if (usart1TaskMessage.message == MSGBUS_MSG_TEST_MESSAGE) {
+                handleUart1Test(usart1TaskMessage);
             }
         }
     }

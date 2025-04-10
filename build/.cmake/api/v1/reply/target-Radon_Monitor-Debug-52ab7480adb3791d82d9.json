@@ -68,7 +68,7 @@
 			{
 				"command" : 2,
 				"file" : 3,
-				"line" : 25,
+				"line" : 26,
 				"parent" : 7
 			},
 			{
@@ -86,7 +86,7 @@
 			{
 				"command" : 2,
 				"file" : 5,
-				"line" : 86,
+				"line" : 87,
 				"parent" : 11
 			},
 			{
@@ -95,7 +95,7 @@
 			{
 				"command" : 2,
 				"file" : 6,
-				"line" : 31,
+				"line" : 32,
 				"parent" : 13
 			},
 			{
@@ -128,7 +128,7 @@
 			{
 				"command" : 3,
 				"file" : 3,
-				"line" : 11,
+				"line" : 12,
 				"parent" : 7
 			},
 			{
@@ -140,13 +140,13 @@
 			{
 				"command" : 3,
 				"file" : 5,
-				"line" : 71,
+				"line" : 72,
 				"parent" : 11
 			},
 			{
 				"command" : 3,
 				"file" : 6,
-				"line" : 16,
+				"line" : 17,
 				"parent" : 13
 			},
 			{
@@ -310,7 +310,7 @@
 				16,
 				17,
 				18,
-				20,
+				19,
 				21,
 				22,
 				23,
@@ -366,8 +366,11 @@
 				73,
 				74,
 				75,
-				83,
-				84
+				76,
+				79,
+				80,
+				86,
+				87
 			]
 		},
 		{
@@ -436,15 +439,15 @@
 			"sourceIndexes" : 
 			[
 				6,
-				19,
-				76,
+				20,
 				77,
 				78,
-				79,
-				80,
 				81,
 				82,
-				85
+				83,
+				84,
+				85,
+				88
 			]
 		}
 	],
@@ -628,7 +631,10 @@
 				82,
 				83,
 				84,
-				85
+				85,
+				86,
+				87,
+				88
 			]
 		}
 	],
@@ -746,6 +752,12 @@
 			"backtrace" : 19,
 			"compileGroupIndex" : 1,
 			"path" : "Middlewares/freeRTOS/portable/GCC/ARM_CM4F/port.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 20,
+			"compileGroupIndex" : 1,
+			"path" : "MessageBus/message_bus.c",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -1100,6 +1112,18 @@
 			"backtrace" : 22,
 			"compileGroupIndex" : 2,
 			"path" : "Drivers/USER_Driver/source/commonDriver.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 22,
+			"compileGroupIndex" : 1,
+			"path" : "Drivers/USER_Driver/source/usart1Driver.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 23,
+			"compileGroupIndex" : 1,
+			"path" : "Application/source/command_processor_c.c",
 			"sourceGroupIndex" : 1
 		},
 		{

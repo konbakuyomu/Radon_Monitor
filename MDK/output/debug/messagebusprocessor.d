@@ -100,6 +100,8 @@
   ..\Board_Support_Package\include\halTypes.h \
   ..\Board_Support_Package\include\drvHal.h \
   ..\Board_Support_Package\include\hal.h ..\Application\taskFactory.h \
+  ..\MessageBus\message_bus.h \
+  ..\Middlewares\freeRTOS\include\message_buffer.h \
   ..\Application\include\commandProcessorBase.hpp \
   D:\keil_v5\ARM\ARMCLANG\Bin\..\include\libcxx\any \
   D:\keil_v5\ARM\ARMCLANG\Bin\..\include\libcxx\__assert \
@@ -670,7 +672,6 @@
   D:\keil_v5\ARM\ARMCLANG\Bin\..\include\libcxx\typeindex \
   ..\Application\include\messageBusProcessor.hpp \
   ..\MessageBus\messageBus.hpp \
-  ..\Middlewares\freeRTOS\include\message_buffer.h \
   D:\keil_v5\ARM\ARMCLANG\Bin\..\include\libcxx\unordered_set \
   ..\Application\include\uartProtocolProcessor.hpp \
   ..\Application\include\buttonControl.hpp \

@@ -675,6 +675,11 @@
               <FileType>8</FileType>
               <FilePath>..\MessageBus\messageBus.cpp</FilePath>
             </File>
+            <File>
+              <FileName>message_bus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MessageBus\message_bus.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

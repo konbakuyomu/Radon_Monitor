@@ -3,6 +3,7 @@
 
 # 应用源文件
 set(MessageBus_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/message_bus.c
     ${CMAKE_CURRENT_SOURCE_DIR}/messageBus.cpp
 )
 
