@@ -7,25 +7,20 @@
 
 #pragma once
 
-/* 头文件
- * -------------------------------------------------------------*/
 #ifdef __cplusplus
-#include <cstddef>
-#include <cstdint>
-#else
-#include <stddef.h>
-#include <stdint.h>
+extern "C" {
 #endif
 
+/* 头文件
+ * -------------------------------------------------------------*/
+#include <stddef.h>
+#include <stdint.h>
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "task.h"
 
 /* 函数声明
  * -------------------------------------------------------------*/
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * @var TaskHandle_t usart1TaskHandle

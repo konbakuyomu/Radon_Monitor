@@ -6,9 +6,9 @@ set(APP_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/source/command_processor_c.c    
     ${CMAKE_CURRENT_SOURCE_DIR}/source/messageBusProcessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/uartProtocolProcessor.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/usartTask.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/buttonControl.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/commonControl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/usartTask.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/buttonControl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/commonControlTask.c
     ${CMAKE_CURRENT_SOURCE_DIR}/taskFactory.c
 )
 

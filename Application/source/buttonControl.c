@@ -8,16 +8,16 @@
 /* 头文件
  * -------------------------------------------------------------*/
 #include "globalConfig.h"
+#include "buttonControl.h"
 
 /* 函数实现
  * -------------------------------------------------------------*/
-extern "C" {
 
 /**
  * @var TaskHandle_t buttonTaskHandle
  * @brief 按键任务句柄，用于控制和引用按键处理任务
  */
-TaskHandle_t buttonTaskHandle = nullptr;
+TaskHandle_t buttonTaskHandle = NULL;
 
 /**
  * @brief 按键处理任务函数，处理按键输入和LED控制
@@ -36,9 +36,6 @@ void buttonTask(void* pvParameters)
     // 按键编号
     uint8_t keyNumber;
 
-    // 获取消息总线实例
-    MessageBus& messageBus = MessageBus::getInstance();
-
     for (;;) {
         // 按键测试
         if (btn_available() != 0) {
@@ -47,13 +44,13 @@ void buttonTask(void* pvParameters)
             switch (ret) {
             case btn_click:
                 if (keyNumber == KEY_BUTTON_1)
-                    HAL_ledToggle(LED_STATUS);
+                    CommonDriver_LedToggle(LED_STATUS);
                 else if (keyNumber == KEY_BUTTON_2)
-                    HAL_ledToggle(LED_NETWORK);
+                    CommonDriver_LedToggle(LED_NETWORK);
                 else if (keyNumber == KEY_BUTTON_3)
-                    HAL_ledToggle(LED_FAULT);
+                    CommonDriver_LedToggle(LED_FAULT);
                 else if (keyNumber == KEY_BUTTON_4)
-                    HAL_ledToggle(LED_ALARM);
+                    CommonDriver_LedToggle(LED_ALARM);
                 break;
             default:
                 break;
@@ -62,5 +59,4 @@ void buttonTask(void* pvParameters)
 
         HAL_delayMillis(10);
     }
-}
 }

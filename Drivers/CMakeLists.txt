@@ -55,8 +55,7 @@ set(USER_SOURCES
     USER_Driver/source/wm8731.c
     USER_Driver/source/ev_hc32f460_lqfp100_v2_wm8731.c
     USER_Driver/source/ev_hc32f460_lqfp100_v2.c
-    USER_Driver/source/usartDriver.cpp
-    USER_Driver/source/commonDriver.cpp
+    USER_Driver/source/commonDriver.c
     USER_Driver/source/usart1Driver.c
 )
 

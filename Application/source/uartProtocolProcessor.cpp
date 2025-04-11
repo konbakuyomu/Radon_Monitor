@@ -141,29 +141,29 @@ bool UartProtocolProcessor::handleAlarmReport(const UartMessage& msg)
         return false;
     }
 
-    // 获取USART1实例
-    USART1Driver& usart1Driver = USART1Driver::getInstance();
+    // // 获取USART1实例
+    // USART1Driver& usart1Driver = USART1Driver::getInstance();
 
-    uint8_t radonAlarmStatus = msg.data[0];
-    uint8_t flowAlarmStatus = msg.data[1];
+    // uint8_t radonAlarmStatus = msg.data[0];
+    // uint8_t flowAlarmStatus = msg.data[1];
 
-    // 处理报警状态...
+    // // 处理报警状态...
     
-    // 创建扩展的数据，复制原始数据并添加2个字节
-    std::vector<uint8_t> extendedData = msg.data;
-    extendedData.push_back(0xAA);  // 添加第一个额外字节
-    extendedData.push_back(0xBB);  // 添加第二个额外字节
+    // // 创建扩展的数据，复制原始数据并添加2个字节
+    // std::vector<uint8_t> extendedData = msg.data;
+    // extendedData.push_back(0xAA);  // 添加第一个额外字节
+    // extendedData.push_back(0xBB);  // 添加第二个额外字节
 
-    // 获取测试数据
-    uint32_t testData = usart1Driver.getTestData();
-    extendedData.push_back(testData & 0xFF);
-    extendedData.push_back((testData >> 8) & 0xFF);
-    extendedData.push_back((testData >> 16) & 0xFF);
-    extendedData.push_back((testData >> 24) & 0xFF);
+    // // 获取测试数据
+    // uint32_t testData = usart1Driver.getTestData();
+    // extendedData.push_back(testData & 0xFF);
+    // extendedData.push_back((testData >> 8) & 0xFF);
+    // extendedData.push_back((testData >> 16) & 0xFF);
+    // extendedData.push_back((testData >> 24) & 0xFF);
 
-    // 使用扩展后的数据创建UartData并发送
-    UartData alarmData(extendedData.data(), extendedData.size());
-    usart1Driver.sendTxDataMessage(alarmData);
+    // // 使用扩展后的数据创建UartData并发送
+    // UartData alarmData(extendedData.data(), extendedData.size());
+    // usart1Driver.sendTxDataMessage(alarmData);
 
     return true;
 }

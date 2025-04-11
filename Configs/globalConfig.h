@@ -62,6 +62,12 @@ extern "C" {
 #include "taskFactory.h"
 #include "message_bus.h"
 #include "usart1Driver.h"
+#include "commonDriver.h"
+
+// 应用层头文件
+#include "usartTask.h"
+#include "buttonControl.h"
+#include "commonControlTask.h"
 
 /* 枚举
  * -------------------------------------------------------------*/
@@ -130,12 +136,7 @@ typedef struct {
 #include "commandProcessorBase.hpp"
 #include "messageBusProcessor.hpp"
 #include "uartProtocolProcessor.hpp"
-#include "buttonControl.hpp"
 #include "messageBus.hpp"
-#include "usartDriver.hpp"
-#include "usartTask.hpp"
-#include "commonControl.hpp"
-#include "commonDriver.hpp"
 
 /* C++ 语言兼容区域结束
  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/

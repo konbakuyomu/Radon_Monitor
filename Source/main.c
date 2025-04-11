@@ -1,7 +1,7 @@
 /**
- * @file main.cpp
+ * @file main.c
  * @brief 主程序入口
- * @date 2025-03-05
+ * @date 2025-04-11
  * @details 包含主函数和系统初始化，创建FreeRTOS任务，实现LED控制
  */
 
