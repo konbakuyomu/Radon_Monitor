@@ -25,7 +25,7 @@ AlignConsecutiveMacros: true           # 对齐连续的宏定义
 AlignTrailingComments: true            # 对齐尾随注释
 
 # 行长度设置
-ColumnLimit: 85                        # 每行最大 70 字符
+ColumnLimit: 100                        # 每行最大 70 字符
 
 # 参数格式化
 BinPackArguments: false                # 禁止将函数实参打包放在同一行

@@ -14,7 +14,7 @@
 
 /* 常量定义
  * -------------------------------------------------------------*/
-#define MAX_SUBSCRIBERS 8 /**< 每种消息类型的最大订阅者数量 */
+#define MAX_SUBSCRIBERS 8                      /**< 每种消息类型的最大订阅者数量 */
 #define MAX_TYPES       MSGBUS_MSG_MAX_MESSAGE /**< 消息类型总数 */
 
 /* 类型定义
@@ -34,8 +34,8 @@ typedef struct {
 /* 静态变量
  * -------------------------------------------------------------*/
 static SubscriberEntry s_subscribers[MAX_SUBSCRIBERS * MAX_TYPES]; /**< 订阅者数组 */
-static MsgBusHandle_t s_nextHandle = 0; /**< 下一个可用句柄 */
-static bool s_initialized = false;      /**< 是否已初始化 */
+static MsgBusHandle_t s_nextHandle = 0;                            /**< 下一个可用句柄 */
+static bool s_initialized = false;                                 /**< 是否已初始化 */
 
 /* 私有函数声明
  * -------------------------------------------------------------*/
@@ -167,8 +167,7 @@ void msgbus_publish(const MsgBusSystemMessage* msg)
  * @param [in] msg 要发布的消息
  * @param [in] pxHigherPriorityTaskWoken 是否需要任务切换
  */
-void msgbus_publish_from_isr(const MsgBusSystemMessage* msg,
-                             BaseType_t* pxHigherPriorityTaskWoken)
+void msgbus_publish_from_isr(const MsgBusSystemMessage* msg, BaseType_t* pxHigherPriorityTaskWoken)
 {
     if (!s_initialized || !msg || msg->message == MSGBUS_MSG_NONE
         || msg->message >= MSGBUS_MSG_MAX_MESSAGE) {
@@ -242,8 +241,7 @@ static void sendMessageToSubscribers(const MsgBusSystemMessage* msg,
 
         for (int i = 0; i < MAX_SUBSCRIBERS * MAX_TYPES; i++) {
             if (s_subscribers[i].inUse && s_subscribers[i].msgType == msgType) {
-                xQueueSendFromISR(
-                    s_subscribers[i].queue, msg, pxHigherPriorityTaskWoken);
+                xQueueSendFromISR(s_subscribers[i].queue, msg, pxHigherPriorityTaskWoken);
             }
         }
 

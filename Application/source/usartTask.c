@@ -1,15 +1,21 @@
 /**
- * @file usartTask.cpp
+ * @file usartTask.c
  * @brief USART1任务处理实现文件
- * @date 2023-07-20
+ * @date 2025-04-11
  * @details 实现USART1任务函数，处理串口通信的发送和接收功能
  */
 
 /* 头文件
  * -------------------------------------------------------------*/
 #include "globalConfig.h"
+#include "messageBusProcessor.h"
 
-/* 全局变量
+/**
+ * @addtogroup USART_Task
+ * @{
+ */
+
+/* 静态变量
  * -------------------------------------------------------------*/
 /**
  * @brief UART1消息队列句柄，用于接收UART1相关消息
@@ -28,48 +34,95 @@ static StaticQueue_t uart1QueueBuffer;
  */
 static uint8_t uart1QueueStorage[10 * sizeof(MsgBusSystemMessage)];
 
+/* 静态函数声明
+ * -------------------------------------------------------------*/
 /**
  * @brief 处理UART1发送命令
- * @param [in] msg 系统消息结构体
+ * @param [in] context 上下文指针（本例中未使用）
+ * @param [in] message 消息指针
+ * @return 处理是否成功
  */
-static void handleUart1Transmit(const MsgBusSystemMessage* msg)
+static bool handleUart1Transmit(void* context, const void* message);
+
+/**
+ * @brief 处理UART1接收命令
+ * @param [in] context 上下文指针（本例中未使用）
+ * @param [in] message 消息指针
+ * @return 处理是否成功
+ */
+static bool handleUart1Receive(void* context, const void* message);
+
+/**
+ * @brief 处理UART1测试命令
+ * @param [in] context 上下文指针（本例中未使用）
+ * @param [in] message 消息指针
+ * @return 处理是否成功
+ */
+static bool handleUart1Test(void* context, const void* message);
+
+/* 静态函数实现
+ * -------------------------------------------------------------*/
+/**
+ * @brief 处理UART1发送命令
+ * @param [in] context 上下文指针（本例中未使用）
+ * @param [in] message 消息指针
+ * @return 处理是否成功
+ */
+static bool handleUart1Transmit(void* context, const void* message)
 {
+    (void)context; // 未使用参数
+    const MsgBusSystemMessage* msg = (const MsgBusSystemMessage*)message;
+
     USART1Driver_Send();
+    return true;
 }
 
 /**
  * @brief 处理UART1接收命令
- * @param [in] msg 系统消息结构体
+ * @param [in] context 上下文指针（本例中未使用）
+ * @param [in] message 消息指针
+ * @return 处理是否成功
  */
-static void handleUart1Receive(const MsgBusSystemMessage* msg)
+static bool handleUart1Receive(void* context, const void* message)
 {
+    (void)context; // 未使用参数
+    const MsgBusSystemMessage* msg = (const MsgBusSystemMessage*)message;
+
     UartData_t usart1Data = USART1Driver_Receive();
 
     // 这里做回显测试
     usart1Data.data[0] = 0xbf;
-    usart1Data.data[1] = 0x7f;
+    usart1Data.data[1] = msg->payload.usartData;
     USART1Driver_SendTxDataMessage(usart1Data.data, usart1Data.size);
+    return true;
 }
 
 /**
  * @brief 处理UART1测试命令
- * @param [in] msg 系统消息结构体
+ * @param [in] context 上下文指针（本例中未使用）
+ * @param [in] message 消息指针
+ * @return 处理是否成功
  */
-static void handleUart1Test(const MsgBusSystemMessage* msg)
+static bool handleUart1Test(void* context, const void* message)
 {
+    (void)context; // 未使用参数
+    const MsgBusSystemMessage* msg = (const MsgBusSystemMessage*)message;
+
     // 将消息总线发来的测试数据存储到usart1Driver的testData成员变量中
     USART1Driver_SaveTestData(msg->payload.testData);
+    return true;
 }
 
-/* 函数实现
+/* 全局变量
  * -------------------------------------------------------------*/
-
 /**
  * @var TaskHandle_t usart1TaskHandle
  * @brief USART1任务句柄，用于控制和引用USART1任务
  */
 TaskHandle_t usart1TaskHandle = NULL;
 
+/* 全局函数实现
+ * -------------------------------------------------------------*/
 /**
  * @brief USART1任务函数，处理串口1数据的收发
  * @param [in] pvParameters FreeRTOS任务参数
@@ -77,6 +130,8 @@ TaskHandle_t usart1TaskHandle = NULL;
  * @return 无返回值
  * @note 任务会一直运行，采用事件驱动模式等待并处理消息队列中的消息
  *       消息类型包括：UART1发送、UART1接收、测试消息
+ * @details 任务初始化消息队列、注册消息处理函数并订阅相关消息类型，
+ *          然后进入循环等待并处理接收到的消息
  */
 void usart1Task(void* pvParameters)
 {
@@ -92,10 +147,22 @@ void usart1Task(void* pvParameters)
     if (uart1Queue == NULL) {
         uart1Queue = xQueueCreateStatic(10,                          // 队列长度
                                         sizeof(MsgBusSystemMessage), // 消息大小
-                                        uart1QueueStorage,  // 队列存储区
-                                        &uart1QueueBuffer); // 队列控制块
+                                        uart1QueueStorage,           // 队列存储区
+                                        &uart1QueueBuffer);          // 队列控制块
     }
 
+    // 初始化Command Processor
+    MessageBusProcessorC* processor = MessageBusProcessorC_getInstance();
+
+    // 注册消息处理函数
+    processor->base.registerHandler(
+        &processor->base, MSGBUS_MSG_UART1_TRANSMIT, handleUart1Transmit, NULL);
+    processor->base.registerHandler(
+        &processor->base, MSGBUS_MSG_UART1_RECEIVE, handleUart1Receive, NULL);
+    processor->base.registerHandler(
+        &processor->base, MSGBUS_MSG_TEST_MESSAGE, handleUart1Test, NULL);
+
+    // 订阅消息
     msgbus_subscribe(MSGBUS_MSG_UART1_TRANSMIT, uart1Queue);
     msgbus_subscribe(MSGBUS_MSG_UART1_RECEIVE, uart1Queue);
     msgbus_subscribe(MSGBUS_MSG_TEST_MESSAGE, uart1Queue);
@@ -104,13 +171,17 @@ void usart1Task(void* pvParameters)
     for (;;) {
         // 阻塞等待消息队列中的新消息
         if (msgbus_wait_for_message(uart1Queue, &usart1TaskMessage)) {
-            if (usart1TaskMessage.message == MSGBUS_MSG_UART1_TRANSMIT) {
-                handleUart1Transmit(&usart1TaskMessage);
-            } else if (usart1TaskMessage.message == MSGBUS_MSG_UART1_RECEIVE) {
-                handleUart1Receive(&usart1TaskMessage);
-            } else if (usart1TaskMessage.message == MSGBUS_MSG_TEST_MESSAGE) {
-                handleUart1Test(&usart1TaskMessage);
+            // 使用Command Processor处理消息
+            bool handled = processor->base.executeCommand(&processor->base, &usart1TaskMessage);
+
+            if (!handled) {
+                // 处理未注册的消息类型（可选）
+                // 本例中可以忽略，因为我们只订阅了已注册处理的消息类型
             }
         }
     }
 }
+
+/**
+ * @}
+ */

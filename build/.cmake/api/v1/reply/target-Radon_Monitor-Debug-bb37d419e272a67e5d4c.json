@@ -68,7 +68,7 @@
 			{
 				"command" : 2,
 				"file" : 3,
-				"line" : 26,
+				"line" : 25,
 				"parent" : 7
 			},
 			{
@@ -95,7 +95,7 @@
 			{
 				"command" : 2,
 				"file" : 6,
-				"line" : 32,
+				"line" : 39,
 				"parent" : 13
 			},
 			{
@@ -128,7 +128,7 @@
 			{
 				"command" : 3,
 				"file" : 3,
-				"line" : 12,
+				"line" : 11,
 				"parent" : 7
 			},
 			{
@@ -146,7 +146,7 @@
 			{
 				"command" : 3,
 				"file" : 6,
-				"line" : 17,
+				"line" : 23,
 				"parent" : 13
 			},
 			{
@@ -311,6 +311,7 @@
 				17,
 				18,
 				19,
+				20,
 				21,
 				22,
 				23,
@@ -370,12 +371,15 @@
 				77,
 				78,
 				79,
+				80,
+				81,
 				82,
 				83,
 				84,
 				85,
 				86,
-				87
+				87,
+				88
 			]
 		},
 		{
@@ -443,10 +447,7 @@
 			},
 			"sourceIndexes" : 
 			[
-				6,
-				20,
-				80,
-				81
+				6
 			]
 		}
 	],
@@ -632,7 +633,8 @@
 				84,
 				85,
 				86,
-				87
+				87,
+				88
 			]
 		}
 	],
@@ -756,12 +758,6 @@
 			"backtrace" : 20,
 			"compileGroupIndex" : 1,
 			"path" : "MessageBus/message_bus.c",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 20,
-			"compileGroupIndex" : 2,
-			"path" : "MessageBus/messageBus.cpp",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -1115,19 +1111,31 @@
 		{
 			"backtrace" : 23,
 			"compileGroupIndex" : 1,
-			"path" : "Application/source/command_processor_c.c",
+			"path" : "Application/source/baseProcessor.c",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 23,
-			"compileGroupIndex" : 2,
-			"path" : "Application/source/messageBusProcessor.cpp",
+			"compileGroupIndex" : 1,
+			"path" : "Application/source/messageBusProcessor.c",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 23,
-			"compileGroupIndex" : 2,
-			"path" : "Application/source/uartProtocolProcessor.cpp",
+			"compileGroupIndex" : 1,
+			"path" : "Application/source/uartProcessor.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 23,
+			"compileGroupIndex" : 1,
+			"path" : "Application/source/buttonProcessor.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 23,
+			"compileGroupIndex" : 1,
+			"path" : "Application/source/commonControlProcessor.c",
 			"sourceGroupIndex" : 1
 		},
 		{

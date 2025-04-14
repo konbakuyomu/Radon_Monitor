@@ -129,16 +129,4 @@ typedef struct {
 /* C 语言兼容区域结束
  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
-/* C++ 语言兼容区域开始(这里头文件中已经有了C++和纯C的分区了，所以这里可以不用再分了)
- * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-
-// 软件应用层头文件
-#include "commandProcessorBase.hpp"
-#include "messageBusProcessor.hpp"
-#include "uartProtocolProcessor.hpp"
-#include "messageBus.hpp"
-
-/* C++ 语言兼容区域结束
- * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-
 #endif /* __GLOBAL_CONFIG_H__ */
