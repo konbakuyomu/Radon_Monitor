@@ -1,8 +1,8 @@
 /**
  * @file commonDriver.c
- * @brief 通用组件控制器实现文件
- * @date 2025-04-11
- * @details 实现通用组件控制函数，提供对LED、PWM等基础组件的控制功能
+ * @brief LED控制器实现文件
+ * @date 2025-04-15
+ * @details 实现LED控制相关函数。
  */
 
 /* 头文件
@@ -12,99 +12,99 @@
 
 /* 静态变量
  * -------------------------------------------------------------*/
-static uint8_t common_driver_initialized = 0;
+/**
+ * @var static uint8_t g_ledControllerInitialized
+ * @brief LED控制器初始化标志，仅在本文件内有效
+ */
+static uint8_t g_ledControllerInitialized = 0;
 
 /* 私有函数声明
  * -------------------------------------------------------------*/
 /**
- * @brief 发送LED控制消息
- * @param [in] ledSelection LED选择器
- * @param [in] control 控制命令
+ * @brief 发送LED控制消息（仅在本文件内使用）
+ * @param [in] ledIdentifier LED标识符
+ * @param [in] command 控制命令 @ref LedControlCommand
  */
-static void CommonDriver_SendLedControlMessage(uint8_t ledSelection,
-                                               LedControl_t control);
+static void sendLedControlMessage(uint8_t ledIdentifier, LedControlCommand command);
 
 /* 公共函数实现
  * -------------------------------------------------------------*/
-
 /**
- * @brief 初始化通用驱动器
- * @details 在使用其他函数前必须先调用此函数
+ * @addtogroup LedControl_API
+ * @{
  */
-void CommonDriver_Init(void)
+/**
+ * @brief 初始化LED控制器
+ * @details 在使用其他LED控制函数前必须先调用此函数
+ */
+void initializeLedController(void)
 {
-    // 初始化操作...
-    common_driver_initialized = 1;
+    g_ledControllerInitialized = 1;
 }
 
 /**
  * @brief 打开指定LED
- * @param [in] ledSelection LED选择器
+ * @param [in] ledIdentifier LED标识符，支持单个或组合
  */
-void CommonDriver_LedTurnOn(uint8_t ledSelection)
+void turnOnLed(uint8_t ledIdentifier)
 {
-    CommonDriver_SendLedControlMessage(ledSelection, LED_CONTROL_TURN_ON);
+    sendLedControlMessage(ledIdentifier, TURN_ON);
 }
 
 /**
  * @brief 关闭指定LED
- * @param [in] ledSelection LED选择器
+ * @param [in] ledIdentifier LED标识符，支持单个或组合
  */
-void CommonDriver_LedTurnOff(uint8_t ledSelection)
+void turnOffLed(uint8_t ledIdentifier)
 {
-    CommonDriver_SendLedControlMessage(ledSelection, LED_CONTROL_TURN_OFF);
+    sendLedControlMessage(ledIdentifier, TURN_OFF);
 }
 
 /**
  * @brief 切换指定LED状态
- * @param [in] ledSelection LED选择器
+ * @param [in] ledIdentifier LED标识符，支持单个或组合
  */
-void CommonDriver_LedToggle(uint8_t ledSelection)
+void toggleLedState(uint8_t ledIdentifier)
 {
-    CommonDriver_SendLedControlMessage(ledSelection, LED_CONTROL_TOGGLE);
+    sendLedControlMessage(ledIdentifier, TOGGLE);
 }
+/**
+ * @}
+ */
 
 /* 私有函数实现
  * -------------------------------------------------------------*/
-
 /**
- * @brief 发送LED控制消息
- * @param [in] ledSelection LED选择器
- * @param [in] control 控制命令
+ * @brief 发送LED控制消息（仅在本文件内使用）
+ * @param [in] ledIdentifier LED标识符
+ * @param [in] command 控制命令 @ref LedControlCommand
  */
-static void CommonDriver_SendLedControlMessage(uint8_t ledSelection,
-                                               LedControl_t control)
+static void sendLedControlMessage(uint8_t ledIdentifier, LedControlCommand command)
 {
     // 验证LED选择是否有效
-    // 有效的LED选择: LED_STATUS(0x01), LED_NETWORK(0x02), LED_FAULT(0x04),
-    // LED_ALARM(0x08)或它们的组合
-    if ((ledSelection & STATUS_LED_ALL) == 0
-        || (ledSelection & ~STATUS_LED_ALL) != 0) {
-        // ledSelection不包含任何有效的LED或包含无效的位
+    if ((ledIdentifier & LED_IS_ALL) == 0 || (ledIdentifier & ~LED_IS_ALL) != 0) {
+        // ledIdentifier不包含任何有效的LED或包含无效的位
         return;
     }
 
-    // 初始化消息
-    MsgBusSystemMessage ledMsg;
-    ledMsg.message = MSGBUS_MSG_LED_CONTROL;
-    ledMsg.payload.ledData.ledSelection = ledSelection;
+    MessageBusMessage ledMessage;
+    ledMessage.type = MESSAGE_BUS_TYPE_LED_CONTROL;
+    ledMessage.payload.led.ledIdentifier = ledIdentifier;
 
-    // 转换LedControl_t枚举到MsgBusLedControl枚举
-    switch (control) {
-    case LED_CONTROL_TURN_ON:
-        ledMsg.payload.ledData.control = MSGBUS_LED_TURN_ON;
+    switch (command) {
+    case TURN_ON:
+        ledMessage.payload.led.action = LED_CONTROL_ACTION_TURN_ON;
         break;
-    case LED_CONTROL_TURN_OFF:
-        ledMsg.payload.ledData.control = MSGBUS_LED_TURN_OFF;
+    case TURN_OFF:
+        ledMessage.payload.led.action = LED_CONTROL_ACTION_TURN_OFF;
         break;
-    case LED_CONTROL_TOGGLE:
-        ledMsg.payload.ledData.control = MSGBUS_LED_TOGGLE;
+    case TOGGLE:
+        ledMessage.payload.led.action = LED_CONTROL_ACTION_TOGGLE;
         break;
     default:
-        ledMsg.payload.ledData.control = MSGBUS_LED_NONE;
+        ledMessage.payload.led.action = LED_CONTROL_ACTION_NONE;
         break;
     }
 
-    // 发布消息
-    msgbus_publish(&ledMsg);
+    publishMessage(&ledMessage);
 }

@@ -5,8 +5,7 @@
  * @details 定义了硬件抽象层使用的各种数据类型，包括状态码、LED、PWM、UART和CAN相关类型
  */
 
-#ifndef HAL_TYPES_H
-#define HAL_TYPES_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,13 +19,23 @@ extern "C" {
 
 /* 版本控制
  * -------------------------------------------------------------*/
+/**
+ * @defgroup HAL_Version 硬件抽象层版本定义
+ * @brief 硬件抽象层版本号常量
+ * @{
+ */
+/** @brief HAL主版本号 */
 #define HAL_VERSION_MAJOR 1
+/** @brief HAL次版本号 */
 #define HAL_VERSION_MINOR 0
+/**
+ * @}
+ */
 
 /* 返回码定义
  * -------------------------------------------------------------*/
 /**
- * @typedef hal_status_t
+ * @typedef HardwareStatus
  * @brief HAL层操作返回状态码
  */
 typedef enum {
@@ -35,41 +44,42 @@ typedef enum {
     HAL_BUSY = -2,       /**< 设备忙 */
     HAL_TIMEOUT = -3,    /**< 操作超时 */
     HAL_INVALID_ARG = -4 /**< 参数无效 */
-} hal_status_t;
+} HardwareStatus;
 
 /* LED相关类型
  * -------------------------------------------------------------*/
 /**
- * @typedef hal_led_t
+ * @typedef LedIdentifier
  * @brief LED标识符类型
+ * @details 用于表示LED的标识符，由ledConfig.h中定义的LED常量赋值
  */
-typedef uint8_t hal_led_t;
+typedef uint8_t LedIdentifier;
 
 /* PWM相关类型
  * -------------------------------------------------------------*/
 /**
- * @typedef hal_pwm_direction_t
+ * @typedef PwmDirection
  * @brief PWM方向枚举
  */
 typedef enum {
     PWM_FORWARD = 0, /**< 正向PWM */
     PWM_REVERSE = 1  /**< 反向PWM */
-} hal_pwm_direction_t;
+} PwmDirection;
 
 /**
- * @typedef hal_pwm_config_t
+ * @typedef PwmConfiguration
  * @brief PWM配置结构体
  */
 typedef struct {
-    uint32_t channel;   /**< 通道号 */
-    uint32_t frequency; /**< 频率(Hz) */
-    float dutyCycle;    /**< 占空比(0-100) */
-} hal_pwm_config_t;
+    uint32_t channel;       /**< 通道号 */
+    uint32_t frequencyHz;   /**< 频率(Hz) */
+    float dutyCyclePercent; /**< 占空比(0-100) */
+} PwmConfiguration;
 
 /* UART相关类型
  * -------------------------------------------------------------*/
 /**
- * @typedef hal_uart_channel_t
+ * @typedef UartChannel
  * @brief UART通道枚举
  */
 typedef enum {
@@ -77,32 +87,30 @@ typedef enum {
     UART_CHANNEL_2 = 1, /**< UART通道2 */
     UART_CHANNEL_3 = 2, /**< UART通道3 */
     UART_CHANNEL_4 = 3  /**< UART通道4 */
-} hal_uart_channel_t;
+} UartChannel;
 
 /**
- * @typedef hal_uart_data_t
+ * @typedef UartTransferData
  * @brief UART数据传输结构体
  */
 typedef struct {
-    uint8_t* data;              /**< 数据指针 */
-    size_t length;              /**< 数据长度 */
-    hal_uart_channel_t channel; /**< 通道号 */
-} hal_uart_data_t;
+    uint8_t* data;       /**< 数据指针 */
+    size_t length;       /**< 数据长度 */
+    UartChannel channel; /**< 通道号 */
+} UartTransferData;
 
 /* CAN相关类型
  * -------------------------------------------------------------*/
 /**
- * @typedef hal_can_message_t
+ * @typedef CanMessage
  * @brief CAN消息结构体
  */
 typedef struct {
     uint32_t id;   /**< 消息ID */
     uint8_t* data; /**< 数据指针 */
     size_t length; /**< 数据长度 */
-} hal_can_message_t;
+} CanMessage;
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* HAL_TYPES_H */

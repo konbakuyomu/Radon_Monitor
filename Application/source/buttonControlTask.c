@@ -1,36 +1,20 @@
 /**
- * @file buttonControl.c
+ * @file buttonControlTask.c
  * @brief 按键控制任务处理实现文件
- * @date 2025-03-15
- * @details 实现按键任务函数，处理按键输入和LED控制功能
+ * @date 2025-04-15
+ * @details 实现按键任务函数，可以识别不同的按键动作
  */
 
 /* 头文件
  * -------------------------------------------------------------*/
-#include "buttonControl.h"
+#include "buttonControlTask.h"
 #include "buttonProcessor.h"
 #include "globalConfig.h"
 
 /**
- * @addtogroup Button_Task
+ * @addtogroup Button_Control_Task
  * @{
  */
-
-/* 类型定义
- * -------------------------------------------------------------*/
-/**
- * @brief 用于构建按键命令类型的宏定义
- * @details 将按键ID和事件类型组合成一个32位命令类型
- */
-#define MAKE_BUTTON_CMD(event, key) (((uint32_t)(event) << 16) | (key))
-
-/**
- * @brief 按键事件消息结构
- */
-typedef struct {
-    uint8_t keyNumber; /**< 按键编号 */
-    btn_event_t event; /**< 按键事件类型 */
-} ButtonEventMessage;
 
 /* 静态函数声明
  * -------------------------------------------------------------*/
@@ -46,7 +30,7 @@ static bool handleButton1Click(void* context, const void* message)
     (void)context;
     (void)message;
 
-    CommonDriver_LedToggle(LED_STATUS);
+    toggleLedState(LED_STATUS);
     return true;
 }
 
@@ -62,7 +46,7 @@ static bool handleButton2Click(void* context, const void* message)
     (void)context;
     (void)message;
 
-    CommonDriver_LedToggle(LED_NETWORK);
+    toggleLedState(LED_NETWORK);
     return true;
 }
 
@@ -78,7 +62,7 @@ static bool handleButton3Click(void* context, const void* message)
     (void)context;
     (void)message;
 
-    CommonDriver_LedToggle(LED_FAULT);
+    toggleLedState(LED_FAULT);
     return true;
 }
 
@@ -94,7 +78,7 @@ static bool handleButton4Click(void* context, const void* message)
     (void)context;
     (void)message;
 
-    CommonDriver_LedToggle(LED_ALARM);
+    toggleLedState(LED_ALARM);
     return true;
 }
 
@@ -111,7 +95,7 @@ TaskHandle_t buttonTaskHandle = NULL;
 /**
  * @brief 按键处理任务函数，处理按键输入和LED控制
  * @param [in] pvParameters FreeRTOS任务参数
- *        This parameter is not used in this task
+ *        FreeRTOS任务创建时传入的参数，本任务中未使用
  * @return 无返回值
  * @note 任务会一直运行，等待并处理按键输入事件
  * @details 初始化按键处理器并注册回调函数，然后循环检测和处理按键事件
@@ -121,37 +105,46 @@ void buttonTask(void* pvParameters)
     // 防止未使用参数警告
     (void)pvParameters;
 
-    // 按键事件消息
+    // 创建按键事件消息实例，用于等待按键事件
     ButtonEventMessage buttonMsg;
 
-    // 获取按键处理器单例
-    ButtonProcessorC* processor = ButtonProcessorC_getInstance();
+    // 初始化命令处理器
+    ButtonCommandProcessor* processor = ButtonCommandProcessor_getInstance();
 
     // 注册按键处理函数
-    processor->base.registerHandler(
-        &processor->base, MAKE_BUTTON_CMD(btn_click, KEY_BUTTON_1), handleButton1Click, NULL);
-    processor->base.registerHandler(
-        &processor->base, MAKE_BUTTON_CMD(btn_click, KEY_BUTTON_2), handleButton2Click, NULL);
-    processor->base.registerHandler(
-        &processor->base, MAKE_BUTTON_CMD(btn_click, KEY_BUTTON_3), handleButton3Click, NULL);
-    processor->base.registerHandler(
-        &processor->base, MAKE_BUTTON_CMD(btn_click, KEY_BUTTON_4), handleButton4Click, NULL);
+    processor->commandProcessor.registerHandler(&processor->commandProcessor,
+                                                CREATE_BUTTON_COMMAND(buttonClick, KEY_BUTTON_1),
+                                                handleButton1Click,
+                                                NULL);
+    processor->commandProcessor.registerHandler(&processor->commandProcessor,
+                                                CREATE_BUTTON_COMMAND(buttonClick, KEY_BUTTON_2),
+                                                handleButton2Click,
+                                                NULL);
+    processor->commandProcessor.registerHandler(&processor->commandProcessor,
+                                                CREATE_BUTTON_COMMAND(buttonClick, KEY_BUTTON_3),
+                                                handleButton3Click,
+                                                NULL);
+    processor->commandProcessor.registerHandler(&processor->commandProcessor,
+                                                CREATE_BUTTON_COMMAND(buttonClick, KEY_BUTTON_4),
+                                                handleButton4Click,
+                                                NULL);
 
     for (;;) {
         // 检查是否有按键事件
-        if (btn_available() != 0) {
+        if (buttonAvailableCount() != 0) {
             // 读取按键事件
-            btn_read_event(&buttonMsg.keyNumber, &buttonMsg.event);
+            buttonReadEvent(&buttonMsg.buttonIdentifier, &buttonMsg.eventType);
 
-            // 使用Command Processor处理按键事件
-            bool handled = processor->base.executeCommand(&processor->base, &buttonMsg);
+            // 使用命令处理器执行命令
+            bool handled = processor->commandProcessor.executeCommand(&processor->commandProcessor,
+                                                                      &buttonMsg);
 
             if (!handled) {
                 // 未处理的按键事件（可以添加默认处理或日志）
             }
         }
 
-        HAL_delayMillis(10);
+        HAL_delayMilliseconds(10);
     }
 }
 

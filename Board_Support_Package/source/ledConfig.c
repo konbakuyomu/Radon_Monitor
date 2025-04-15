@@ -25,7 +25,7 @@ const uint8_t LED_FAULT = 0x04U;
 /** @brief 报警LED标识符 */
 const uint8_t LED_ALARM = 0x08U;
 /** @brief 所有LED的组合标识符 */
-const uint8_t STATUS_LED_ALL = (LED_STATUS | LED_NETWORK | LED_FAULT | LED_ALARM);
+const uint8_t LED_IS_ALL = (LED_STATUS | LED_NETWORK | LED_FAULT | LED_ALARM);
 /**
  * @}
  */
@@ -64,20 +64,20 @@ static const uint16_t ALARM_LED_PIN = GPIO_PIN_10;
  * @details
  * 该数组包含所有LED的端口和引脚配置，按照状态灯、网络灯、故障灯、报警灯的顺序排列
  */
-static const PortPinConfiguration ledPortPin[4]
-    = { { STATUS_LED_PORT, STATUS_LED_PIN },
-        { NETWORK_LED_PORT, NETWORK_LED_PIN },
-        { FAULT_LED_PORT, FAULT_LED_PIN },
-        { ALARM_LED_PORT, ALARM_LED_PIN } };
+static const PortPinConfiguration ledPortPin[4] = { { STATUS_LED_PORT, STATUS_LED_PIN },
+                                                    { NETWORK_LED_PORT, NETWORK_LED_PIN },
+                                                    { FAULT_LED_PORT, FAULT_LED_PIN },
+                                                    { ALARM_LED_PORT, ALARM_LED_PIN } };
 
-/* 函数定义
+/* 函数实现
  * -------------------------------------------------------------*/
 
 /**
  * @brief 初始化所有LED
  * @details 配置LED引脚为输出模式，并将所有LED初始状态设置为关闭
+ * @return 无
  */
-void ledConfigInit(void)
+void initializeLedConfiguration(void)
 {
     stc_gpio_init_t stcGpioInit;
     uint8_t i;
@@ -90,24 +90,25 @@ void ledConfigInit(void)
 
     /* 初始化所有LED引脚 */
     for (i = 0U; i < 4U; i++) {
-        (void)GPIO_Init(
-            ledPortPin[i].portNumber, ledPortPin[i].pinNumber, &stcGpioInit);
+        (void)GPIO_Init(ledPortPin[i].portNumber, ledPortPin[i].pinNumber, &stcGpioInit);
     }
 
     /* 初始状态下关闭所有LED */
-    ledTurnOff(STATUS_LED_ALL);
+    turnLedOff(LED_ALL);
 }
 
 /**
  * @brief 打开指定的LED
  * @param [in] ledSelection 要打开的LED选择
- *                         - LED_STATUS: 状态LED
- *                         - LED_NETWORK: 网络LED
- *                         - LED_FAULT: 故障LED
- *                         - LED_ALARM: 报警LED
- *                         - STATUS_LED_ALL: 所有LED
+ *             This parameter can be one of the following values:
+ *             @arg LED_STATUS: 状态LED
+ *             @arg LED_NETWORK: 网络LED
+ *             @arg LED_FAULT: 故障LED
+ *             @arg LED_ALARM: 报警LED
+ *             @arg LED_ALL: 所有LED
+ * @return 无
  */
-void ledTurnOn(uint8_t ledSelection)
+void turnLedOn(uint8_t ledSelection)
 {
     uint8_t i;
 
@@ -121,13 +122,15 @@ void ledTurnOn(uint8_t ledSelection)
 /**
  * @brief 关闭指定的LED
  * @param [in] ledSelection 要关闭的LED选择
- *                         - LED_STATUS: 状态LED
- *                         - LED_NETWORK: 网络LED
- *                         - LED_FAULT: 故障LED
- *                         - LED_ALARM: 报警LED
- *                         - STATUS_LED_ALL: 所有LED
+ *             This parameter can be one of the following values:
+ *             @arg LED_STATUS: 状态LED
+ *             @arg LED_NETWORK: 网络LED
+ *             @arg LED_FAULT: 故障LED
+ *             @arg LED_ALARM: 报警LED
+ *             @arg LED_ALL: 所有LED
+ * @return 无
  */
-void ledTurnOff(uint8_t ledSelection)
+void turnLedOff(uint8_t ledSelection)
 {
     uint8_t i;
 
@@ -141,13 +144,15 @@ void ledTurnOff(uint8_t ledSelection)
 /**
  * @brief 切换指定的LED状态
  * @param [in] ledSelection 要切换的LED选择
- *                         - LED_STATUS: 状态LED
- *                         - LED_NETWORK: 网络LED
- *                         - LED_FAULT: 故障LED
- *                         - LED_ALARM: 报警LED
- *                         - STATUS_LED_ALL: 所有LED
+ *             This parameter can be one of the following values:
+ *             @arg LED_STATUS: 状态LED
+ *             @arg LED_NETWORK: 网络LED
+ *             @arg LED_FAULT: 故障LED
+ *             @arg LED_ALARM: 报警LED
+ *             @arg LED_ALL: 所有LED
+ * @return 无
  */
-void ledToggle(uint8_t ledSelection)
+void toggleLed(uint8_t ledSelection)
 {
     uint8_t i;
 

@@ -5,8 +5,7 @@
  * @details 提供按键初始化和配置的接口函数，支持多个按键的独立控制和定时器配置
  */
 
-#ifndef KEYCONFIG_H
-#define KEYCONFIG_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -74,7 +73,7 @@ extern "C" {
  * -------------------------------------------------------------*/
 
 /**
- * @enum KeyButton
+ * @typedef KeyButton
  * @brief 按键编号枚举定义
  */
 typedef enum {
@@ -119,5 +118,3 @@ void initializeKeyConfiguration(void);
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* KEYCONFIG_H */

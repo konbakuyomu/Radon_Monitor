@@ -20,7 +20,6 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
-
 /**
  * @defgroup Common_Control_Task 通用控制任务模块
  * @brief 通用控制任务相关定义
@@ -45,7 +44,6 @@ extern TaskHandle_t commonControlTaskHandle;
  * @return 无返回值
  * @note 任务会一直运行，等待并处理消息队列中的消息
  * @details 该任务负责:
- *          - 初始化通用控制处理器
  *          - 监听消息队列
  *          - 处理LED控制等通用指令
  */

@@ -10,73 +10,78 @@
  * -------------------------------------------------------------*/
 
 /**
- * @typedef hal_module_t
+ * @typedef HardwareAbstractionModule
  * @brief HAL模块类型定义
+ * @details 包含HAL模块的所有状态和函数指针，实现HAL的核心功能
  */
 typedef struct {
-    bool initialized;                       /**< 初始化标志 */
-    uint8_t versionMajor;                   /**< 主版本号 */
-    uint8_t versionMinor;                   /**< 次版本号 */
-    void (*initSystem)(void);               /**< 系统初始化函数 */
-    void (*delayMillisFunc)(unsigned long); /**< 延时函数 */
-    unsigned long (*getTickFunc)(void);     /**< 获取滴答计数函数 */
+    bool initialized;                                 /**< 初始化标志 */
+    uint8_t versionMajor;                             /**< 主版本号 */
+    uint8_t versionMinor;                             /**< 次版本号 */
+    void (*initializeSystem)(void);                   /**< 系统初始化函数 */
+    void (*delayMillisecondsFunction)(unsigned long); /**< 延时函数 */
+    unsigned long (*getTickCountFunction)(void);      /**< 获取滴答计数函数 */
 
     /* LED相关函数 */
-    hal_status_t (*ledTurnOnFunc)(hal_led_t);
-    hal_status_t (*ledTurnOffFunc)(hal_led_t);
-    hal_status_t (*ledToggleFunc)(hal_led_t);
+    HardwareStatus (*ledTurnOnFunction)(LedIdentifier);
+    HardwareStatus (*ledTurnOffFunction)(LedIdentifier);
+    HardwareStatus (*ledToggleFunction)(LedIdentifier);
 
     /* PWM相关函数 */
-    hal_status_t (*pwmStartFunc)(uint32_t);
-    hal_status_t (*pwmStopFunc)(uint32_t);
-    hal_status_t (*pwmConfigureFunc)(const hal_pwm_config_t*);
-    hal_status_t (*pwmSetDirectionFunc)(uint32_t, hal_pwm_direction_t);
-    hal_status_t (*pwmGetDirectionFunc)(uint32_t, hal_pwm_direction_t*);
+    HardwareStatus (*pwmStartFunction)(uint32_t);
+    HardwareStatus (*pwmStopFunction)(uint32_t);
+    HardwareStatus (*pwmConfigureFunction)(const PwmConfiguration*);
+    HardwareStatus (*pwmSetDirectionFunction)(uint32_t, PwmDirection);
+    HardwareStatus (*pwmGetDirectionFunction)(uint32_t, PwmDirection*);
 
     /* UART相关函数 */
-    hal_status_t (*uartSendFunc)(const hal_uart_data_t*);
-    hal_status_t (*uartReceiveFunc)(hal_uart_data_t*, uint32_t);
+    HardwareStatus (*uartSendFunction)(const UartTransferData*);
+    HardwareStatus (*uartReceiveFunction)(UartTransferData*, uint32_t);
 
     /* CAN相关函数 */
-    hal_status_t (*canSendFunc)(const hal_can_message_t*);
-} hal_module_t;
+    HardwareStatus (*canSendFunction)(const CanMessage*);
+} HardwareAbstractionModule;
 
 /* 静态变量
  * -------------------------------------------------------------*/
 
 /**
- * @var hal_module_t s_hal
+ * @var g_hardwareModule
  * @brief HAL模块全局实例，仅在当前文件内有效
+ * @details 保存HAL模块的状态和函数指针，实现HAL的状态管理
  */
-static hal_module_t s_hal = { .initialized = false,
-                              .versionMajor = HAL_VERSION_MAJOR,
-                              .versionMinor = HAL_VERSION_MINOR,
-                              /* 所有函数指针初始为NULL */
-                              .initSystem = NULL,
-                              .delayMillisFunc = NULL,
-                              .getTickFunc = NULL,
-                              .ledTurnOnFunc = NULL,
-                              .ledTurnOffFunc = NULL,
-                              .ledToggleFunc = NULL,
-                              .pwmStartFunc = NULL,
-                              .pwmStopFunc = NULL,
-                              .pwmConfigureFunc = NULL,
-                              .pwmSetDirectionFunc = NULL,
-                              .pwmGetDirectionFunc = NULL,
-                              .uartSendFunc = NULL,
-                              .uartReceiveFunc = NULL,
-                              .canSendFunc = NULL };
+static HardwareAbstractionModule g_hardwareModule = { .initialized = false,
+                                                      .versionMajor = HAL_VERSION_MAJOR,
+                                                      .versionMinor = HAL_VERSION_MINOR,
+                                                      /* 所有函数指针初始为NULL */
+                                                      .initializeSystem = NULL,
+                                                      .delayMillisecondsFunction = NULL,
+                                                      .getTickCountFunction = NULL,
+                                                      .ledTurnOnFunction = NULL,
+                                                      .ledTurnOffFunction = NULL,
+                                                      .ledToggleFunction = NULL,
+                                                      .pwmStartFunction = NULL,
+                                                      .pwmStopFunction = NULL,
+                                                      .pwmConfigureFunction = NULL,
+                                                      .pwmSetDirectionFunction = NULL,
+                                                      .pwmGetDirectionFunction = NULL,
+                                                      .uartSendFunction = NULL,
+                                                      .uartReceiveFunction = NULL,
+                                                      .canSendFunction = NULL };
 
 /* 内部函数
  * -------------------------------------------------------------*/
 
 /**
  * @brief 验证HAL已初始化（仅在本文件内使用）
- * @return bool true表示已初始化，false表示未初始化
+ * @return bool
+ *         - true: 已初始化
+ *         - false: 未初始化
+ * @details 检查HAL模块是否已经完成初始化
  */
 static inline bool verifyInitialized(void)
 {
-    if (!s_hal.initialized) {
+    if (!g_hardwareModule.initialized) {
         /* 可以在这里添加错误日志 */
         return false;
     }
@@ -88,405 +93,431 @@ static inline bool verifyInitialized(void)
 
 /**
  * @brief 注册HAL功能函数
- * @param [in] initFunc 系统初始化函数
- * @param [in] delayFunc 延时函数
- * @param [in] tickFunc 获取滴答计数函数
- * @return hal_status_t 
+ * @param [in] initializeFunction 系统初始化函数
+ * @param [in] delayFunction 延时函数
+ * @param [in] getTickFunction 获取滴答计数函数
+ * @return HardwareStatus
  *         - HAL_OK: 注册成功
  *         - HAL_INVALID_ARG: 参数无效
+ * @details 注册系统的核心功能函数，包括系统初始化、延时和获取系统时间
  */
-hal_status_t HAL_registerCoreFunctions(void (*initFunc)(void),
-                                       void (*delayFunc)(unsigned long),
-                                       unsigned long (*tickFunc)(void))
+HardwareStatus HAL_registerCoreFunctions(void (*initializeFunction)(void),
+                                         void (*delayFunction)(unsigned long),
+                                         unsigned long (*getTickFunction)(void))
 {
-    if (!initFunc || !delayFunc || !tickFunc) {
+    if (!initializeFunction || !delayFunction || !getTickFunction) {
         return HAL_INVALID_ARG;
     }
 
-    s_hal.initSystem = initFunc;
-    s_hal.delayMillisFunc = delayFunc;
-    s_hal.getTickFunc = tickFunc;
+    g_hardwareModule.initializeSystem = initializeFunction;
+    g_hardwareModule.delayMillisecondsFunction = delayFunction;
+    g_hardwareModule.getTickCountFunction = getTickFunction;
 
     return HAL_OK;
 }
 
 /**
  * @brief 注册LED相关功能函数
- * @param [in] turnOnFunc 打开LED函数
- * @param [in] turnOffFunc 关闭LED函数
- * @param [in] toggleFunc 切换LED状态函数
- * @return hal_status_t
+ * @param [in] turnOnFunction 打开LED函数
+ * @param [in] turnOffFunction 关闭LED函数
+ * @param [in] toggleFunction 切换LED状态函数
+ * @return HardwareStatus
  *         - HAL_OK: 注册成功
  *         - HAL_INVALID_ARG: 参数无效
+ * @details 注册LED控制相关的功能函数，包括开启、关闭和切换LED状态
  */
-hal_status_t HAL_registerLedFunctions(hal_status_t (*turnOnFunc)(hal_led_t),
-                                      hal_status_t (*turnOffFunc)(hal_led_t),
-                                      hal_status_t (*toggleFunc)(hal_led_t))
+HardwareStatus HAL_registerLedFunctions(HardwareStatus (*turnOnFunction)(LedIdentifier),
+                                        HardwareStatus (*turnOffFunction)(LedIdentifier),
+                                        HardwareStatus (*toggleFunction)(LedIdentifier))
 {
-    if (!turnOnFunc || !turnOffFunc || !toggleFunc) {
+    if (!turnOnFunction || !turnOffFunction || !toggleFunction) {
         return HAL_INVALID_ARG;
     }
 
-    s_hal.ledTurnOnFunc = turnOnFunc;
-    s_hal.ledTurnOffFunc = turnOffFunc;
-    s_hal.ledToggleFunc = toggleFunc;
+    g_hardwareModule.ledTurnOnFunction = turnOnFunction;
+    g_hardwareModule.ledTurnOffFunction = turnOffFunction;
+    g_hardwareModule.ledToggleFunction = toggleFunction;
 
     return HAL_OK;
 }
 
 /**
  * @brief 注册PWM相关功能函数
- * @param [in] startFunc 启动PWM函数
- * @param [in] stopFunc 停止PWM函数
- * @param [in] configureFunc 配置PWM函数
- * @param [in] setDirectionFunc 设置PWM方向函数
- * @param [in] getDirectionFunc 获取PWM方向函数
- * @return hal_status_t
+ * @param [in] startFunction 启动PWM函数
+ * @param [in] stopFunction 停止PWM函数
+ * @param [in] configureFunction 配置PWM函数
+ * @param [in] setDirectionFunction 设置PWM方向函数
+ * @param [in] getDirectionFunction 获取PWM方向函数
+ * @return HardwareStatus
  *         - HAL_OK: 注册成功
  *         - HAL_INVALID_ARG: 参数无效
+ * @details 注册PWM控制相关的功能函数，包括启动、停止、配置和方向控制
  */
-hal_status_t HAL_registerPwmFunctions(
-    hal_status_t (*startFunc)(uint32_t),
-    hal_status_t (*stopFunc)(uint32_t),
-    hal_status_t (*configureFunc)(const hal_pwm_config_t*),
-    hal_status_t (*setDirectionFunc)(uint32_t, hal_pwm_direction_t),
-    hal_status_t (*getDirectionFunc)(uint32_t, hal_pwm_direction_t*))
+HardwareStatus
+HAL_registerPwmFunctions(HardwareStatus (*startFunction)(uint32_t),
+                         HardwareStatus (*stopFunction)(uint32_t),
+                         HardwareStatus (*configureFunction)(const PwmConfiguration*),
+                         HardwareStatus (*setDirectionFunction)(uint32_t, PwmDirection),
+                         HardwareStatus (*getDirectionFunction)(uint32_t, PwmDirection*))
 {
-    if (!startFunc || !stopFunc || !configureFunc || !setDirectionFunc
-        || !getDirectionFunc) {
+    if (!startFunction || !stopFunction || !configureFunction || !setDirectionFunction
+        || !getDirectionFunction) {
         return HAL_INVALID_ARG;
     }
 
-    s_hal.pwmStartFunc = startFunc;
-    s_hal.pwmStopFunc = stopFunc;
-    s_hal.pwmConfigureFunc = configureFunc;
-    s_hal.pwmSetDirectionFunc = setDirectionFunc;
-    s_hal.pwmGetDirectionFunc = getDirectionFunc;
+    g_hardwareModule.pwmStartFunction = startFunction;
+    g_hardwareModule.pwmStopFunction = stopFunction;
+    g_hardwareModule.pwmConfigureFunction = configureFunction;
+    g_hardwareModule.pwmSetDirectionFunction = setDirectionFunction;
+    g_hardwareModule.pwmGetDirectionFunction = getDirectionFunction;
 
     return HAL_OK;
 }
 
 /**
  * @brief 注册UART相关功能函数
- * @param [in] sendFunc 发送UART数据函数
- * @param [in] receiveFunc 接收UART数据函数
- * @return hal_status_t
+ * @param [in] sendFunction 发送UART数据函数
+ * @param [in] receiveFunction 接收UART数据函数
+ * @return HardwareStatus
  *         - HAL_OK: 注册成功
  *         - HAL_INVALID_ARG: 参数无效
+ * @details 注册UART通信相关的功能函数，包括数据发送和接收
  */
-hal_status_t
-HAL_registerUartFunctions(hal_status_t (*sendFunc)(const hal_uart_data_t*),
-                          hal_status_t (*receiveFunc)(hal_uart_data_t*, uint32_t))
+HardwareStatus HAL_registerUartFunctions(HardwareStatus (*sendFunction)(const UartTransferData*),
+                                         HardwareStatus (*receiveFunction)(UartTransferData*,
+                                                                           uint32_t))
 {
-    if (!sendFunc || !receiveFunc) {
+    if (!sendFunction || !receiveFunction) {
         return HAL_INVALID_ARG;
     }
 
-    s_hal.uartSendFunc = sendFunc;
-    s_hal.uartReceiveFunc = receiveFunc;
+    g_hardwareModule.uartSendFunction = sendFunction;
+    g_hardwareModule.uartReceiveFunction = receiveFunction;
 
     return HAL_OK;
 }
 
 /**
  * @brief 注册CAN相关功能函数
- * @param [in] sendFunc 发送CAN消息函数
- * @return hal_status_t
+ * @param [in] sendFunction 发送CAN消息函数
+ * @return HardwareStatus
  *         - HAL_OK: 注册成功
  *         - HAL_INVALID_ARG: 参数无效
+ * @details 注册CAN通信相关的功能函数，包括消息发送
  */
-hal_status_t
-HAL_registerCanFunctions(hal_status_t (*sendFunc)(const hal_can_message_t*))
+HardwareStatus HAL_registerCanFunctions(HardwareStatus (*sendFunction)(const CanMessage*))
 {
-    if (!sendFunc) {
+    if (!sendFunction) {
         return HAL_INVALID_ARG;
     }
 
-    s_hal.canSendFunc = sendFunc;
+    g_hardwareModule.canSendFunction = sendFunction;
 
     return HAL_OK;
 }
 
 /**
  * @brief 初始化HAL模块
- * @return hal_status_t
+ * @return HardwareStatus
  *         - HAL_OK: 初始化成功
  *         - HAL_ERROR: 必要函数未注册
+ * @details 初始化硬件抽象层，准备系统硬件使用
  */
-hal_status_t HAL_init(void)
+HardwareStatus HAL_initialize(void)
 {
-    if (s_hal.initialized) {
+    if (g_hardwareModule.initialized) {
         return HAL_OK; // 已经初始化过
     }
 
-    if (!s_hal.initSystem) {
+    if (!g_hardwareModule.initializeSystem) {
         return HAL_ERROR; // 必要函数未注册
     }
 
-    s_hal.initSystem();
-    s_hal.initialized = true;
+    g_hardwareModule.initializeSystem();
+    g_hardwareModule.initialized = true;
     return HAL_OK;
 }
 
 /**
  * @brief 检查HAL是否已初始化
- * @return bool true表示已初始化，false表示未初始化
+ * @return bool
+ *         - true: 已初始化
+ *         - false: 未初始化
+ * @details 检查HAL模块是否已经完成初始化
  */
-bool HAL_isInitialized(void) { return s_hal.initialized; }
+bool HAL_isInitialized(void) { return g_hardwareModule.initialized; }
 
 /**
  * @brief 获取HAL版本信息
- * @param [out] major 主版本号
- * @param [out] minor 次版本号
+ * @param [out] majorVersion 主版本号
+ * @param [out] minorVersion 次版本号
+ * @details 获取当前HAL的版本信息
  */
-void HAL_getVersion(uint8_t* major, uint8_t* minor)
+void HAL_getVersion(uint8_t* majorVersion, uint8_t* minorVersion)
 {
-    if (major)
-        *major = s_hal.versionMajor;
-    if (minor)
-        *minor = s_hal.versionMinor;
+    if (majorVersion)
+        *majorVersion = g_hardwareModule.versionMajor;
+    if (minorVersion)
+        *minorVersion = g_hardwareModule.versionMinor;
 }
 
 /**
  * @brief 延迟指定毫秒数
- * @param [in] ms 延迟时间(毫秒)
+ * @param [in] milliseconds 延迟时间(毫秒)
+ * @details 实现系统的毫秒级延时
  */
-void HAL_delayMillis(unsigned long ms)
+void HAL_delayMilliseconds(unsigned long milliseconds)
 {
-    if (verifyInitialized() && s_hal.delayMillisFunc) {
-        s_hal.delayMillisFunc(ms);
+    if (verifyInitialized() && g_hardwareModule.delayMillisecondsFunction) {
+        g_hardwareModule.delayMillisecondsFunction(milliseconds);
     }
 }
 
 /**
  * @brief 获取当前系统滴答计数
  * @return 当前系统滴答计数值
+ * @details 获取系统启动以来的滴答计数，用于时间计算
  */
-unsigned long HAL_getTick(void)
+unsigned long HAL_getTickCount(void)
 {
-    if (verifyInitialized() && s_hal.getTickFunc) {
-        return s_hal.getTickFunc();
+    if (verifyInitialized() && g_hardwareModule.getTickCountFunction) {
+        return g_hardwareModule.getTickCountFunction();
     }
     return 0;
 }
 
-/* LED相关函数实现 */
+/* LED相关函数实现
+ * -------------------------------------------------------------*/
 
 /**
  * @brief 打开指定LED
- * @param [in] led LED标识符
- * @return hal_status_t
+ * @param [in] ledId LED标识符
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 控制指定的LED点亮
  */
-hal_status_t HAL_ledTurnOn(hal_led_t led)
+HardwareStatus HAL_ledTurnOn(LedIdentifier ledId)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.ledTurnOnFunc) {
-        return s_hal.ledTurnOnFunc(led);
+    if (g_hardwareModule.ledTurnOnFunction) {
+        return g_hardwareModule.ledTurnOnFunction(ledId);
     }
     return HAL_ERROR;
 }
 
 /**
  * @brief 关闭指定LED
- * @param [in] led LED标识符
- * @return hal_status_t
+ * @param [in] ledId LED标识符
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 控制指定的LED熄灭
  */
-hal_status_t HAL_ledTurnOff(hal_led_t led)
+HardwareStatus HAL_ledTurnOff(LedIdentifier ledId)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.ledTurnOffFunc) {
-        return s_hal.ledTurnOffFunc(led);
+    if (g_hardwareModule.ledTurnOffFunction) {
+        return g_hardwareModule.ledTurnOffFunction(ledId);
     }
     return HAL_ERROR;
 }
 
 /**
  * @brief 切换指定LED状态
- * @param [in] led LED标识符
- * @return hal_status_t
+ * @param [in] ledId LED标识符
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 将指定LED的状态在开和关之间切换
  */
-hal_status_t HAL_ledToggle(hal_led_t led)
+HardwareStatus HAL_ledToggle(LedIdentifier ledId)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.ledToggleFunc) {
-        return s_hal.ledToggleFunc(led);
+    if (g_hardwareModule.ledToggleFunction) {
+        return g_hardwareModule.ledToggleFunction(ledId);
     }
     return HAL_ERROR;
 }
 
-/* PWM相关函数实现 */
+/* PWM相关函数实现
+ * -------------------------------------------------------------*/
 
 /**
  * @brief 启动指定的PWM
- * @param [in] channel PWM通道号
- * @return hal_status_t
+ * @param [in] channelNumber PWM通道号
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 启动指定通道的PWM输出
  */
-hal_status_t HAL_pwmStart(uint32_t channel)
+HardwareStatus HAL_pwmStart(uint32_t channelNumber)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.pwmStartFunc) {
-        return s_hal.pwmStartFunc(channel);
+    if (g_hardwareModule.pwmStartFunction) {
+        return g_hardwareModule.pwmStartFunction(channelNumber);
     }
     return HAL_ERROR;
 }
 
 /**
  * @brief 停止指定的PWM
- * @param [in] channel PWM通道号
- * @return hal_status_t
+ * @param [in] channelNumber PWM通道号
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 停止指定通道的PWM输出
  */
-hal_status_t HAL_pwmStop(uint32_t channel)
+HardwareStatus HAL_pwmStop(uint32_t channelNumber)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.pwmStopFunc) {
-        return s_hal.pwmStopFunc(channel);
+    if (g_hardwareModule.pwmStopFunction) {
+        return g_hardwareModule.pwmStopFunction(channelNumber);
     }
     return HAL_ERROR;
 }
 
 /**
  * @brief 配置PWM参数
- * @param [in] config PWM配置参数
- * @return hal_status_t
+ * @param [in] configuration PWM配置参数
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 根据配置参数设置PWM通道的工作模式
  */
-hal_status_t HAL_pwmConfigure(const hal_pwm_config_t* config)
+HardwareStatus HAL_pwmConfigure(const PwmConfiguration* configuration)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.pwmConfigureFunc) {
-        return s_hal.pwmConfigureFunc(config);
+    if (g_hardwareModule.pwmConfigureFunction) {
+        return g_hardwareModule.pwmConfigureFunction(configuration);
     }
     return HAL_ERROR;
 }
 
 /**
  * @brief 设置PWM方向
- * @param [in] channel PWM通道号
+ * @param [in] channelNumber PWM通道号
  * @param [in] direction PWM方向
- * @return hal_status_t
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 设置指定PWM通道的输出方向
  */
-hal_status_t HAL_pwmSetDirection(uint32_t channel, hal_pwm_direction_t direction)
+HardwareStatus HAL_pwmSetDirection(uint32_t channelNumber, PwmDirection direction)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.pwmSetDirectionFunc) {
-        return s_hal.pwmSetDirectionFunc(channel, direction);
+    if (g_hardwareModule.pwmSetDirectionFunction) {
+        return g_hardwareModule.pwmSetDirectionFunction(channelNumber, direction);
     }
     return HAL_ERROR;
 }
 
 /**
  * @brief 获取PWM方向
- * @param [in] channel PWM通道号
+ * @param [in] channelNumber PWM通道号
  * @param [out] direction PWM方向
- * @return hal_status_t
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 获取指定PWM通道的当前输出方向
  */
-hal_status_t HAL_pwmGetDirection(uint32_t channel, hal_pwm_direction_t* direction)
+HardwareStatus HAL_pwmGetDirection(uint32_t channelNumber, PwmDirection* direction)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.pwmGetDirectionFunc) {
-        return s_hal.pwmGetDirectionFunc(channel, direction);
+    if (g_hardwareModule.pwmGetDirectionFunction) {
+        return g_hardwareModule.pwmGetDirectionFunction(channelNumber, direction);
     }
     return HAL_ERROR;
 }
 
-/* UART相关函数实现 */
+/* UART相关函数实现
+ * -------------------------------------------------------------*/
 
 /**
  * @brief 发送UART数据
- * @param [in] data UART数据配置
- * @return hal_status_t
+ * @param [in] transferData UART数据配置
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 通过指定的UART通道发送数据
  */
-hal_status_t HAL_uartSend(const hal_uart_data_t* data)
+HardwareStatus HAL_uartSend(const UartTransferData* transferData)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.uartSendFunc) {
-        return s_hal.uartSendFunc(data);
+    if (g_hardwareModule.uartSendFunction) {
+        return g_hardwareModule.uartSendFunction(transferData);
     }
     return HAL_ERROR;
 }
 
 /**
  * @brief 接收UART数据
- * @param [in,out] data UART数据配置
- * @param [in] timeout 超时时间(毫秒)
- * @return hal_status_t
+ * @param [in,out] transferData UART数据配置
+ * @param [in] timeoutMilliseconds 超时时间(毫秒)
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
  *         - HAL_TIMEOUT: 接收超时
+ * @details 从指定的UART通道接收数据，支持超时机制
  */
-hal_status_t HAL_uartReceive(hal_uart_data_t* data, uint32_t timeout)
+HardwareStatus HAL_uartReceive(UartTransferData* transferData, uint32_t timeoutMilliseconds)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.uartReceiveFunc) {
-        return s_hal.uartReceiveFunc(data, timeout);
+    if (g_hardwareModule.uartReceiveFunction) {
+        return g_hardwareModule.uartReceiveFunction(transferData, timeoutMilliseconds);
     }
     return HAL_ERROR;
 }
 
-/* CAN相关函数实现 */
+/* CAN相关函数实现
+ * -------------------------------------------------------------*/
 
 /**
  * @brief 发送CAN消息
  * @param [in] message CAN消息
- * @return hal_status_t
+ * @return HardwareStatus
  *         - HAL_OK: 操作成功
  *         - HAL_ERROR: HAL未初始化或函数未注册
+ * @details 发送CAN总线消息
  */
-hal_status_t HAL_canSend(const hal_can_message_t* message)
+HardwareStatus HAL_canSend(const CanMessage* message)
 {
     if (!verifyInitialized()) {
         return HAL_ERROR;
     }
 
-    if (s_hal.canSendFunc) {
-        return s_hal.canSendFunc(message);
+    if (g_hardwareModule.canSendFunction) {
+        return g_hardwareModule.canSendFunction(message);
     }
     return HAL_ERROR;
 }

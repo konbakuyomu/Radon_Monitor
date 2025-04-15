@@ -21,18 +21,18 @@
 /**
  * @brief 消息总线命令处理器支持的最大命令数量
  */
-#define MESSAGE_BUS_MAX_COMMANDS 3
+#define SYSTEM_MESSAGE_MAX_COMMANDS 3
 
 /* 静态函数声明
  * -------------------------------------------------------------*/
 /**
  * @brief 从SystemMessage获取命令类型的实现
- * @param [in] self 处理器指针，此处未使用
+ * @param [in] processor 处理器指针，此处未使用
  * @param [in] message 指向SystemMessage结构体的指针
  * @return SystemMessage中的命令类型
  * @details 假设SystemMessage第一个字段为uint32_t message
  */
-static uint32_t MessageBus_getCommandFromMessage(void* self, const void* message)
+static uint32_t SystemMessage_extractCommandType(void* processor, const void* message)
 {
     // 直接取消息结构体的第一个字段（uint32_t message）
     return *((const uint32_t*)message);
@@ -43,26 +43,28 @@ static uint32_t MessageBus_getCommandFromMessage(void* self, const void* message
 /**
  * @brief 单例相关静态变量
  */
-static MessageBusProcessorC instance_msgbus;                      /**< 单例对象 */
-static uint32_t msgbus_cmdTypes[MESSAGE_BUS_MAX_COMMANDS];        /**< 命令类型数组 */
-static CommandHandlerC msgbus_handlers[MESSAGE_BUS_MAX_COMMANDS]; /**< 处理函数数组 */
-static void* msgbus_contexts[MESSAGE_BUS_MAX_COMMANDS];           /**< 上下文数组 */
+static SystemMessageDispatcher systemMessageDispatcherInstance;         /**< 单例对象 */
+static uint32_t systemMessageCommandTypes[SYSTEM_MESSAGE_MAX_COMMANDS]; /**< 命令类型数组 */
+static CommandHandler
+    systemMessageHandlerFunctions[SYSTEM_MESSAGE_MAX_COMMANDS];         /**< 处理函数数组 */
+static void* systemMessageContextPointers[SYSTEM_MESSAGE_MAX_COMMANDS]; /**< 上下文数组 */
 
 /* 全局函数实现
  * -------------------------------------------------------------*/
 /**
  * @brief 初始化消息总线命令处理器
- * @param [in,out] proc 指向处理器结构体的指针
- * @param [in] config 指向配置结构体的指针
+ * @param [in,out] processor 指向处理器结构体的指针
+ * @param [in] configuration 指向配置结构体的指针
  * @return 无返回值
  * @details
  *   - 调用基类初始化
- *   - 设置getCommandFromMessage为SystemMessage专用实现
+ *   - 设置getCommandTypeFromMessage为SystemMessage专用实现
  */
-void MessageBusProcessorC_init(MessageBusProcessorC* proc, const CommandProcessorConfig* config)
+void SystemMessageDispatcher_initialize(SystemMessageDispatcher* processor,
+                                        const CommandProcessorConfiguration* configuration)
 {
-    CommandProcessorBaseC_init(&proc->base, config);
-    proc->base.getCommandFromMessage = MessageBus_getCommandFromMessage;
+    CommandProcessor_initialize(&processor->commandProcessor, configuration);
+    processor->commandProcessor.getCommandTypeFromMessage = SystemMessage_extractCommandType;
 }
 
 /**
@@ -72,18 +74,19 @@ void MessageBusProcessorC_init(MessageBusProcessorC* proc, const CommandProcesso
  *   - 单例模式，避免重复分配资源
  *   - 首次调用时自动初始化
  */
-MessageBusProcessorC* MessageBusProcessorC_getInstance(void)
+SystemMessageDispatcher* SystemMessageDispatcher_getInstance(void)
 {
-    static bool initialized = false;
-    if (!initialized) {
-        CommandProcessorConfig config = { .capacity = MESSAGE_BUS_MAX_COMMANDS,
-                                          .cmdTypes = msgbus_cmdTypes,
-                                          .handlers = msgbus_handlers,
-                                          .contexts = msgbus_contexts };
-        MessageBusProcessorC_init(&instance_msgbus, &config);
-        initialized = true;
+    static bool isInitialized = false;
+    if (!isInitialized) {
+        CommandProcessorConfiguration configuration
+            = { .capacity = SYSTEM_MESSAGE_MAX_COMMANDS,
+                .commandTypes = systemMessageCommandTypes,
+                .handlerFunctions = systemMessageHandlerFunctions,
+                .contextPointers = systemMessageContextPointers };
+        SystemMessageDispatcher_initialize(&systemMessageDispatcherInstance, &configuration);
+        isInitialized = true;
     }
-    return &instance_msgbus;
+    return &systemMessageDispatcherInstance;
 }
 
 /**

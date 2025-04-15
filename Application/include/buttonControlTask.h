@@ -1,7 +1,7 @@
 /**
- * @file buttonControl.h
+ * @file buttonControlTask.h
  * @brief 按键控制任务处理头文件
- * @date 2025-03-15
+ * @date 2025-04-15
  * @details 声明按键控制相关的任务句柄和任务函数，用于处理按键输入和LED控制
  *          本文件定义了按键任务相关的接口和全局变量
  */
@@ -20,8 +20,8 @@ extern "C" {
 #include "task.h"
 
 /**
- * @defgroup Button_Task 按键任务模块
- * @brief 按键任务相关定义
+ * @defgroup Button_Control_Task 按键控制任务模块
+ * @brief 按键控制任务相关定义
  * @{
  */
 
@@ -42,7 +42,6 @@ extern TaskHandle_t buttonTaskHandle;
  * @return 无返回值
  * @note 任务会一直运行，等待并处理按键输入事件
  * @details 该任务负责:
- *          - 初始化按键处理器
  *          - 监听按键事件
  *          - 调用注册的处理函数
  */

@@ -13,6 +13,7 @@
 
 /**
  * @defgroup USART1_Constants USART1相关常量定义
+ * @brief USART1相关的常量值定义
  * @{
  */
 
@@ -32,10 +33,10 @@ static const uint32_t USART1_TMR0_PERIOD_VALUE = 512UL;
 static const uint32_t USART1_BAUDRATE = 115200UL;
 
 /**
- * @var MAX_RECV_BUFSIZE
+ * @var MAX_RECEIVE_BUFFER_SIZE
  * @brief USART1接收缓冲区大小
  */
-static const uint16_t MAX_RECV_BUFSIZE = 50U;
+static const uint16_t MAX_RECEIVE_BUFFER_SIZE = 50U;
 
 /**
  * @}
@@ -44,16 +45,79 @@ static const uint16_t MAX_RECV_BUFSIZE = 50U;
 /* 静态函数声明
  * -------------------------------------------------------------*/
 
-static void ReconfigureUartDma(void);
-static void USART1_RxTimeout_IrqCallback(void);
-static void USART1_RxError_IrqCallback(void);
-static void USART1_RX_DMA_TC_IrqCallback(void);
-static void USART1_TX_DMA_TC_IrqCallback(void);
-static void USART1_TxComplete_IrqCallback(void);
-static void USART1_TMR0_Config(void);
-static int32_t USART1_DMA_Config(void);
-static void USART1_IrqConfig(void);
-static void USART1_GPIO_Config(void);
+/**
+ * @brief 重新配置UART的DMA接收
+ * @details 重置DMA接收配置，准备接收新的数据
+ * @return 无
+ */
+static void reconfigureUartDma(void);
+
+/**
+ * @brief USART1接收超时中断回调函数
+ * @details 当接收超时时，计算已接收的数据量，通过任务通知发送给处理任务
+ * @return 无
+ */
+static void usart1ReceiveTimeoutIrqCallback(void);
+
+/**
+ * @brief USART1接收错误中断回调函数
+ * @details 处理USART1接收过程中的错误，包括奇偶校验错误、帧错误和溢出错误
+ * @return 无
+ */
+static void usart1ReceiveErrorIrqCallback(void);
+
+/**
+ * @brief USART1接收DMA传输完成中断回调函数
+ * @details 这个一般是不触发的，前面在配置接收的DMA的时候，配置了 DMA_DTCTLx 的 CNT 寄存器
+ *          配置的是接收缓冲区数组的大小，按照芯片手册，必须要把这个数组塞满才会触发这个寄存器
+ *          一般预留的数组都比协议规定的数据包要大，所以这个一般不触发
+ * @return 无
+ */
+static void usart1ReceiveDmaTransferCompleteIrqCallback(void);
+
+/**
+ * @brief USART1发送DMA传输完成中断回调函数
+ * @details 当DMA发送完成时，使能USART1发送完成中断，并清除DMA传输完成标志
+ * @return 无
+ */
+static void usart1TransmitDmaTransferCompleteIrqCallback(void);
+
+/**
+ * @brief USART1发送完成中断回调函数
+ * @details 当USART1发送完成时，关闭发送功能和中断，清除标志位，并准备接收新数据
+ * @return 无
+ */
+static void usart1TransmitCompleteIrqCallback(void);
+
+/**
+ * @brief 配置USART1的Timer0
+ * @details 配置Timer0用于USART1的接收超时检测，使用LRC振荡器作为时钟源
+ * @return 无
+ */
+static void configureUsart1Timer0(void);
+
+/**
+ * @brief 配置USART1的DMA
+ * @details 配置USART1的接收和发送DMA通道，设置中断和触发源
+ * @return int32_t
+ *         - LL_OK: 配置成功
+ *         - 其他: 配置失败
+ */
+static int32_t configureUsart1Dma(void);
+
+/**
+ * @brief 配置USART1的中断
+ * @details 配置USART1的接收超时中断、接收错误中断和接收完成中断
+ * @return 无
+ */
+static void configureUsart1Interrupts(void);
+
+/**
+ * @brief 配置USART1的GPIO
+ * @details 配置USART1的接收和发送引脚，并初始化USART1
+ * @return 无
+ */
+static void configureUsart1Gpio(void);
 
 /* 静态函数实现
  * -------------------------------------------------------------*/
@@ -61,19 +125,20 @@ static void USART1_GPIO_Config(void);
 /**
  * @brief 重新配置UART的DMA接收
  * @details 重置DMA接收配置，准备接收新的数据
+ * @return 无
  */
-static void ReconfigureUartDma(void)
+static void reconfigureUartDma(void)
 {
     stc_dma_init_t stcDmaInit;
 
     (void)DMA_StructInit(&stcDmaInit);
     stcDmaInit.u32IntEn = DMA_INT_ENABLE;
     stcDmaInit.u32BlockSize = 1UL;
-    stcDmaInit.u32TransCount = USART1_GetDmaBufferSize_use_c();
+    stcDmaInit.u32TransCount = getUsart1DmaBufferSize();
     stcDmaInit.u32DataWidth = DMA_DATAWIDTH_8BIT;
 
     // 使用C++驱动提供的DMA缓冲区
-    stcDmaInit.u32DestAddr = (uint32_t)USART1_GetDmaBufferPtr_use_c();
+    stcDmaInit.u32DestAddr = (uint32_t)getUsart1DmaBufferPointer();
 
     stcDmaInit.u32SrcAddr = (uint32_t)(&USART1_UNIT->RDR);
     stcDmaInit.u32SrcAddrInc = DMA_SRC_ADDR_FIX;
@@ -84,19 +149,20 @@ static void ReconfigureUartDma(void)
 /**
  * @brief USART1接收超时中断回调函数
  * @details 当接收超时时，计算已接收的数据量，通过任务通知发送给处理任务
+ * @return 无
  */
-static void USART1_RxTimeout_IrqCallback(void)
+static void usart1ReceiveTimeoutIrqCallback(void)
 {
     // 计算已接收的字节数
-    uint16_t bytesReceived = MAX_RECV_BUFSIZE
+    uint16_t bytesReceived = MAX_RECEIVE_BUFFER_SIZE
         - (uint16_t)DMA_GetTransCount(USART1_RX_DMA_UNIT, USART1_RX_DMA_CH);
 
-    if (bytesReceived <= MAX_RECV_BUFSIZE) {
+    if (bytesReceived <= MAX_RECEIVE_BUFFER_SIZE) {
         // 使用外部接口处理接收到的数据(这里是缓冲区未满的情况)
-        USART1_ProcessReceivedData_use_c(bytesReceived);
+        processUsart1ReceivedData(bytesReceived);
 
         // 重新配置DMA接收
-        ReconfigureUartDma();
+        reconfigureUartDma();
 
         // 停止定时器
         TMR0_Stop(USART1_TMR0_UNIT, USART1_TMR0_CH);
@@ -108,30 +174,30 @@ static void USART1_RxTimeout_IrqCallback(void)
 /**
  * @brief USART1接收错误中断回调函数
  * @details 处理USART1接收过程中的错误，包括奇偶校验错误、帧错误和溢出错误
+ * @return 无
  */
-static void USART1_RxError_IrqCallback(void)
+static void usart1ReceiveErrorIrqCallback(void)
 {
     // 首先从USART中读取数据
     (void)USART_ReadData(USART1_UNIT);
     // 然后清除USART的错误状态
-    USART_ClearStatus(
-        USART1_UNIT,
-        (USART_FLAG_PARITY_ERR | USART_FLAG_FRAME_ERR | USART_FLAG_OVERRUN));
+    USART_ClearStatus(USART1_UNIT,
+                      (USART_FLAG_PARITY_ERR | USART_FLAG_FRAME_ERR | USART_FLAG_OVERRUN));
 }
 
 /**
  * @brief USART1接收DMA传输完成中断回调函数
- * @details 这个一般是不触发的，前面在配置接收的DMA的时候，配置了 DMA_DTCTLx 的 CNT
- * 寄存器
+ * @details 这个一般是不触发的，前面在配置接收的DMA的时候，配置了 DMA_DTCTLx 的 CNT 寄存器
  *          配置的是接收缓冲区数组的大小，按照芯片手册，必须要把这个数组塞满才会触发这个寄存器
  *          一般预留的数组都比协议规定的数据包要大，所以这个一般不触发
+ * @return 无
  */
-static void USART1_RX_DMA_TC_IrqCallback(void)
+static void usart1ReceiveDmaTransferCompleteIrqCallback(void)
 {
     // 使用外部接口处理接收到的数据(这里是缓冲区已满的情况)
-    USART1_ProcessReceivedData_use_c(MAX_RECV_BUFSIZE);
+    processUsart1ReceivedData(MAX_RECEIVE_BUFFER_SIZE);
     // 重新配置DMA接收
-    ReconfigureUartDma();
+    reconfigureUartDma();
 
     // 关闭接收超时功能
     USART_FuncCmd(USART1_UNIT, USART_RX_TIMEOUT, DISABLE);
@@ -149,8 +215,9 @@ static void USART1_RX_DMA_TC_IrqCallback(void)
 /**
  * @brief USART1发送DMA传输完成中断回调函数
  * @details 当DMA发送完成时，使能USART1发送完成中断，并清除DMA传输完成标志
+ * @return 无
  */
-static void USART1_TX_DMA_TC_IrqCallback(void)
+static void usart1TransmitDmaTransferCompleteIrqCallback(void)
 {
     USART_FuncCmd(USART1_UNIT, USART_INT_TX_CPLT, ENABLE); // 使能发送完成中断
     DMA_ClearTransCompleteStatus(USART1_TX_DMA_UNIT, USART1_TX_DMA_TC_FLAG);
@@ -159,21 +226,23 @@ static void USART1_TX_DMA_TC_IrqCallback(void)
 /**
  * @brief USART1发送完成中断回调函数
  * @details 当USART1发送完成时，关闭发送功能和中断，清除标志位，并准备接收新数据
+ * @return 无
  */
-static void USART1_TxComplete_IrqCallback(void)
+static void usart1TransmitCompleteIrqCallback(void)
 {
     // 关闭发送功能和中断
     USART_FuncCmd(USART1_UNIT, (USART_TX | USART_INT_TX_CPLT), DISABLE);
-    
+
     // 通知串口1驱动发送完成
-    USART1_NotifyTxComplete_use_c();
+    notifyUsart1TransmitComplete();
 }
 
 /**
  * @brief 配置USART1的Timer0
  * @details 配置Timer0用于USART1的接收超时检测，使用LRC振荡器作为时钟源
+ * @return 无
  */
-static void USART1_TMR0_Config(void)
+static void configureUsart1Timer0(void)
 {
     stc_tmr0_init_t stcTmr0Init;
     stc_irq_signin_config_t stcIrqSignConfig;
@@ -207,7 +276,7 @@ static void USART1_TMR0_Config(void)
  *         - LL_OK: 配置成功
  *         - 其他: 配置失败
  */
-static int32_t USART1_DMA_Config(void)
+static int32_t configureUsart1Dma(void)
 {
     int32_t result;
     stc_dma_init_t stcDmaInit;
@@ -222,9 +291,9 @@ static int32_t USART1_DMA_Config(void)
     (void)DMA_StructInit(&stcDmaInit);
     stcDmaInit.u32IntEn = DMA_INT_ENABLE;
     stcDmaInit.u32BlockSize = 1UL;
-    stcDmaInit.u32TransCount = USART1_GetDmaBufferSize_use_c();
+    stcDmaInit.u32TransCount = getUsart1DmaBufferSize();
     stcDmaInit.u32DataWidth = DMA_DATAWIDTH_8BIT;
-    stcDmaInit.u32DestAddr = (uint32_t)USART1_GetDmaBufferPtr_use_c();
+    stcDmaInit.u32DestAddr = (uint32_t)getUsart1DmaBufferPointer();
     stcDmaInit.u32SrcAddr = (uint32_t)(&USART1_UNIT->RDR);
     stcDmaInit.u32SrcAddrInc = DMA_SRC_ADDR_FIX;
     stcDmaInit.u32DestAddrInc = DMA_DEST_ADDR_INC;
@@ -232,7 +301,7 @@ static int32_t USART1_DMA_Config(void)
     if (result == LL_OK) {
         stcIrqSignConfig.enIntSrc = USART1_RX_DMA_TC_INT_SRC;
         stcIrqSignConfig.enIRQn = USART1_RX_DMA_TC_IRQn;
-        stcIrqSignConfig.pfnCallback = &USART1_RX_DMA_TC_IrqCallback;
+        stcIrqSignConfig.pfnCallback = &usart1ReceiveDmaTransferCompleteIrqCallback;
         (void)INTC_IrqSignIn(&stcIrqSignConfig);
         NVIC_ClearPendingIRQ(stcIrqSignConfig.enIRQn);
         NVIC_SetPriority(stcIrqSignConfig.enIRQn, DDL_IRQ_PRIO_DEFAULT);
@@ -257,7 +326,7 @@ static int32_t USART1_DMA_Config(void)
     if (result == LL_OK) {
         stcIrqSignConfig.enIntSrc = USART1_TX_DMA_TC_INT_SRC;
         stcIrqSignConfig.enIRQn = USART1_TX_DMA_TC_IRQn;
-        stcIrqSignConfig.pfnCallback = &USART1_TX_DMA_TC_IrqCallback;
+        stcIrqSignConfig.pfnCallback = &usart1TransmitDmaTransferCompleteIrqCallback;
         (void)INTC_IrqSignIn(&stcIrqSignConfig);
         NVIC_ClearPendingIRQ(stcIrqSignConfig.enIRQn);
         NVIC_SetPriority(stcIrqSignConfig.enIRQn, DDL_IRQ_PRIO_DEFAULT);
@@ -275,15 +344,16 @@ static int32_t USART1_DMA_Config(void)
 /**
  * @brief 配置USART1的中断
  * @details 配置USART1的接收超时中断、接收错误中断和接收完成中断
+ * @return 无
  */
-static void USART1_IrqConfig(void)
+static void configureUsart1Interrupts(void)
 {
     stc_irq_signin_config_t stcIrqSigninConfig;
 
     /* 配置发送完成中断 */
     stcIrqSigninConfig.enIRQn = USART1_TX_CPLT_IRQn;
     stcIrqSigninConfig.enIntSrc = USART1_TX_CPLT_INT_SRC;
-    stcIrqSigninConfig.pfnCallback = &USART1_TxComplete_IrqCallback;
+    stcIrqSigninConfig.pfnCallback = &usart1TransmitCompleteIrqCallback;
     (void)INTC_IrqSignIn(&stcIrqSigninConfig);
     NVIC_ClearPendingIRQ(stcIrqSigninConfig.enIRQn);
     NVIC_SetPriority(stcIrqSigninConfig.enIRQn, DDL_IRQ_PRIO_DEFAULT);
@@ -292,7 +362,7 @@ static void USART1_IrqConfig(void)
     /* 配置接收错误中断 */
     stcIrqSigninConfig.enIRQn = USART1_RX_ERR_IRQn;
     stcIrqSigninConfig.enIntSrc = USART1_RX_ERR_INT_SRC;
-    stcIrqSigninConfig.pfnCallback = &USART1_RxError_IrqCallback;
+    stcIrqSigninConfig.pfnCallback = &usart1ReceiveErrorIrqCallback;
     (void)INTC_IrqSignIn(&stcIrqSigninConfig);
     NVIC_ClearPendingIRQ(stcIrqSigninConfig.enIRQn);
     NVIC_SetPriority(stcIrqSigninConfig.enIRQn, DDL_IRQ_PRIO_DEFAULT);
@@ -301,7 +371,7 @@ static void USART1_IrqConfig(void)
     /* 配置接收超时中断 */
     stcIrqSigninConfig.enIRQn = USART1_RX_TIMEOUT_IRQn;
     stcIrqSigninConfig.enIntSrc = USART1_RX_TIMEOUT_INT_SRC;
-    stcIrqSigninConfig.pfnCallback = &USART1_RxTimeout_IrqCallback;
+    stcIrqSigninConfig.pfnCallback = &usart1ReceiveTimeoutIrqCallback;
     (void)INTC_IrqSignIn(&stcIrqSigninConfig);
     NVIC_ClearPendingIRQ(stcIrqSigninConfig.enIRQn);
     NVIC_SetPriority(stcIrqSigninConfig.enIRQn, DDL_IRQ_PRIO_DEFAULT);
@@ -311,8 +381,9 @@ static void USART1_IrqConfig(void)
 /**
  * @brief 配置USART1的GPIO
  * @details 配置USART1的接收和发送引脚，并初始化USART1
+ * @return 无
  */
-static void USART1_GPIO_Config(void)
+static void configureUsart1Gpio(void)
 {
     stc_usart_uart_init_t stcUartInit;
     stc_gpio_init_t stcGpioInit;
@@ -339,17 +410,21 @@ static void USART1_GPIO_Config(void)
     (void)USART_UART_Init(USART1_UNIT, &stcUartInit, NULL);
 }
 
+/* 公共函数实现
+ * -------------------------------------------------------------*/
+
 /**
  * @brief 初始化USART1外设
  * @details 依次配置USART1的GPIO、DMA、中断和定时器，并使能USART1功能
+ * @return 无
  */
-void USART1_Init(void)
+void initializeUsart1(void)
 {
-    USART1_GPIO_Config();
-    USART1_DMA_Config();
-    USART1_IrqConfig();
-    USART1_TMR0_Config();
-    USART1_FunctionEnable();
+    configureUsart1Gpio();
+    configureUsart1Dma();
+    configureUsart1Interrupts();
+    configureUsart1Timer0();
+    enableUsart1Functions();
 }
 
 /**
@@ -359,8 +434,9 @@ void USART1_Init(void)
  * @details 使用DMA方式通过USART1发送指定长度的数据。
  *          该函数配置DMA传输计数和源地址，然后使能DMA通道和USART发送功能。
  *          发送完成后会触发DMA传输完成中断，在中断处理函数中会关闭发送功能。
+ * @return 无
  */
-void USART1_Send(uint8_t* data, uint16_t length)
+void sendDataViaUsart1(uint8_t* data, uint16_t length)
 {
     DMA_SetTransCount(USART1_TX_DMA_UNIT, USART1_TX_DMA_CH, length);
     DMA_SetSrcAddr(USART1_TX_DMA_UNIT, USART1_TX_DMA_CH, (uint32_t)data);

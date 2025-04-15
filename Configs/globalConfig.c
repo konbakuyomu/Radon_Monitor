@@ -1,8 +1,7 @@
 /**
  * @file globalConfig.c
  * @brief 全局配置源文件
- * @author konbakuyomu
- * @date 2025-02-11
+ * @date 2025-04-15
  * @details 本文件实现了全局变量的定义和FreeRTOS静态内存分配回调函数，
  *          为整个项目提供统一的配置参数和静态内存管理支持。
  */
@@ -11,33 +10,30 @@
  * -------------------------------------------------------------*/
 #include "globalConfig.h"
 
-/* 全局变量
+/* 全局变量实现
  * -------------------------------------------------------------*/
-
 /**
- * @defgroup Global_Variables_Implementation 全局变量实现
- * @brief 全局变量的具体定义
+ * @addtogroup Global_Variables
  * @{
  */
-
-/** @brief 初始化任务优先级 */
+/** @var INIT_TASK_PRIORITY
+ *  @brief 初始化任务优先级，实际值定义
+ */
 const uint8_t INIT_TASK_PRIORITY = 1U;
-/** @brief 应用任务优先级 */
+/** @var APP_TASK_PRIORITY
+ *  @brief 应用任务优先级，实际值定义
+ */
 const uint8_t APP_TASK_PRIORITY = 3U;
-
-
 /**
  * @}
  */
 
-/* 函数定义
+/* FreeRTOS静态内存分配回调函数
  * -------------------------------------------------------------*/
-
 /**
  * @brief 获取空闲任务的内存
  * @param [out] ppxIdleTaskTCBBuffer 指向空闲任务TCB指针的指针，用于返回静态TCB的地址
- * @param [out] ppxIdleTaskStackBuffer
- * 指向空闲任务堆栈数组首地址指针的指针，用于返回静态堆栈的地址
+ * @param [out] ppxIdleTaskStackBuffer 指向空闲任务堆栈数组首地址指针的指针，用于返回静态堆栈的地址
  * @param [out] pulIdleTaskStackSize 用于返回空闲任务堆栈的大小
  * @details 当configSUPPORT_STATIC_ALLOCATION为1时，FreeRTOS在创建系统空闲任务时
  *          不会通过动态分配内存，而是调用此函数获得用户提供的静态内存。
@@ -67,10 +63,8 @@ void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer,
 
 /**
  * @brief 获取定时器任务的内存
- * @param [out] ppxTimerTaskTCBBuffer
- * 指向定时器任务TCB指针的指针，用于返回静态TCB的地址
- * @param [out] ppxTimerTaskStackBuffer
- * 指向定时器任务堆栈数组首地址指针的指针，用于返回静态堆栈的地址
+ * @param [out] ppxTimerTaskTCBBuffer 指向定时器任务TCB指针的指针，用于返回静态TCB的地址
+ * @param [out] ppxTimerTaskStackBuffer 指向定时器任务堆栈数组首地址指针的指针，用于返回静态堆栈的地址
  * @param [out] pulTimerTaskStackSize 用于返回定时器任务堆栈的大小
  * @details 当需要使用软件定时器功能（configUSE_TIMERS = 1）且启用静态分配时，
  *          FreeRTOS会自动创建一个定时器任务。为了避免运行时动态分配，

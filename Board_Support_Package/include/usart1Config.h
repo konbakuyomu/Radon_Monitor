@@ -6,8 +6,7 @@
  *          以及USART1初始化函数的声明。
  */
 
-#ifndef __USART1_CONFIG_H__
-#define __USART1_CONFIG_H__
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,11 +16,15 @@ extern "C" {
  * -------------------------------------------------------------*/
 #include "hc32_ll.h"
 
+/* 宏定义
+ * -------------------------------------------------------------*/
 
 /**
  * @defgroup USART1_Peripheral_Definition USART1外设定义
+ * @brief USART1外设相关的常量定义
  * @{
  */
+/** @brief USART1控制单元 */
 #define USART1_UNIT (CM_USART1)
 /**
  * @}
@@ -29,26 +32,39 @@ extern "C" {
 
 /**
  * @defgroup USART1_RX_DMA_Definition USART1接收DMA定义
+ * @brief USART1接收DMA相关的常量定义
  * @{
  */
-#define USART1_RX_DMA_UNIT         (CM_DMA1)
-#define USART1_RX_DMA_CH           (DMA_CH0)
-#define USART1_RX_DMA_TRIG_SEL     (AOS_DMA1_0)
+/** @brief USART1接收DMA单元 */
+#define USART1_RX_DMA_UNIT (CM_DMA1)
+/** @brief USART1接收DMA通道 */
+#define USART1_RX_DMA_CH (DMA_CH0)
+/** @brief USART1接收DMA触发选择器 */
+#define USART1_RX_DMA_TRIG_SEL (AOS_DMA1_0)
+/** @brief USART1接收DMA触发事件源 */
 #define USART1_RX_DMA_TRIG_EVT_SRC (EVT_SRC_USART1_RI)
-#define USART1_RX_DMA_TC_INT       (DMA_INT_TC_CH0)
-#define USART1_RX_DMA_TC_FLAG      (DMA_FLAG_TC_CH0)
-#define USART1_RX_DMA_TC_IRQn      (INT002_IRQn)
-#define USART1_RX_DMA_TC_INT_SRC   (INT_SRC_DMA1_TC0)
+/** @brief USART1接收DMA传输完成中断 */
+#define USART1_RX_DMA_TC_INT (DMA_INT_TC_CH0)
+/** @brief USART1接收DMA传输完成标志 */
+#define USART1_RX_DMA_TC_FLAG (DMA_FLAG_TC_CH0)
+/** @brief USART1接收DMA传输完成中断号 */
+#define USART1_RX_DMA_TC_IRQn (INT002_IRQn)
+/** @brief USART1接收DMA传输完成中断源 */
+#define USART1_RX_DMA_TC_INT_SRC (INT_SRC_DMA1_TC0)
 /**
  * @}
  */
 
 /**
  * @defgroup USART1_RX_GPIO_Definition USART1接收GPIO定义
+ * @brief USART1接收GPIO相关的常量定义
  * @{
  */
-#define USART1_RX_PORT      (GPIO_PORT_C)
-#define USART1_RX_PIN       (GPIO_PIN_04)
+/** @brief USART1接收端口 */
+#define USART1_RX_PORT (GPIO_PORT_C)
+/** @brief USART1接收引脚 */
+#define USART1_RX_PIN (GPIO_PIN_04)
+/** @brief USART1接收GPIO功能 */
 #define USART1_RX_GPIO_FUNC (GPIO_FUNC_33)
 /**
  * @}
@@ -56,40 +72,60 @@ extern "C" {
 
 /**
  * @defgroup USART1_RX_IRQ_Definition USART1接收中断定义
+ * @brief USART1接收中断相关的常量定义
  * @{
  */
-#define USART1_RX_ERR_IRQn        (INT003_IRQn)
-#define USART1_RX_ERR_INT_SRC     (INT_SRC_USART1_EI)  // USART1接收错误中断
-#define USART1_RX_TIMEOUT_IRQn    (INT004_IRQn)
+/** @brief USART1接收错误中断号 */
+#define USART1_RX_ERR_IRQn (INT003_IRQn)
+/** @brief USART1接收错误中断源 */
+#define USART1_RX_ERR_INT_SRC (INT_SRC_USART1_EI) // USART1接收错误中断
+/** @brief USART1接收超时中断号 */
+#define USART1_RX_TIMEOUT_IRQn (INT004_IRQn)
+/** @brief USART1接收超时中断源 */
 #define USART1_RX_TIMEOUT_INT_SRC (INT_SRC_USART1_RTO) // USART1接收超时中断
-#define USART1_RX_FULL_IRQn       (INT005_IRQn)
-#define USART1_RX_FULL_INT_SRC    (INT_SRC_USART1_RI)  // USART1接收完成中断
+/** @brief USART1接收完成中断号 */
+#define USART1_RX_FULL_IRQn (INT005_IRQn)
+/** @brief USART1接收完成中断源 */
+#define USART1_RX_FULL_INT_SRC (INT_SRC_USART1_RI) // USART1接收完成中断
 /**
  * @}
  */
 
 /**
  * @defgroup USART1_TX_DMA_Definition USART1发送DMA定义
+ * @brief USART1发送DMA相关的常量定义
  * @{
  */
-#define USART1_TX_DMA_UNIT         (CM_DMA1)
-#define USART1_TX_DMA_CH           (DMA_CH1)
-#define USART1_TX_DMA_TRIG_SEL     (AOS_DMA1_1)
+/** @brief USART1发送DMA单元 */
+#define USART1_TX_DMA_UNIT (CM_DMA1)
+/** @brief USART1发送DMA通道 */
+#define USART1_TX_DMA_CH (DMA_CH1)
+/** @brief USART1发送DMA触发选择器 */
+#define USART1_TX_DMA_TRIG_SEL (AOS_DMA1_1)
+/** @brief USART1发送DMA触发事件源 */
 #define USART1_TX_DMA_TRIG_EVT_SRC (EVT_SRC_USART1_TI)
-#define USART1_TX_DMA_TC_INT       (DMA_INT_TC_CH1)
-#define USART1_TX_DMA_TC_FLAG      (DMA_FLAG_TC_CH1)
-#define USART1_TX_DMA_TC_IRQn      (INT006_IRQn)
-#define USART1_TX_DMA_TC_INT_SRC   (INT_SRC_DMA1_TC1)
+/** @brief USART1发送DMA传输完成中断 */
+#define USART1_TX_DMA_TC_INT (DMA_INT_TC_CH1)
+/** @brief USART1发送DMA传输完成标志 */
+#define USART1_TX_DMA_TC_FLAG (DMA_FLAG_TC_CH1)
+/** @brief USART1发送DMA传输完成中断号 */
+#define USART1_TX_DMA_TC_IRQn (INT006_IRQn)
+/** @brief USART1发送DMA传输完成中断源 */
+#define USART1_TX_DMA_TC_INT_SRC (INT_SRC_DMA1_TC1)
 /**
  * @}
  */
 
 /**
  * @defgroup USART1_TX_GPIO_Definition USART1发送GPIO定义
+ * @brief USART1发送GPIO相关的常量定义
  * @{
  */
-#define USART1_TX_PORT      (GPIO_PORT_C)
-#define USART1_TX_PIN       (GPIO_PIN_05)
+/** @brief USART1发送端口 */
+#define USART1_TX_PORT (GPIO_PORT_C)
+/** @brief USART1发送引脚 */
+#define USART1_TX_PIN (GPIO_PIN_05)
+/** @brief USART1发送GPIO功能 */
 #define USART1_TX_GPIO_FUNC (GPIO_FUNC_32)
 /**
  * @}
@@ -97,9 +133,12 @@ extern "C" {
 
 /**
  * @defgroup USART1_TX_IRQ_Definition USART1发送中断定义
+ * @brief USART1发送中断相关的常量定义
  * @{
  */
-#define USART1_TX_CPLT_IRQn    (INT007_IRQn)
+/** @brief USART1发送完成中断号 */
+#define USART1_TX_CPLT_IRQn (INT007_IRQn)
+/** @brief USART1发送完成中断源 */
 #define USART1_TX_CPLT_INT_SRC (INT_SRC_USART1_TCI) // USART1发送完成中断
 /**
  * @}
@@ -107,11 +146,15 @@ extern "C" {
 
 /**
  * @defgroup USART1_TMR0_Definition USART1定时器定义
+ * @brief USART1定时器相关的常量定义
  * @{
  */
+/** @brief USART1定时器单元 */
 #define USART1_TMR0_UNIT (CM_TMR0_1)
-#define USART1_TMR0_CLK  (FCG2_PERIPH_TMR0_1)
-#define USART1_TMR0_CH   (TMR0_CH_A)
+/** @brief USART1定时器时钟 */
+#define USART1_TMR0_CLK (FCG2_PERIPH_TMR0_1)
+/** @brief USART1定时器通道 */
+#define USART1_TMR0_CH (TMR0_CH_A)
 /**
  * @}
  */
@@ -122,31 +165,30 @@ extern "C" {
 /**
  * @brief 使能USART1功能
  * @details 使能USART1的接收、接收中断、接收超时和接收超时中断功能
+ * @return 无
  */
-static inline void USART1_FunctionEnable(void)
+static inline void enableUsart1Functions(void)
 {
     USART_FuncCmd(
-        USART1_UNIT,
-        (USART_RX | USART_INT_RX | USART_RX_TIMEOUT | USART_INT_RX_TIMEOUT),
-        ENABLE);
+        USART1_UNIT, (USART_RX | USART_INT_RX | USART_RX_TIMEOUT | USART_INT_RX_TIMEOUT), ENABLE);
 }
 
 /**
  * @brief 初始化USART1外设
  * @details 配置USART1的GPIO、DMA、中断和定时器，并使能USART1功能
+ * @return 无
  */
-void USART1_Init(void);
+void initializeUsart1(void);
 
 /**
  * @brief 通过USART1发送数据
  * @param [in] data 指向要发送数据的指针
  * @param [in] length 要发送的数据长度（字节数）
  * @details 使用DMA方式通过USART1发送指定长度的数据
+ * @return 无
  */
-void USART1_Send(uint8_t* data, uint16_t length);
+void sendDataViaUsart1(uint8_t* data, uint16_t length);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __USART1_CONFIG_H__ */

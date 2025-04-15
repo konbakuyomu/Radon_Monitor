@@ -4,7 +4,7 @@
 # 应用源文件
 set(APP_SOURCES 
     ${CMAKE_CURRENT_SOURCE_DIR}/source/usartTask.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/buttonControl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/buttonControlTask.c
     ${CMAKE_CURRENT_SOURCE_DIR}/source/commonControlTask.c
     ${CMAKE_CURRENT_SOURCE_DIR}/taskFactory.c
 )

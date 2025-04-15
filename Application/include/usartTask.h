@@ -43,10 +43,9 @@ extern TaskHandle_t usart1TaskHandle;
  * @return 无返回值
  * @note 任务会一直运行，等待并处理消息队列中的消息
  * @details 该任务负责:
- *          - 初始化串口处理器
  *          - 监听串口数据
  *          - 解析和处理串口命令
- *          - 发送响应数据
+ *          - 发送串口数据
  */
 void usart1Task(void* pvParameters);
 

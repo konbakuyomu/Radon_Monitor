@@ -6,8 +6,7 @@
  * @details 提供LED初始化和控制的接口函数，支持多个LED的独立或组合控制
  */
 
-#ifndef LED_CONFIG_H
-#define LED_CONFIG_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,7 +33,7 @@ extern const uint8_t LED_FAULT;
 /** @brief 报警LED标识符 */
 extern const uint8_t LED_ALARM;
 /** @brief 所有LED的组合标识符 */
-extern const uint8_t STATUS_LED_ALL;
+extern const uint8_t LED_IS_ALL;
 /**
  * @}
  */
@@ -47,46 +46,47 @@ extern const uint8_t STATUS_LED_ALL;
  * @details 配置LED引脚为输出模式，并将所有LED初始状态设置为关闭
  * @return 无
  */
-void ledConfigInit(void);
+void initializeLedConfiguration(void);
 
 /**
  * @brief 打开指定的LED
  * @param [in] ledSelection 要打开的LED选择
- *                         - LED_STATUS: 状态LED
- *                         - LED_NETWORK: 网络LED
- *                         - LED_FAULT: 故障LED
- *                         - LED_ALARM: 报警LED
- *                         - STATUS_LED_ALL: 所有LED
+ *             This parameter can be one of the following values:
+ *             @arg LED_STATUS: 状态LED
+ *             @arg LED_NETWORK: 网络LED
+ *             @arg LED_FAULT: 故障LED
+ *             @arg LED_ALARM: 报警LED
+ *             @arg LED_ALL: 所有LED
  * @return 无
  */
-void ledTurnOn(uint8_t ledSelection);
+void turnLedOn(uint8_t ledSelection);
 
 /**
  * @brief 关闭指定的LED
  * @param [in] ledSelection 要关闭的LED选择
- *                         - LED_STATUS: 状态LED
- *                         - LED_NETWORK: 网络LED
- *                         - LED_FAULT: 故障LED
- *                         - LED_ALARM: 报警LED
- *                         - STATUS_LED_ALL: 所有LED
+ *             This parameter can be one of the following values:
+ *             @arg LED_STATUS: 状态LED
+ *             @arg LED_NETWORK: 网络LED
+ *             @arg LED_FAULT: 故障LED
+ *             @arg LED_ALARM: 报警LED
+ *             @arg LED_ALL: 所有LED
  * @return 无
  */
-void ledTurnOff(uint8_t ledSelection);
+void turnLedOff(uint8_t ledSelection);
 
 /**
  * @brief 切换指定的LED状态
  * @param [in] ledSelection 要切换的LED选择
- *                         - LED_STATUS: 状态LED
- *                         - LED_NETWORK: 网络LED
- *                         - LED_FAULT: 故障LED
- *                         - LED_ALARM: 报警LED
- *                         - STATUS_LED_ALL: 所有LED
+ *             This parameter can be one of the following values:
+ *             @arg LED_STATUS: 状态LED
+ *             @arg LED_NETWORK: 网络LED
+ *             @arg LED_FAULT: 故障LED
+ *             @arg LED_ALARM: 报警LED
+ *             @arg LED_ALL: 所有LED
  * @return 无
  */
-void ledToggle(uint8_t ledSelection);
+void toggleLed(uint8_t ledSelection);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* LED_CONFIG_H */

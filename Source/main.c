@@ -33,8 +33,10 @@ static TaskHandle_t AppTaskCreate_Handle = NULL;
  */
 void task1_callback(btask_event_t* e)
 {
+    static uint32_t testData = 0;
     // 发送测试数据
-    // USART1Driver_SendTestDataMessage(0x123456);
+    sendUsart1TestDataMessage(testData);
+    testData++;
 }
 
 /**
@@ -64,7 +66,7 @@ static void AppTaskCreateProcess(void)
 int main(void)
 {
     // 初始化HAL硬件抽象层
-    HAL_injectDrvHal();
+    HAL_injectDriverImplementation();
 
     task1_handle = btask_creat_ms(1000,           // 周期为1000ms
                                   task1_callback, // 回调函数

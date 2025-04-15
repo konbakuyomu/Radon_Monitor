@@ -1,12 +1,11 @@
 /**
  * @file commonDriver.h
  * @brief 通用组件控制器头文件
- * @date 2025-03-20
- * @details 声明通用组件控制函数，提供对LED、PWM等基础组件的控制接口
+ * @date 2025-04-15
+ * @details 声明LED控制相关函数和类型，提供对LED的基础控制接口。
  */
 
-#ifndef __COMMON_DRIVER_H__
-#define __COMMON_DRIVER_H__
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,51 +16,63 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
-/* 定义和枚举
+/* 枚举与类型定义
  * -------------------------------------------------------------*/
 /**
- * @enum LedControl
- * @brief LED控制命令枚举
+ * @defgroup LedControlCommand_Enum LED控制命令枚举
+ * @brief LED控制命令类型
+ * @{
+ */
+/**
+ * @enum LedControlCommand
+ * @brief LED控制命令
+ * @var TURN_ON  打开LED
+ * @var TURN_OFF 关闭LED
+ * @var TOGGLE   切换LED状态
  */
 typedef enum {
-    LED_CONTROL_TURN_ON,  /**< 打开LED */
-    LED_CONTROL_TURN_OFF, /**< 关闭LED */
-    LED_CONTROL_TOGGLE    /**< 切换LED状态 */
-} LedControl_t;
+    TURN_ON,   /**< 打开LED */
+    TURN_OFF,  /**< 关闭LED */
+    TOGGLE     /**< 切换LED状态 */
+} LedControlCommand;
+/**
+ * @}
+ */
 
 /* 函数声明
  * -------------------------------------------------------------*/
-
 /**
- * @brief 初始化通用驱动器
- * @details 在使用其他函数前必须先调用此函数
+ * @defgroup LedControl_API LED控制API
+ * @brief LED控制相关对外API
+ * @{
  */
-void CommonDriver_Init(void);
-
 /**
- * LED控制函数
- * --------------------------------------*/
+ * @brief 初始化LED控制器
+ * @details 在使用其他LED控制函数前必须先调用此函数
+ */
+void initializeLedController(void);
 
 /**
  * @brief 打开指定LED
- * @param [in] ledSelection LED选择器
+ * @param [in] ledIdentifier LED标识符，支持单个或组合
  */
-void CommonDriver_LedTurnOn(uint8_t ledSelection);
+void turnOnLed(uint8_t ledIdentifier);
 
 /**
  * @brief 关闭指定LED
- * @param [in] ledSelection LED选择器
+ * @param [in] ledIdentifier LED标识符，支持单个或组合
  */
-void CommonDriver_LedTurnOff(uint8_t ledSelection);
+void turnOffLed(uint8_t ledIdentifier);
 
 /**
  * @brief 切换指定LED状态
- * @param [in] ledSelection LED选择器
+ * @param [in] ledIdentifier LED标识符，支持单个或组合
  */
-void CommonDriver_LedToggle(uint8_t ledSelection);
+void toggleLedState(uint8_t ledIdentifier);
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __COMMON_DRIVER_H__ */ 

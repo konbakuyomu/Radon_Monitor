@@ -21,7 +21,7 @@
 #define configCPU_CLOCK_HZ                        ( SystemCoreClock ) /* 系统主频。一般SystemCoreClock会和系统主频相等。不同时直接设置主频数，单位Hz */
 #define configTICK_RATE_HZ                        ((TickType_t)1000) /* 嘀嗒计时频率，1ms触发一次 */
 #define configMAX_PRIORITIES                      ( 7 ) /* 最大优先级，-1，0为最低优先级 */
-#define configMINIMAL_STACK_SIZE                  ((uint16_t)128) /* idle堆栈大小，定义空闲任务的栈空间大小, 单位: Word, 无默认需定义 */
+#define configMINIMAL_STACK_SIZE                  ((uint16_t)128) /* idle任务堆栈大小，定义空闲任务的栈空间大小, 单位: Word, 无默认需定义 */
 #define configMAX_TASK_NAME_LEN                   ( 16 ) /* 定义任务名最大字符数, 默认: 16 */
 
 #define configUSE_16_BIT_TICKS                    0 /* 1: 定义系统时钟节拍计数器的数据类型为16位无符号数, 无默认需定义 */
@@ -57,8 +57,8 @@
 #define configUSE_TRACE_FACILITY                 1 /* 启用可视化跟踪调试 */
 #define configUSE_STATS_FORMATTING_FUNCTIONS     1 /* 启用任务状态统计格式化功能 */
 
-#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() (CPU_RunTime = 0ul) /* 配置定时器用于运行时间统计 */
-#define portGET_RUN_TIME_COUNTER_VALUE()         (CPU_RunTime) /* 获取运行时间计数器值 */
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() (g_processorRuntimeCounter = 0ul) /* 配置定时器用于运行时间统计 */
+#define portGET_RUN_TIME_COUNTER_VALUE()         (g_processorRuntimeCounter)       /* 获取运行时间计数器值 */
 
 /***************************************************************************************************************/
 /*                                FreeRTOS与协程有关的配置选项                                                    */

@@ -9,7 +9,7 @@ set(BSP_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/source/ledConfig.c
     ${CMAKE_CURRENT_SOURCE_DIR}/source/keyConfig.c
     ${CMAKE_CURRENT_SOURCE_DIR}/source/usart1Config.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/beatTaskConfig.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/heartbeatTaskConfig.c
 )
 
 # 2. 添加源文件到项目

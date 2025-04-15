@@ -11,6 +11,13 @@
  * -------------------------------------------------------------*/
 
 /**
+ * @defgroup KEY_Constants 按键相关常量定义
+ * @brief 按键相关的常量值定义
+ * @{
+ */
+
+/**
+ * @var KEY_TMRA_PERIOD_VALUE
  * @brief TMRA周期值，用于设置定时器周期
  * @details Timera 定时器的时钟源是PCLK1，频率为100MHz
  *          Frequency = (Clock freq / div) / (Compare value + 1)
@@ -19,28 +26,34 @@
  */
 static const uint32_t KEY_TMRA_PERIOD_VALUE = 49999U;
 
+/**
+ * @}
+ */
+
 /* 静态函数
  * -------------------------------------------------------------*/
 
 /**
  * @brief 按键定时器中断处理函数
  * @details 处理TMRA中断，用于按键扫描的定时触发
+ * @return 无
  */
 static void KEY_TMRA_IRQHandler(void)
 {
     if (TMRA_GetStatus(KEY_TMRA_UNIT, KEY_TMRA_INT_FLAG) == SET) {
         TMRA_ClearStatus(KEY_TMRA_UNIT, KEY_TMRA_INT_FLAG);
-        btn_tic_ms(1);
+        buttonTickMilliseconds(1);
     }
 }
 
 /**
  * @brief 读取按键输入电平
  * @param [in] keyNumber 按键编号（1-4）
- * @return 按键电平状态
+ * @return uint8_t 按键电平状态
  *         - 1: 表示高电平
  *         - 0: 表示低电平
  *         - KEY_BUTTON_ERROR: 表示无效按键编号
+ * @details 根据按键编号读取对应GPIO的输入电平状态
  */
 static uint8_t readKeyInputLevel(uint8_t keyNumber)
 {
@@ -73,6 +86,7 @@ static uint8_t readKeyInputLevel(uint8_t keyNumber)
 /**
  * @brief 配置按键扫描定时器
  * @details 初始化TMRA用于按键扫描，配置中断和回调函数
+ * @return 无
  */
 void configureKeyTimer(void)
 {
@@ -106,6 +120,7 @@ void configureKeyTimer(void)
 /**
  * @brief 启动按键扫描定时器
  * @details 启动TMRA开始按键扫描
+ * @return 无
  */
 void startKeyTimer(void)
 {
@@ -116,6 +131,7 @@ void startKeyTimer(void)
 /**
  * @brief 初始化按键GPIO配置
  * @details 配置所有按键GPIO为输入模式，带上拉电阻
+ * @return 无
  */
 void initializeKeyGpio(void)
 {
@@ -133,17 +149,18 @@ void initializeKeyGpio(void)
 
 /**
  * @brief 注册按键读取函数
- * @details 将按键读取函数注册到按键处理模块
+ * @details 将按键读取函数注册到按键处理模块，并初始化所有按键
+ * @return 无
  */
 void initializeKeyConfiguration(void)
 {
     /* 注册按键读取函数 */
-    btn_attach_read_io_func(readKeyInputLevel);
+    buttonAttachReadInputOutputFunction(readKeyInputLevel);
 
     /* 初始化所有按键，第二个参数为按键按下去后的电平状态，这里默认是高(光耦未导通)，按下是低(光耦导通)
      */
-    btn_attach(KEY_BUTTON_1, 0);
-    btn_attach(KEY_BUTTON_2, 0);
-    btn_attach(KEY_BUTTON_3, 0);
-    btn_attach(KEY_BUTTON_4, 0);
+    buttonAttach(KEY_BUTTON_1, 0);
+    buttonAttach(KEY_BUTTON_2, 0);
+    buttonAttach(KEY_BUTTON_3, 0);
+    buttonAttach(KEY_BUTTON_4, 0);
 }

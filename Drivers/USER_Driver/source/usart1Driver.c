@@ -1,81 +1,133 @@
+/**
+ * @file usart1Driver.c
+ * @brief USART1驱动器实现文件
+ * @date 2025-04-15
+ * @details 实现USART1驱动相关的消息缓冲、DMA、FreeRTOS集成等功能。
+ */
+
+/* 头文件
+ * -------------------------------------------------------------*/
 #include "globalConfig.h"
 
-static USART1Driver_t usart1_driver_instance;
-MsgBusSystemMessage usart1DriverMessage;
+/* 静态变量
+ * -------------------------------------------------------------*/
+/**
+ * @var static Usart1Driver g_usart1DriverInstance
+ * @brief USART1驱动主实例，仅在本文件内有效
+ */
+static Usart1Driver g_usart1DriverInstance;
 
-void USART1Driver_Init(void)
+/**
+ * @var MsgBusSystemMessage g_usart1DriverMessage
+ * @brief USART1驱动消息对象，仅在本文件内有效
+ */
+MessageBusMessage g_usart1DriverMessage;
+
+/* 公共函数实现
+ * -------------------------------------------------------------*/
+/**
+ * @addtogroup Usart1Driver_APIs
+ * @{
+ */
+/**
+ * @brief 初始化USART1驱动器
+ */
+void initializeUsart1Driver(void)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
+    Usart1Driver* driver = &g_usart1DriverInstance;
 
-    drv->txMessageBuffer = xMessageBufferCreateStatic(
-        USART1_MAX_SEND_BUFFER_SIZE, drv->txMessageBufferMemory, &drv->txMessageBufferStorage);
+    driver->transmitMessageBuffer
+        = xMessageBufferCreateStatic(USART1_MAX_SEND_BUFFER_SIZE,
+                                     driver->transmitMessageBufferMemory,
+                                     &driver->transmitMessageBufferStorage);
 
-    drv->rxMessageBuffer = xMessageBufferCreateStatic(
-        USART1_MAX_RECEIVE_BUFFER_SIZE, drv->rxMessageBufferMemory, &drv->rxMessageBufferStorage);
+    driver->receiveMessageBuffer = xMessageBufferCreateStatic(USART1_MAX_RECEIVE_BUFFER_SIZE,
+                                                              driver->receiveMessageBufferMemory,
+                                                              &driver->receiveMessageBufferStorage);
 
-    drv->txCompleteSemaphore = xSemaphoreCreateBinaryStatic(&drv->txCompleteSemaphoreBuffer);
+    driver->transmitCompleteSemaphore
+        = xSemaphoreCreateBinaryStatic(&driver->transmitCompleteSemaphoreBuffer);
 
-    drv->testData = 0;
+    driver->testData = 0;
 
-    usart1DriverMessage.message = 0;
-    usart1DriverMessage.payload.usartData = pdFALSE;
+    g_usart1DriverMessage.type = MESSAGE_BUS_TYPE_NONE;
+    g_usart1DriverMessage.payload.usartData = pdFALSE;
 }
 
-size_t USART1Driver_Send(void)
+/**
+ * @brief 发送数据（从transmitMessageBuffer取出并发送）
+ * @retval size_t 实际发送的字节数
+ */
+size_t sendUsart1Data(void)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
-    size_t bytesSent = 0;
+    Usart1Driver* driver = &g_usart1DriverInstance;
+    size_t sentByteCount = 0;
 
-    bytesSent = xMessageBufferReceive(
-        drv->txMessageBuffer, drv->sendBuffer, USART1_MAX_SEND_BUFFER_SIZE, portMAX_DELAY);
+    sentByteCount = xMessageBufferReceive(driver->transmitMessageBuffer,
+                                          driver->sendBuffer,
+                                          USART1_MAX_SEND_BUFFER_SIZE,
+                                          portMAX_DELAY);
 
-    if (bytesSent > 0) {
-        xSemaphoreTake(drv->txCompleteSemaphore, 0);
+    if (sentByteCount > 0) {
+        xSemaphoreTake(driver->transmitCompleteSemaphore, 0);
 
-        hal_uart_data_t uartData;
-        uartData.data = drv->sendBuffer;
-        uartData.length = bytesSent;
+        UartTransferData uartData;
+        uartData.data = driver->sendBuffer;
+        uartData.length = sentByteCount;
         uartData.channel = UART_CHANNEL_1;
         HAL_uartSend(&uartData);
 
-        if (xSemaphoreTake(drv->txCompleteSemaphore, pdMS_TO_TICKS(1000)) != pdTRUE) {
+        if (xSemaphoreTake(driver->transmitCompleteSemaphore, pdMS_TO_TICKS(1000)) != pdTRUE) {
             // 超时处理
         }
     }
 
-    memset(drv->sendBuffer, 0, sizeof(drv->sendBuffer));
-    return bytesSent;
+    memset(driver->sendBuffer, 0, sizeof(driver->sendBuffer));
+    return sentByteCount;
 }
 
-size_t USART1Driver_SendTxDataMessage(const uint8_t* data, size_t size)
+/**
+ * @brief 添加数据到发送缓冲区
+ * @param [in] data 数据指针
+ * @param [in] dataSize 数据长度
+ * @retval size_t 实际写入的字节数
+ */
+size_t addUsart1TransmitData(const uint8_t* data, size_t dataSize)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
-    if (data == NULL || size == 0)
+    Usart1Driver* driver = &g_usart1DriverInstance;
+    if (data == NULL || dataSize == 0)
         return 0;
 
-    size_t bytesWritten = xMessageBufferSend(drv->txMessageBuffer, data, size, portMAX_DELAY);
+    size_t writtenByteCount
+        = xMessageBufferSend(driver->transmitMessageBuffer, data, dataSize, portMAX_DELAY);
 
-    if (bytesWritten == size) {
-        usart1DriverMessage.message = MSGBUS_MSG_UART1_TRANSMIT;
-        usart1DriverMessage.payload.usartData = 0x02;
-        msgbus_publish(&usart1DriverMessage);
+    if (writtenByteCount == dataSize) {
+        g_usart1DriverMessage.type = MESSAGE_BUS_TYPE_UART1_TRANSMIT;
+        g_usart1DriverMessage.payload.usartData = 0x02;
+        publishMessage(&g_usart1DriverMessage);
     }
 
-    return bytesWritten;
+    return writtenByteCount;
 }
 
-UartData_t USART1Driver_Receive(void)
+/**
+ * @brief 接收数据（从receiveMessageBuffer取出）
+ * @return UartData UART数据结构体
+ */
+UartData receiveUsart1Data(void)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
-    size_t bytesReceived = 0;
+    Usart1Driver* driver = &g_usart1DriverInstance;
+    size_t receivedByteCount = 0;
 
-    bytesReceived = xMessageBufferReceive(
-        drv->rxMessageBuffer, drv->procBuffer, USART1_MAX_RECEIVE_BUFFER_SIZE, portMAX_DELAY);
+    receivedByteCount = xMessageBufferReceive(driver->receiveMessageBuffer,
+                                              driver->processBuffer,
+                                              USART1_MAX_RECEIVE_BUFFER_SIZE,
+                                              portMAX_DELAY);
 
-    UartData_t uartData;
-    if (bytesReceived > 0) {
-        uartData.data = drv->procBuffer;
-        uartData.size = bytesReceived;
+    UartData uartData;
+    if (receivedByteCount > 0) {
+        uartData.data = driver->processBuffer;
+        uartData.size = receivedByteCount;
     } else {
         uartData.data = NULL;
         uartData.size = 0;
@@ -83,62 +135,98 @@ UartData_t USART1Driver_Receive(void)
     return uartData;
 }
 
-void USART1Driver_SendRxDataMessage(size_t bytesReceived)
+/**
+ * @brief DMA接收完成，转存数据并通知
+ * @param [in] receivedByteCount 实际接收字节数
+ */
+void notifyUsart1DmaReceiveComplete(size_t receivedByteCount)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
+    Usart1Driver* driver = &g_usart1DriverInstance;
     BaseType_t higherPriorityTaskWoken = pdFALSE;
 
-    if (bytesReceived > 0) {
-        xMessageBufferSendFromISR(
-            drv->rxMessageBuffer, drv->dmaBuffer, bytesReceived, &higherPriorityTaskWoken);
+    if (receivedByteCount > 0) {
+        xMessageBufferSendFromISR(driver->receiveMessageBuffer,
+                                  driver->dmaBuffer,
+                                  receivedByteCount,
+                                  &higherPriorityTaskWoken);
 
-        memset(drv->dmaBuffer, 0, sizeof(drv->dmaBuffer));
+        memset(driver->dmaBuffer, 0, sizeof(driver->dmaBuffer));
 
-        usart1DriverMessage.message = MSGBUS_MSG_UART1_RECEIVE;
-        usart1DriverMessage.payload.usartData = 0x03;
-        msgbus_publish_from_isr(&usart1DriverMessage, &higherPriorityTaskWoken);
+        g_usart1DriverMessage.type = MESSAGE_BUS_TYPE_UART1_RECEIVE;
+        g_usart1DriverMessage.payload.usartData = 0x03;
+        publishMessageFromInterrupt(&g_usart1DriverMessage, &higherPriorityTaskWoken);
 
         portYIELD_FROM_ISR(higherPriorityTaskWoken);
     }
 }
 
-uint8_t* USART1_GetDmaBufferPtr_use_c(void) { return usart1_driver_instance.dmaBuffer; }
+/**
+ * @brief 获取DMA缓冲区指针
+ * @return uint8_t* DMA缓冲区指针
+ */
+uint8_t* getUsart1DmaBufferPointer(void) { return g_usart1DriverInstance.dmaBuffer; }
 
-uint32_t USART1_GetDmaBufferSize_use_c(void) { return USART1_MAX_RECEIVE_BUFFER_SIZE; }
+/**
+ * @brief 获取DMA缓冲区大小
+ * @return uint32_t DMA缓冲区大小
+ */
+uint32_t getUsart1DmaBufferSize(void) { return USART1_MAX_RECEIVE_BUFFER_SIZE; }
 
-void USART1_ProcessReceivedData_use_c(size_t bytesReceived)
+/**
+ * @brief 处理接收数据（供BSP调用）
+ * @param [in] receivedByteCount 实际接收字节数
+ */
+void processUsart1ReceivedData(size_t receivedByteCount)
 {
-    USART1Driver_SendRxDataMessage(bytesReceived);
+    notifyUsart1DmaReceiveComplete(receivedByteCount);
 }
 
-void USART1_NotifyTxComplete_use_c(void)
+/**
+ * @brief 发送完成通知（供中断调用）
+ */
+void notifyUsart1TransmitComplete(void)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    Usart1Driver* driver = &g_usart1DriverInstance;
+    BaseType_t higherPriorityTaskWoken = pdFALSE;
 
-    if (drv->txCompleteSemaphore != NULL) {
-        xSemaphoreGiveFromISR(drv->txCompleteSemaphore, &xHigherPriorityTaskWoken);
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    if (driver->transmitCompleteSemaphore != NULL) {
+        xSemaphoreGiveFromISR(driver->transmitCompleteSemaphore, &higherPriorityTaskWoken);
+        portYIELD_FROM_ISR(higherPriorityTaskWoken);
     }
 }
 
-void USART1Driver_SaveTestData(uint32_t data)
+/**
+ * @brief 保存测试数据
+ * @param [in] testData 测试数据
+ */
+void saveUsart1TestData(uint32_t testData)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
-    drv->testData = data;
+    Usart1Driver* driver = &g_usart1DriverInstance;
+    driver->testData = testData;
 }
 
-uint32_t USART1Driver_GetTestData(void)
+/**
+ * @brief 获取测试数据
+ * @return uint32_t 测试数据
+ */
+uint32_t getUsart1TestData(void)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
-    return drv->testData;
+    Usart1Driver* driver = &g_usart1DriverInstance;
+    return driver->testData;
 }
 
-void USART1Driver_SendTestDataMessage(uint32_t data)
+/**
+ * @brief 发送测试数据消息
+ * @param [in] testData 测试数据
+ */
+void sendUsart1TestDataMessage(uint32_t testData)
 {
-    USART1Driver_t* drv = &usart1_driver_instance;
-    drv->testData = data;
-    usart1DriverMessage.message = MSGBUS_MSG_TEST_MESSAGE;
-    usart1DriverMessage.payload.testData = data;
-    msgbus_publish(&usart1DriverMessage);
+    Usart1Driver* driver = &g_usart1DriverInstance;
+    driver->testData = testData;
+    g_usart1DriverMessage.type = MESSAGE_BUS_TYPE_TEST_MESSAGE;
+    g_usart1DriverMessage.payload.testValue = testData;
+    publishMessage(&g_usart1DriverMessage);
 }
+/**
+ * @}
+ */

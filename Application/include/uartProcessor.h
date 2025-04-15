@@ -26,9 +26,9 @@
  *        用于处理如UartMessage等串口协议消息
  */
 typedef struct {
-    CommandProcessorBaseC base; /**< 基类结构体，继承命令处理器基类功能 */
+    CommandProcessor base; /**< 基类结构体，继承命令处理器基类功能 */
     // 可扩展其他成员
-} UartProtocolProcessorC;
+} UartProtocolProcessor;
 
 /* 函数声明
  * -------------------------------------------------------------*/
@@ -39,14 +39,14 @@ typedef struct {
  * @return 无返回值
  * @note 必须在使用前调用此函数进行初始化
  */
-void UartProtocolProcessorC_init(UartProtocolProcessorC* proc,
-                                 const CommandProcessorConfig* config);
+void UartProtocolProcessor_initialize(UartProtocolProcessor* processor,
+                                        const CommandProcessorConfiguration* configuration);
 
 /**
  * @brief 获取串口协议命令处理器单例（全局唯一实例）
  * @return 指向单例的指针
  */
-UartProtocolProcessorC* UartProtocolProcessorC_getInstance(void);
+UartProtocolProcessor* UartProtocolProcessor_getInstance(void);
 
 /**
  * @}

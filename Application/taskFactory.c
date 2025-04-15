@@ -1,12 +1,13 @@
 /**
  * @file taskFactory.c
  * @brief 任务工厂源文件
- * @date 2025-02-13
+ * @date 2025-04-15
+ * @details 实现任务工厂功能，动态创建或者静态创建任务
  */
 
 #include "globalConfig.h"
 
-/* 静态变量定义
+/* 静态变量
  * -------------------------------------------------------------*/
 // 为Uart1接收任务定义静态TCB和堆栈
 static StaticTask_t usart1TaskTCB;

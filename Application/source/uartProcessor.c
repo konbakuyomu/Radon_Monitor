@@ -32,7 +32,7 @@
  * @return UartMessage中的命令类型
  * @details 假设UartMessage第一个字段为uint32_t command
  */
-static uint32_t UartProtocol_getCommandFromMessage(void* self, const void* message)
+static uint32_t UartProtocol_getCommandTypeFromMessage(void* self, const void* message)
 {
     // 直接取消息结构体的第一个字段（uint32_t command）
     return *((const uint32_t*)message);
@@ -43,26 +43,27 @@ static uint32_t UartProtocol_getCommandFromMessage(void* self, const void* messa
 /**
  * @brief 单例相关静态变量
  */
-static UartProtocolProcessorC instance_uart;                      /**< 单例对象 */
-static uint32_t uart_cmdTypes[UART_PROTOCOL_MAX_COMMANDS];        /**< 命令类型数组 */
-static CommandHandlerC uart_handlers[UART_PROTOCOL_MAX_COMMANDS]; /**< 处理函数数组 */
-static void* uart_contexts[UART_PROTOCOL_MAX_COMMANDS];           /**< 上下文数组 */
+static UartProtocolProcessor instance_uart;                      /**< 单例对象 */
+static uint32_t uart_cmdTypes[UART_PROTOCOL_MAX_COMMANDS];       /**< 命令类型数组 */
+static CommandHandler uart_handlers[UART_PROTOCOL_MAX_COMMANDS]; /**< 处理函数数组 */
+static void* uart_contexts[UART_PROTOCOL_MAX_COMMANDS];          /**< 上下文数组 */
 
 /* 全局函数实现
  * -------------------------------------------------------------*/
 /**
  * @brief 初始化串口协议命令处理器
- * @param [in,out] proc 指向处理器结构体的指针
- * @param [in] config 指向配置结构体的指针
+ * @param [in,out] processor 指向处理器结构体的指针
+ * @param [in] configuration 指向配置结构体的指针
  * @return 无返回值
  * @details
  *   - 调用基类初始化
- *   - 设置getCommandFromMessage为UartMessage专用实现
+ *   - 设置getCommandTypeFromMessage为UartMessage专用实现
  */
-void UartProtocolProcessorC_init(UartProtocolProcessorC* proc, const CommandProcessorConfig* config)
+void UartProtocolProcessor_initialize(UartProtocolProcessor* processor,
+                                      const CommandProcessorConfiguration* configuration)
 {
-    CommandProcessorBaseC_init(&proc->base, config);
-    proc->base.getCommandFromMessage = UartProtocol_getCommandFromMessage;
+    CommandProcessor_initialize(&processor->base, configuration);
+    processor->base.getCommandTypeFromMessage = UartProtocol_getCommandTypeFromMessage;
 }
 
 /**
@@ -72,15 +73,15 @@ void UartProtocolProcessorC_init(UartProtocolProcessorC* proc, const CommandProc
  *   - 单例模式，避免重复分配资源
  *   - 首次调用时自动初始化
  */
-UartProtocolProcessorC* UartProtocolProcessorC_getInstance(void)
+UartProtocolProcessor* UartProtocolProcessor_getInstance(void)
 {
     static bool initialized = false;
     if (!initialized) {
-        CommandProcessorConfig config = { .capacity = UART_PROTOCOL_MAX_COMMANDS,
-                                          .cmdTypes = uart_cmdTypes,
-                                          .handlers = uart_handlers,
-                                          .contexts = uart_contexts };
-        UartProtocolProcessorC_init(&instance_uart, &config);
+        CommandProcessorConfiguration configuration = { .capacity = UART_PROTOCOL_MAX_COMMANDS,
+                                                        .commandTypes = uart_cmdTypes,
+                                                        .handlerFunctions = uart_handlers,
+                                                        .contextPointers = uart_contexts };
+        UartProtocolProcessor_initialize(&instance_uart, &configuration);
         initialized = true;
     }
     return &instance_uart;

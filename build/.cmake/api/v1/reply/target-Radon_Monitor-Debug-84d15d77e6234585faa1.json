@@ -757,7 +757,7 @@
 		{
 			"backtrace" : 20,
 			"compileGroupIndex" : 1,
-			"path" : "MessageBus/message_bus.c",
+			"path" : "MessageBus/messageBus.c",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -799,7 +799,7 @@
 		{
 			"backtrace" : 21,
 			"compileGroupIndex" : 1,
-			"path" : "Board_Support_Package/source/beatTaskConfig.c",
+			"path" : "Board_Support_Package/source/heartbeatTaskConfig.c",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -1147,7 +1147,7 @@
 		{
 			"backtrace" : 23,
 			"compileGroupIndex" : 1,
-			"path" : "Application/source/buttonControl.c",
+			"path" : "Application/source/buttonControlTask.c",
 			"sourceGroupIndex" : 1
 		},
 		{

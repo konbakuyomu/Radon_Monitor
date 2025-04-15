@@ -1,10 +1,11 @@
 /**
  * @file taskFactory.h
  * @brief 任务工厂头文件
- * @date 2025-02-13
+ * @date 2025-04-15
+ * @details 实现任务工厂功能，动态创建或者静态创建任务
  */
-#ifndef __TASK_FACTORY_H__
-#define __TASK_FACTORY_H__
+
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,4 @@ void taskFactoryInitStatic(void);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif
