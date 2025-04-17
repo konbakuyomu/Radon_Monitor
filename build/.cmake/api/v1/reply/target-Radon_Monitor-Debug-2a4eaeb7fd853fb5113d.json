@@ -95,7 +95,7 @@
 			{
 				"command" : 2,
 				"file" : 6,
-				"line" : 39,
+				"line" : 45,
 				"parent" : 13
 			},
 			{
@@ -146,7 +146,7 @@
 			{
 				"command" : 3,
 				"file" : 6,
-				"line" : 23,
+				"line" : 28,
 				"parent" : 13
 			},
 			{
@@ -379,7 +379,8 @@
 				85,
 				86,
 				87,
-				88
+				88,
+				89
 			]
 		},
 		{
@@ -634,7 +635,8 @@
 				85,
 				86,
 				87,
-				88
+				88,
+				89
 			]
 		}
 	],
@@ -1136,6 +1138,12 @@
 			"backtrace" : 23,
 			"compileGroupIndex" : 1,
 			"path" : "Application/source/commonControlProcessor.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 23,
+			"compileGroupIndex" : 1,
+			"path" : "Application/source/usartCommandHandlers.c",
 			"sourceGroupIndex" : 1
 		},
 		{

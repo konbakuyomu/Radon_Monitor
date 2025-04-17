@@ -9,6 +9,11 @@ set(APP_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/taskFactory.c
 )
 
+# 命令处理源文件
+set(CMD_HANDLER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/usartCommandHandlers.c
+)
+
 # 命令分发源文件
 set(CMD_DISPATCH_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/source/baseProcessor.c   
@@ -22,6 +27,7 @@ set(CMD_DISPATCH_SOURCES
 #----------------------------------------
 target_sources(${PROJECT_NAME} PRIVATE
     ${CMD_DISPATCH_SOURCES}    
+    ${CMD_HANDLER_SOURCES}
     ${APP_SOURCES}
 )
 

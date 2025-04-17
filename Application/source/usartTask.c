@@ -9,6 +9,8 @@
  * -------------------------------------------------------------*/
 #include "globalConfig.h"
 #include "messageBusProcessor.h"
+#include "uartProcessor.h"
+#include "usartCommandHandlers.h"
 
 /**
  * @addtogroup USART_Task
@@ -86,14 +88,25 @@ static bool handleUart1Transmit(void* context, const void* message)
 static bool handleUart1Receive(void* context, const void* message)
 {
     (void)context; // 未使用参数
-    const MessageBusMessage* msg = (const MessageBusMessage*)message;
+    (void)message;
 
-    UartData usart1Data = receiveUsart1Data();
-
-    // 这里做回显测试
-    usart1Data.data[0] = 0xbf;
-    usart1Data.data[1] = msg->payload.usartData;
-    addUsart1TransmitData(usart1Data.data, usart1Data.size);
+    UartData rawData = receiveUsart1Data();
+    UartFrame frame;
+    // 解析帧
+    if (!parseUartFrame(&rawData, &frame)) {
+        sendUartErrorResponse(0, UART_ERR_INVALID_CRC);
+        return true;
+    }
+    // 地址过滤
+    if (frame.address != UART_DEVICE_ADDRESS) {
+        return true;
+    }
+    // 分发命令
+    UartProtocolProcessor* processor = UartProtocolProcessor_getInstance();
+    bool handled = processor->base.executeCommand(&processor->base, &frame);
+    if (!handled) {
+        sendUartErrorResponse(frame.functionCode, UART_ERR_UNKNOWN_CMD);
+    }
     return true;
 }
 
@@ -171,6 +184,9 @@ void usart1Task(void* pvParameters)
         &processor->commandProcessor, MESSAGE_BUS_TYPE_UART1_RECEIVE, handleUart1Receive, NULL);
     processor->commandProcessor.registerHandler(
         &processor->commandProcessor, MESSAGE_BUS_TYPE_TEST_MESSAGE, handleUart1Test, NULL);
+
+    // 初始化串口协议处理器并注册所有命令处理函数
+    registerUartCommandHandlers();
 
     // 订阅消息
     subscribeMessage(MESSAGE_BUS_TYPE_UART1_TRANSMIT, uart1Queue);
