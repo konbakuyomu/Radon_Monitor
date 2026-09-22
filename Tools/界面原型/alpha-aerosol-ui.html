@@ -1,0 +1,1526 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>α气溶胶快速测量仪 · 串口屏界面示例</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#eceff3;color:#1f2933;font:15px/1.6 "Segoe UI","Microsoft YaHei",sans-serif}
+button,select,input{font:inherit}
+button,select{cursor:pointer}
+
+/* ── 外壳（设备之外，不参与串口屏移植） ───────────────── */
+.bench{max-width:1460px;margin:0 auto;padding:22px 26px 60px}
+.bar{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:16px;flex-wrap:wrap}
+.bar h1{font-size:19px;font-weight:600}
+.bar p{font-size:13px;color:#68727f;margin-top:4px}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools select,.tools button{border:1px solid #c3ccd6;background:#fff;border-radius:6px;padding:7px 11px;font-size:13px;color:#1f2933}
+.tools button.on{background:#0d141d;border-color:#0d141d;color:#e8eef5}
+.viewport{position:relative;margin:0 auto;overflow:hidden;background:#070b10;border-radius:4px;box-shadow:0 10px 30px rgba(31,41,51,.18)}
+.hardware{margin:22px auto 0;display:flex;justify-content:center;gap:74px}
+.metal{text-align:center}
+.metal label{display:block;font-size:13px;color:#68727f;margin-bottom:7px}
+.metal button{width:54px;height:54px;border-radius:50%;border:2px solid #97a2ae;background:linear-gradient(150deg,#fff,#c0c8d1);box-shadow:0 2px 4px rgba(31,41,51,.22)}
+.metal button.held{background:#b2bcc7;box-shadow:inset 0 3px 6px rgba(31,41,51,.35)}
+.metal small{display:block;font-size:13px;color:#68727f;margin-top:6px}
+.tip{text-align:center;font-size:12.5px;color:#68727f;margin-top:14px;line-height:1.8}
+
+/* ── 屏幕（1280×800，以下全部参与移植） ───────────────── */
+.screen{
+  --ink-0:#070B10; --ink-1:#0D141D; --ink-2:#131D28;
+  --line-1:#1E2A38; --line-2:#2A3A4C;
+  --text-1:#E8EEF5; --text-2:#9FB0C3; --text-3:#6B7E93;
+  --accent:#38A9E8; --ok:#35C08A; --warn:#E9A23B; --alarm:#FF4D57;
+  width:1280px;height:800px;position:absolute;transform-origin:top left;
+  background:var(--ink-0);color:var(--text-1);overflow:hidden;
+  font-family:"Source Han Sans SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.screen.alarm::after{content:'';position:absolute;inset:0;border:4px solid var(--alarm);pointer-events:none;z-index:7}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.c-ok{color:var(--ok)!important} .c-alarm{color:var(--alarm)!important}
+.c-warn{color:var(--warn)!important} .c-mut{color:var(--text-3)!important} .c-acc{color:var(--accent)!important}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:currentColor;margin-right:10px;vertical-align:baseline}
+
+/* 顶栏 64px */
+.topbar{height:64px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;background:var(--ink-1);border-bottom:1px solid var(--line-1)}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.brand .wm{font-size:24px;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+.brand .wm i{font-style:normal;font-weight:400;font-size:27px;margin-right:2px}
+.brand .co{font-size:18px;color:var(--text-3);white-space:nowrap}
+.brand .sn{font-size:18px;color:var(--text-2);white-space:nowrap;padding-left:14px;border-left:1px solid var(--line-2)}
+.badge-admin{font-size:17px;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:3px 9px;white-space:nowrap}
+.badge-alarm{font-size:19px;font-weight:600;color:var(--ink-0);background:var(--alarm);border-radius:4px;padding:4px 12px;white-space:nowrap}
+.sigs{display:flex;align-items:center;gap:20px;flex-shrink:0}
+.sig{display:flex;align-items:center;gap:7px;font-size:19px;color:var(--text-3)}
+.sig.on{color:var(--ok)}
+.sig svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.clock{display:flex;align-items:baseline;gap:12px;font-size:23px;margin-left:4px}
+.clock small{font-size:19px;color:var(--text-2)}
+
+/* 页签 40px —— 取代每页 60px 的大标题 */
+.tabs{height:40px;display:flex;background:var(--ink-1);border-bottom:1px solid var(--line-1)}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:20px;
+  color:var(--text-3);border-right:1px solid var(--line-1);position:relative}
+.tab:last-child{border-right:0}
+.tab.on{color:var(--accent)}
+.tab.on::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--accent)}
+
+/* 内容区 624px */
+.content{height:624px;padding:18px 28px;position:relative}
+
+/* 按键条 72px */
+.keybar{height:72px;display:flex;background:var(--ink-1);border-top:1px solid var(--line-1)}
+.kcell{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;
+  border-right:1px solid var(--line-1);padding:0 10px;min-width:0}
+.kcell:last-child{border-right:0}
+.kcap{min-width:58px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--line-2);border-radius:5px;background:var(--ink-2);color:var(--text-1);font-size:20px;flex-shrink:0}
+.kact{font-size:20px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feedback{position:absolute;right:28px;bottom:86px;z-index:8;font-size:20px;color:var(--alarm);font-weight:600;
+  background:var(--ink-0);border:1px solid var(--alarm);border-radius:6px;padding:7px 15px;pointer-events:none}
+.feedback:empty{display:none}
+.feedback.info{color:var(--accent);border-color:var(--accent)}
+
+/* 主监测 · 两块等大数值面板 */
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.metric{height:232px;background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px;
+  padding:24px 30px;display:flex;flex-direction:column}
+.metric.alarm{border-color:var(--alarm)}
+.mhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.mhead h2{font-size:22px;font-weight:500;color:var(--text-2)}
+.mhead span{font-size:19px;color:var(--text-3);white-space:nowrap}
+.mval{margin-top:auto;display:flex;align-items:baseline;gap:14px}
+.mval b{font-size:96px;font-weight:600;line-height:1.05;letter-spacing:-.03em}
+.mval span{font-size:28px;color:var(--text-2)}
+.gauge{margin-top:18px}
+.gtrack{height:6px;background:var(--ink-2);border-radius:3px;position:relative;overflow:hidden}
+.gfill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:3px}
+.gfill.alarm{background:var(--alarm)}
+.gscale{display:flex;justify-content:space-between;margin-top:9px;font-size:18px;color:var(--text-3)}
+.mfoot{margin-top:auto;font-size:19px;color:var(--text-3)}
+
+/* 统一「字段」组件 —— 全部页面的状态信息只用这一个 */
+.panel{background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px}
+.status{margin-top:20px;height:336px;padding:20px 28px;display:flex;flex-direction:column}
+.sgroup + .sgroup{margin-top:20px;padding-top:20px;border-top:1px solid var(--line-1)}
+.scap{font-size:19px;color:var(--text-3);letter-spacing:.09em;margin-bottom:10px}
+.fields{display:grid;grid-template-columns:repeat(4,1fr)}
+.field{padding:0 20px;border-right:1px solid var(--line-1);min-width:0}
+.field:first-child{padding-left:0}
+.field:last-child{border-right:0;padding-right:0}
+.field > label{display:block;font-size:20px;color:var(--text-2);margin-bottom:8px}
+.field .v{font-size:28px;color:var(--text-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.field .v small{font-size:20px;color:var(--text-2);margin-left:7px}
+.field .v.two{font-size:22px;line-height:1.4;white-space:normal}
+
+/* 列表行 —— 单列，▲▼ 就是上下（修掉两列网格的操作 bug） */
+.lgroup + .lgroup{margin-top:18px}
+.lcap{font-size:19px;color:var(--text-3);letter-spacing:.09em;margin-bottom:8px}
+.rows{display:flex;flex-direction:column;gap:7px}
+.row{height:64px;display:flex;align-items:center;gap:16px;padding:0 22px;width:100%;
+  background:var(--ink-1);border:1px solid var(--line-1);border-radius:8px;text-align:left;color:inherit}
+.row .rname{font-size:26px;color:var(--text-1);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .rval{font-size:26px;color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums}
+.row.readonly .rval{color:var(--text-3)}
+.row.on{background:var(--ink-2);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.row.editing{background:var(--ink-2);border-color:var(--accent)}
+.row.danger .rname{color:var(--alarm)}
+.chev{width:13px;height:13px;stroke:var(--text-3);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.row.on .chev{stroke:var(--accent)}
+
+/* 数位编辑器 —— 就地编辑，不弹全屏 modal */
+.ed{display:inline-flex;align-items:center;justify-content:flex-end;min-height:44px;padding:4px 12px;
+  background:var(--ink-0);border:1px solid var(--accent);border-radius:6px;color:var(--accent);
+  font-size:30px;font-weight:500;font-variant-numeric:tabular-nums;white-space:pre}
+.ed .d{display:inline-block;min-width:19px;text-align:center}
+.ed .d.cur{color:var(--ink-0);background:var(--accent);border-radius:3px}
+.ed .opt{padding:0 6px}
+.ed .sfx{font-size:21px;color:var(--text-2);margin-left:9px}
+
+/* 表格 */
+.tbox{border:1px solid var(--line-1);border-radius:10px;overflow:hidden;background:var(--ink-1)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{height:52px;background:var(--ink-2);color:var(--text-2);font-size:20px;font-weight:500;
+  text-align:left;padding:0 18px;white-space:nowrap}
+.tbl th small{font-size:17px;color:var(--text-3);margin-left:5px}
+.tbl td{height:80px;font-size:24px;padding:0 18px;border-top:1px solid var(--line-1);white-space:nowrap}
+.tbl td.r,.tbl th.r{text-align:right;font-variant-numeric:tabular-nums}
+.tbl th.r{text-align:right}
+.tbl td.m,.tbl th.m{text-align:center}
+.tbl tr.on td{background:var(--ink-2)}
+.tmeta{display:flex;align-items:center;justify-content:space-between;gap:16px;height:42px;margin-bottom:12px}
+.tmeta .left{display:flex;align-items:center;gap:16px;font-size:20px;color:var(--text-2)}
+.tmeta .left b{color:var(--text-1);font-weight:500;font-variant-numeric:tabular-nums}
+.tfoot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:20px;color:var(--text-3)}
+.tfoot .warnline{color:var(--alarm);font-weight:600}
+.pill{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:1px solid var(--line-2);
+  border-radius:6px;background:var(--ink-1);font-size:20px;color:var(--text-2)}
+.pill b{color:var(--text-1);font-weight:500;margin-left:8px;font-variant-numeric:tabular-nums}
+.pill.on{border-color:var(--accent);background:var(--ink-2)}
+.pill.acc{color:var(--accent);border-color:var(--accent)}
+.pill.warn{color:var(--warn);border-color:var(--warn)}
+
+/* 空 / 加载 / 失败 三态 */
+.state{height:496px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px}
+.state svg{width:58px;height:58px;stroke:var(--text-3);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-bottom:22px}
+.state.loading svg{stroke:var(--accent);animation:breathe 1.1s ease-in-out infinite alternate}
+@keyframes breathe{to{opacity:.35}}
+.state h3{font-size:30px;font-weight:600;margin-bottom:12px}
+.state p{font-size:21px;color:var(--text-2);max-width:620px;line-height:1.7}
+
+/* 能谱 */
+.chart{margin-top:12px;padding:8px 0 6px;background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px}
+.chead{display:flex;justify-content:space-between;align-items:center;height:30px;padding:0 16px;font-size:19px;color:var(--text-3)}
+.chead .grp{display:flex;align-items:center;gap:10px}
+.chead .pill{height:28px;font-size:18px;padding:0 10px}
+canvas{display:block;width:1224px;height:352px}
+.params{margin-top:14px;padding:16px 0;display:grid;grid-template-columns:repeat(8,1fr)}
+.params .field{padding:0 14px}
+.params .field > label{font-size:18px;margin-bottom:9px}
+.params .field .v{font-size:22px}
+.smenu{margin-top:14px;padding:14px 18px;display:grid;grid-template-columns:118px 1fr;align-items:center;gap:14px}
+.smenu h3{font-size:21px;font-weight:500;color:var(--text-2)}
+.smenu-list{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px}
+.smenu-item{padding:10px 13px;border:1px solid var(--line-1);border-radius:7px;background:var(--ink-2);
+  text-align:left;color:inherit;min-width:0}
+.smenu-item.on{border-color:var(--accent);background:var(--ink-2)}
+.smenu-item label{display:block;font-size:18px;color:var(--text-2);margin-bottom:7px}
+.smenu-item b{display:block;font-size:21px;font-weight:500;color:var(--accent);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.smenu-item.on b{color:var(--accent)}
+
+/* 维护隐藏页 */
+.agroups{display:grid;gap:16px}
+.abox{background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px;padding:16px 18px;min-width:0}
+.abox > h3{font-size:21px;font-weight:500;color:var(--text-2);padding-bottom:12px;margin-bottom:12px;
+  border-bottom:1px solid var(--line-1);letter-spacing:.04em}
+.arow{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  height:58px;padding:0 12px;background:transparent;border:0;border-radius:6px;color:inherit;text-align:left}
+.arow + .arow{border-top:1px solid var(--line-1)}
+.arow .an{font-size:21px;color:var(--text-2);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arow .av{font-size:23px;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.arow.readonly .av{color:var(--text-3)}
+.arow.on{background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--accent)}
+.arow .ed{font-size:23px;min-height:38px;padding:2px 9px}
+.arow .ed .d{min-width:15px}
+.ver{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.ver .abox{padding:30px 34px}
+.ver .vnum{font-size:44px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-bottom:18px}
+.ver .vrow{display:flex;justify-content:space-between;font-size:21px;color:var(--text-2);padding-top:16px;border-top:1px solid var(--line-1)}
+.ver .vrow b{color:var(--text-1);font-weight:500;font-variant-numeric:tabular-nums}
+.grid-tbl{width:100%;border-collapse:collapse}
+.grid-tbl th{height:46px;background:var(--ink-2);color:var(--text-2);font-size:18px;font-weight:500;padding:0 12px;text-align:left;white-space:nowrap}
+.grid-tbl th.m{text-align:center}
+.grid-tbl td{border-top:1px solid var(--line-1);padding:0;height:44px}
+.grid-tbl .cell{width:100%;height:44px;display:flex;align-items:center;padding:0 12px;background:transparent;border:0;color:var(--text-1);font-size:19px;font-variant-numeric:tabular-nums;text-align:left}
+.grid-tbl .cell.m{justify-content:center}
+.grid-tbl .cell.ro{color:var(--text-3)}
+.grid-tbl .cell.acc{color:var(--accent)}
+.grid-tbl .cell.on{background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--accent)}
+.grid-tbl.dense td,.grid-tbl.dense .cell{height:38px}
+.grid-tbl.dense .cell{font-size:18px}
+.grid-tbl .cell .ed{font-size:19px;min-height:32px;padding:1px 7px;border-radius:4px}
+.grid-tbl .cell .ed .d{min-width:12px}
+.afoot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:19px;color:var(--text-3)}
+
+/* 挣来的 modal：只用于破坏性确认与需要保护焦点的密码输入 */
+.overlay{position:absolute;inset:104px 0 72px;background:rgba(7,11,16,.86);
+  display:flex;align-items:center;justify-content:center;z-index:5}
+.dialog{width:660px;background:var(--ink-1);border:1px solid var(--line-2);border-radius:12px;padding:38px 44px;text-align:center}
+.dialog h2{font-size:29px;font-weight:600;margin-bottom:14px}
+.dialog p{font-size:21px;color:var(--text-2);line-height:1.7;margin-bottom:26px}
+.dialog p b{color:var(--alarm);font-weight:600}
+.pw{display:flex;justify-content:center;gap:12px;margin-bottom:26px}
+.pw .d{width:64px;height:84px;display:flex;align-items:center;justify-content:center;
+  background:var(--ink-0);border:1px solid var(--line-2);border-radius:8px;
+  font-size:44px;font-variant-numeric:tabular-nums;color:var(--text-1)}
+.pw .d.cur{border-color:var(--accent);color:var(--accent)}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.choice{height:66px;border:1px solid var(--line-2);border-radius:8px;background:var(--ink-2);
+  color:var(--text-1);font-size:24px}
+.choice.on{border-color:var(--accent);background:var(--ink-2);color:var(--accent)}
+.choice.danger.on{border-color:var(--alarm);color:var(--alarm)}
+.dhint{margin-top:22px;font-size:19px;color:var(--text-3)}
+
+/* ── 标注模式：区分「烘焙静态层」与「动态控件」 ───────────── */
+.annot{position:absolute;inset:0;z-index:6;pointer-events:none;display:none}
+.screen.annot-on .annot{display:block}
+.screen.annot-on .topbar,.screen.annot-on .tabs,
+.screen.annot-on .content,.screen.annot-on .keybar{filter:grayscale(.55) brightness(.5)}
+.abx{position:absolute;border:1px dashed var(--accent);background:rgba(56,169,232,.1);border-radius:2px}
+.alb{position:absolute;transform:translateY(-100%);background:var(--accent);color:#04202f;
+  font-size:11px;line-height:1.35;padding:1px 5px;border-radius:2px;white-space:nowrap;font-weight:600}
+.annot-key{display:none;gap:26px;align-items:center;margin:-4px 0 14px;padding:11px 15px;
+  background:#fff;border:1px solid #d7dee6;border-radius:8px;font-size:13px;color:#4a5560}
+.annot-key.on{display:flex}
+.annot-key i{font-style:normal;display:inline-block;width:22px;height:11px;border:1px dashed #38a9e8;
+  background:rgba(56,169,232,.14);margin-right:9px;vertical-align:middle}
+.annot-key s{text-decoration:none;display:inline-block;width:22px;height:11px;background:#8c99a6;
+  margin-right:9px;vertical-align:middle}
+
+/* 控件清单表（设备之外） */
+.spec{margin-top:34px;background:#fff;border:1px solid #d7dee6;border-radius:10px;overflow:hidden}
+.spec h2{font-size:16px;padding:16px 20px;border-bottom:1px solid #e4eaf0;font-weight:600}
+.spec h2 span{font-weight:400;color:#68727f;font-size:13px;margin-left:10px}
+.spec table{width:100%;border-collapse:collapse;font-size:13px}
+.spec th{background:#f4f7fa;color:#4a5560;text-align:left;font-weight:500;padding:9px 14px;border-bottom:1px solid #e4eaf0}
+.spec td{padding:8px 14px;border-bottom:1px solid #eef2f6;font-variant-numeric:tabular-nums}
+.spec tr:last-child td{border-bottom:0}
+.spec code{background:#f0f4f8;border-radius:3px;padding:1px 5px;font-size:12px}
+.notes{margin-top:26px;font-size:13.5px;color:#4a5560;line-height:1.95;max-width:1020px}
+.notes h3{font-size:14.5px;color:#1f2933;margin:20px 0 8px;font-weight:600}
+.notes ul{margin-left:20px}
+.notes code{background:#e6ebf1;border-radius:3px;padding:1px 5px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="bench">
+  <div class="bar">
+    <div>
+      <h1>α气溶胶快速测量仪 · 串口屏界面示例</h1>
+      <p>1280 × 800 · 显示区域 150.72 × 94.20 mm · 深色单主题 · 背景图烘焙 + 控件叠加 · 画面为演示数据</p>
+    </div>
+    <div class="tools">
+      <select id="jump" aria-label="跳转页面"></select>
+      <select id="zoom" aria-label="预览比例">
+        <option value="fit">适应窗口</option>
+        <option value="1">像素原尺寸</option>
+      </select>
+      <select id="workDemo" aria-label="工作状态">
+        <option>待机</option><option>自检</option><option selected>测量中</option>
+        <option>本底模式</option><option>效率模式</option><option>K值模式</option><option>温补模式</option>
+      </select>
+      <select id="faultDemo" aria-label="故障类型">
+        <option selected>无故障</option><option>走纸故障</option><option>采样故障</option>
+        <option>高压故障</option><option>电路故障</option><option>通信故障</option>
+      </select>
+      <button id="alarmDemo">模拟报警</button>
+      <button id="annotBtn">标注模式</button>
+    </div>
+  </div>
+
+  <div class="annot-key" id="annotKey">
+    <span><i></i>动态控件 · 运行时由主控数据刷新，需在屏厂工程里逐个建立</span>
+    <span><s></s>烘焙静态层 · 整页导出为背景 PNG，运行时零开销</span>
+  </div>
+
+  <div class="viewport" id="viewport">
+    <div class="screen" id="screen">
+      <header class="topbar" id="topbar"></header>
+      <nav class="tabs" id="tabs"></nav>
+      <main class="content" id="content"></main>
+      <div class="keybar" id="keybar"></div>
+      <div class="feedback" id="fb"></div>
+      <div id="modal"></div>
+      <div class="annot" id="annot"></div>
+    </div>
+  </div>
+
+  <div class="hardware">
+    <div class="metal"><label>运行</label><button data-key="0" aria-label="运行 / 向上"></button><small>▲</small></div>
+    <div class="metal"><label>停止</label><button data-key="1" aria-label="停止 / 向下"></button><small>▼</small></div>
+    <div class="metal"><label>设置</label><button data-key="2" aria-label="设置 / 确认"></button><small>OK</small></div>
+    <div class="metal"><label>移位</label><button data-key="3" aria-label="移位 / 返回"></button><small>↩</small></div>
+  </div>
+  <p class="tip">
+    键盘 ↑ / ↓ / Enter / → 等效四键。编辑时长按 ↩ 取消；能谱界面同时长按 ▲▼OK 满 5 秒进入隐藏界面（密码 759759）；隐藏界面长按 ↩ 退出。
+  </p>
+
+  <section class="spec" id="spec"></section>
+
+  <div class="notes" id="notes">
+    <h3>这一版改了什么</h3>
+    <ul>
+      <li><b>颜色只表达状态，不做装饰。</b>数值一律用主文本色，只有越限才变红；绿色只给「在线 / 运行中」，红色只给「报警 / 故障」，蓝色（accent）只给「当前选中 / 当前页 / 可编辑值」。原先天然 α 绿、人工 α 蓝属于装饰用色，且与顶栏「绿＝正常」的含义打架。报警与故障的正常态按需求文档不着色。</li>
+      <li><b>每页 60px 的大标题换成 40px 页签条。</b>800px 高的屏，顶栏＋标题＋按键条原先吃掉约 180px。页签条同时把「移位键在四页之间循环」这件事教给了用户。</li>
+      <li><b>一屏只用一套组件语言。</b>主界面原先横排三段式、四个 tile、五列分隔栏三种排法并存且卡片套卡片；现在全部收敛为同一个「标签在上、数值在下」的字段组件，分「运行状态 / 设备状态」两组，组间留白加一条分隔线。</li>
+      <li><b>报警升级为整屏事件。</b>屏幕四周 4px 红框 ＋ 顶栏红色「报警」徽标 ＋ 人工 α 面板红框 ＋ 数值与刻度条变红，三米外可辨。</li>
+      <li><b>人工 α 数值下方新增「当前值 vs 报警阈值」线性刻度。</b>天然 α 没有阈值判定，因此没有这条刻度 —— 两块面板等大，靠功能差异而不是色块装饰来区分身份。</li>
+      <li><b>配置页从两列网格改为单列分组列表，修掉一个操作逻辑缺陷。</b>原先按「下一条目」在视觉上是往右跳而不是往下；同时恢复了需求文档里「功能控制 / 参数设置」的分组，并去掉了文档中没有的「显示主题切换」（本版只做深色）。</li>
+      <li><b>能谱图叠加能区标注。</b>β / 人工 α / 天然 α1·2·3 五个能区按维护页的道址映射画成色带并标注名称，人工 α 能区加重一档。能区参数本来就在维护页里配置，却从没画到谱上 —— 这是这次信息量提升最大的一处。游标改为实线并带读数标签。</li>
+      <li><b>图标全部为手绘 SVG，统一 2px 描边</b>，不再用「›」这类文本字符冒充图标。</li>
+      <li><b>参数修改就地进行，不弹全屏窗口。</b>只有「清除历史确认」「删除目标地址」「删除温补分组」和「管理员密码」保留弹窗 —— 前者是破坏性操作，后者需要保护性焦点。</li>
+    </ul>
+
+    <h3>设计基准</h3>
+    <ul>
+      <li><b>色板</b>（全部从同一蓝墨色相调出，不用无色相灰）：屏幕场 <code>#070B10</code> · 面板 <code>#0D141D</code> · 分区 <code>#131D28</code> · 细线 <code>#1E2A38</code> · 边框 <code>#2A3A4C</code> · 主文本 <code>#E8EEF5</code> · 标签 <code>#9FB0C3</code> · 弱化 <code>#6B7E93</code> · accent <code>#38A9E8</code> · 正常 <code>#35C08A</code> · 警告 <code>#E9A23B</code> · 报警 <code>#FF4D57</code>。全部前景/背景组合均达到 WCAG 正文 4.5:1（弱化色仅用于 ≥19px，按大字 3:1 计）。</li>
+      <li><b>字阶</b>（固定 px，比例约 1.2）：标签 20 / 次级 22 / 表格 24 / 字段值 28 / 行标题 26 / 主数值 96。7 英寸实机可读性下限：常用小字不低于 18px，关键标签不低于 20px。所有数字启用等宽数字（tabular-nums）。</li>
+      <li><b>间距节奏</b>：组内 8–12px，组间 18–24px，标题上方留白大于下方。</li>
+      <li><b>屏幕分区</b>：顶栏 64 ＋ 页签 40 ＋ 内容 624 ＋ 按键条 72 ＝ 800px；内容区左右安全边距 28px。</li>
+    </ul>
+
+    <h3>串口屏落地（背景图烘焙 ＋ 控件叠加）</h3>
+    <ul>
+      <li>点「标注模式」查看：虚线框住的是<b>动态控件</b>，需要在屏厂工程里逐个建立；画面其余像素全部属于<b>烘焙静态层</b>，整页导出为一张背景 PNG 即可，运行时零开销。上方「当前页动态控件清单」给出每个控件的坐标与对应命令码，可直接作为建控件的依据。</li>
+      <li><b>动态数字必须使用等宽数字字库</b>（固定字宽），否则数值跳动时会左右抖动。中文静态标签已经烘焙进背景，不占字库。</li>
+      <li><b>选中高亮做成图片控件</b>：预先烘焙一张「选中行」底图（深一档底色 ＋ 1px accent 描边），按行切换位置显示，比逐帧画矩形省事也更稳。</li>
+      <li><b>图标做成两态图片</b>：北斗 / 无线各备「亮（#35C08A）」「灰（#6B7E93）」两张；电池按电量分档备图或用一个矩形控件改宽度。</li>
+      <li><b>能谱曲线</b>用屏厂的曲线 / 波形控件绘制，能区色带与坐标轴刻度烘焙进背景（能区边界改动频率极低，若需随参数变化，则改为五个可移动的半透明矩形控件）。</li>
+      <li><b>报警整屏态</b>建议单独烘焙一张背景（带红框、红色人工 α 面板边框），报警时整页切背景图，比逐控件改色可靠。</li>
+    </ul>
+
+    <h3>需要和需求文档对齐的三处</h3>
+    <ul>
+      <li><b>能谱道数</b>：需求文档写 512 道，旧截图目录写「256 道能谱」。本示例按 <b>512 道</b>实现。</li>
+      <li><b>故障类型</b>：文档正文写「一共 5 种」却列了 6 项。本示例按 <b>6 种</b>实现（无故障 / 走纸故障 / 采样故障 / 高压故障 / 电路故障 / 通信故障）。</li>
+      <li><b>工作状态</b>：需求正文写「本地模式」，协议表写「本底模式（0x0200）」。本示例取 <b>本底模式</b>，共 7 种。</li>
+    </ul>
+
+    <h3>操作</h3>
+    <ul>
+      <li>四个实体键：<b>运行 ▲</b> / <b>停止 ▼</b> / <b>设置 OK</b> / <b>移位 ↩</b>，键盘 ↑ ↓ Enter → 等效。</li>
+      <li><b>移位</b>短按在 监测 → 配置 → 历史 → 能谱 → 监测 之间循环；在子页面中为返回上一级。</li>
+      <li>编辑参数时：▲▼ 调整当前位，↩ 移到下一位，OK 保存并提交，长按 ↩ 取消。进入编辑前显示屏会先向主控读取当前值。</li>
+      <li>能谱界面：▲▼ 移动游标（长按一次走 10 道），OK 打开能谱操作菜单，长按 OK 切换线性 / 对数。</li>
+      <li>隐藏界面：能谱主界面同时长按 运行＋停止＋设置 满 5 秒，输入管理员密码 <b>759759</b>；维护界面内短按移位切换五个页面，长按移位退出。</li>
+      <li>顶部的「跳转页面」下拉可直接查看全部 13 个物理页与各状态附图，不必逐步操作。</li>
+    </ul>
+
+    <p style="margin-top:18px;color:#68727f">本示例仅用于评审界面与操作逻辑，不连接设备，画面均为演示数据。模拟金属按键、工具栏与本说明位于设备画布之外，不参与移植。</p>
+  </div>
+</div>
+<script>
+/* =====================================================================
+   α气溶胶快速测量仪 · 串口屏界面示例
+   画布 1280×800 固定。四键操作：▲(运行) ▼(停止) OK(设置) ↩(移位)
+   设计基准：深色单主题；颜色只表达状态；一套字段组件贯穿全部页面。
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const PAGES = ['监测', '配置', '历史', '能谱'];
+const ADMIN_VIEWS = [['version','软件版本'],['calib','参数标定'],['zones','能区划分'],['temp','温度补偿'],['bg','本底补偿']];
+const HPAGE = 5;
+const CHANNELS = 512;
+
+const S = {
+  page:0, sel:0, sub:null, scale:1, annot:false,
+  running:true, work:'测量中', fault:'无故障', elapsed:96, alarm:false, battery:86,
+  unit:0, threshold:12.5, period:600, bd:true, rf:true, bright:10,
+  interval:60, rate:9600, addresses:[1001,1002], addrSel:0,
+  clockOffset:0, modal:null, reading:null,
+  natural:8.426, artificial:0.218,
+  channel:242, specLog:false, specZoom:0, specPaused:false, specPanel:false, specSel:0,
+  roiOn:false, roiEdit:false, roiEdge:0, roiStart:230, roiEnd:258, showZones:true,
+  histLoaded:false, histLoading:false, histCount:0, histPage:0, histSub:null,
+  histActSel:0, histQuery:5, histClearFrom:1, histClearCount:1, histInterval:600,
+  admin:false, adminView:'version', adminSel:0
+};
+
+/* ── 演示数据 ──────────────────────────────────────────────────────── */
+const records = Array.from({length:36}, (_,i) => ({
+  date:'2026-09-' + String(17 - Math.floor(i/12)).padStart(2,'0'),
+  time:`${String(14 - Math.floor(i%12/6)).padStart(2,'0')}:${String(50 - i%6*10).padStart(2,'0')}:00`,
+  art: i%7===3 ? 14.62 : 0.16 + (i%8)*0.017,
+  nat: 7.6 + (i%9)*0.42,
+  flow: 30 + (i%4)*0.12,
+  alarm: i%7===3,
+  fault: i===9 ? '采样故障' : '无故障',
+  power: i===12
+}));
+
+/* 谱形按能区布置：β 连续谱 + 人工α + 天然α1/2/3 各一峰 */
+const spectrum = Array.from({length:CHANNELS}, (_,i) => {
+  let v = 14 + 9 * Math.sin(i*1.7)**2;
+  v += 1400 * Math.exp(-Math.pow((i-96)/16, 2));
+  v += 2600 * Math.exp(-Math.pow((i-172)/9, 2));
+  v += 5200 * Math.exp(-Math.pow((i-242)/8, 2));
+  v += 3400 * Math.exp(-Math.pow((i-294)/8, 2));
+  v += 6400 * Math.exp(-Math.pow((i-345)/9, 2));
+  return Math.round(v);
+});
+
+const zoneNames = ['β 能区','人工 α','天然 α1','天然 α2','天然 α3','天然 α 总'];
+const bgNames = ['β','人工 α','天然 α1','天然 α2','天然 α3'];
+const A = {
+  mcaThreshold:'120', mcaGain:'1000',
+  energy1:'4000', channel1:'180', energy2:'7000', channel2:'350',
+  effDetect:'0.2500', effAdsorb:'0.9800',
+  zones:  [['1000','1600'],['2000','2700'],['3000','3600'],['3700','4300'],['4400','5000'],['3000','5000']],
+  mapping:[['73','118'],['147','198'],['220','264'],['272','316'],['323','367'],['220','367']],
+  temps:[
+    {t:'25.00', th:'120', g:'1000', bg:'15', k:'1.000000', c:'1.000000'},
+    {t:'35.00', th:'124', g:'1018', bg:'17', k:'1.012000', c:'0.995000'},
+    {t:'45.00', th:'129', g:'1041', bg:'20', k:'1.026000', c:'0.988000'}
+  ],
+  dynBg:['12','25','18','11','8'], staBg:['10','22','15','9','7'],
+  bgK:['1.000000','-0.250000','12.500000','0.980000','-10.250000'],
+  mcuVer:'V2.1.0', mcuDate:'2026-05-31', fpgaVer:'V2.1.0', fpgaDate:'2026-05-31'
+};
+
+/* ── 图标：统一 2px stroke 手绘 SVG，不用 Unicode 字符 ───────────── */
+const IC = {
+  sat:'<svg viewBox="0 0 24 24"><path d="m3 5 4-3 5 6-4 3zM12 16l4-3 5 6-4 3zM9 13l3-3 3 4-3 3z"/><path d="M12 17 8 21M2 13c4.4 0 8 3.6 8 8"/></svg>',
+  rf:'<svg viewBox="0 0 24 24"><path d="M3.5 9.5a13 13 0 0 1 17 0M6.5 13a8.5 8.5 0 0 1 11 0M9.5 16.5a4 4 0 0 1 5 0"/><circle cx="12" cy="20" r="1.2"/></svg>',
+  chev:'<svg class="chev" viewBox="0 0 12 20"><path d="m2 2 8 8-8 8"/></svg>',
+  empty:'<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h9"/><circle cx="18" cy="18" r="3.5"/></svg>',
+  search:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>',
+  warn:'<svg viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3zM12 9v5M12 17.2v.1"/></svg>'
+};
+function batIcon(pct){
+  const w = Math.max(1, Math.round(20 * pct / 100));
+  return `<svg viewBox="0 0 34 20" style="width:32px;height:19px"><rect x="1" y="3" width="27" height="14" rx="2.5"/>`
+       + `<path d="M31 8v4"/><rect x="4.5" y="6.5" width="${w}" height="7" rx="1" fill="currentColor" stroke="none"/></svg>`;
+}
+
+/* ── 格式化 ────────────────────────────────────────────────────────── */
+const unit = () => S.unit ? 'pCi/L' : 'Bq/m³';
+const conc = v => (S.unit ? v/37 : v).toFixed(3);
+const thrText = () => (S.unit ? S.threshold/37 : S.threshold).toFixed(2);
+const thrEdit = () => { const [a,b] = thrText().split('.'); return a.padStart(6,'0') + '.' + b; };
+const p2 = n => String(n).padStart(2,'0');
+const duration = n => [Math.floor(n/3600), Math.floor(n/60)%60, n%60].map(p2).join(':');
+const durationZh = n => `${p2(Math.floor(n/3600))}时${p2(Math.floor(n/60)%60)}分${p2(n%60)}秒`;
+function parseDurationZh(v){
+  const m = v.match(/^(\d+)时(\d{2})分(\d{2})秒$/);
+  if (!m || +m[2] > 59 || +m[3] > 59) throw Error('测量周期格式无效');
+  return +m[1]*3600 + (+m[2])*60 + (+m[3]);
+}
+const now = () => new Date(Date.now() + S.clockOffset);
+const dateTimeEdit = () => now().toLocaleString('sv-SE').replace(' ','　');
+const artValue = () => S.alarm ? 16.82 : S.artificial;
+const isAlarm = () => S.alarm;
+const faultBad = () => S.fault !== '无故障';
+
+/* ── 通用组件 ──────────────────────────────────────────────────────── */
+const attr = c => c ? ` data-ctl="${c}"` : '';
+function field(label, value, cls = '', ctl = ''){
+  return `<div class="field"><label>${label}</label><div class="v ${cls}"${attr(ctl)}>${value}</div></div>`;
+}
+function row(i, name, value, opt = {}){
+  const on = opt.on, editing = opt.editing;
+  const cls = ['row', on ? 'on' : '', editing ? 'editing' : '', opt.readonly ? 'readonly' : '', opt.danger ? 'danger' : ''].join(' ');
+  const right = editing ? `<span class="ed">${editor(S.modal)}</span>`
+    : `<span class="rval"${attr(opt.ctl)}>${value}</span>${opt.noChev ? '' : IC.chev}`;
+  return `<button class="${cls}" data-row="${i}"><span class="rname">${name}</span>${right}</button>`;
+}
+function editor(m){
+  if (!m) return '';
+  if (m.options) return `<span class="opt">${m.options[+m.value]}</span>`;
+  const chars = [...m.value];
+  let intEnd = m.value.indexOf('.'); if (intEnd < 0) intEnd = chars.length;
+  let first = 0; while (first < intEnd - 1 && chars[first] === '0') first++;
+  const body = chars.map((c,i) => {
+    const hidden = m.trim && i < first && c === '0' && i !== m.pos;
+    const editable = /\d/.test(c);
+    return `<span class="${editable ? 'd' : ''} ${i === m.pos ? 'cur' : ''}">${hidden ? '&nbsp;' : c}</span>`;
+  }).join('');
+  return body + (m.suffix ? `<span class="sfx">${m.suffix}</span>` : '');
+}
+
+/* ── 顶栏 / 页签 / 按键条 ──────────────────────────────────────────── */
+function renderTopbar(){
+  const d = now();
+  const bat = S.battery < 10 ? 'c-alarm' : S.battery < 20 ? 'c-warn' : '';
+  $('#topbar').innerHTML =
+    `<div class="brand">
+       <div class="wm"><i>α</i>气溶胶快速测量仪</div>
+       <div class="co">重庆建安仪器有限责任公司</div>
+       <div class="sn" data-ctl="设备编号|静态文本|出厂写入">2026-09-0001</div>
+       ${S.admin ? '<div class="badge-admin">管理员</div>' : ''}
+       ${isAlarm() ? '<div class="badge-alarm" data-ctl="报警徽标|图标两态|0x0101">报警</div>' : ''}
+     </div>
+     <div class="sigs">
+       <span class="sig ${S.bd ? 'on' : ''}" data-ctl="北斗标识|图标两态|0x0101">${IC.sat}北斗</span>
+       <span class="sig ${S.rf ? 'on' : ''}" data-ctl="无线标识|图标两态|0x0101">${IC.rf}无线</span>
+       <span class="sig on ${bat}" data-ctl="电池电量|图标+数值|0x0101">${batIcon(S.battery)}<span class="num">${S.battery}%</span></span>
+       <span class="clock">
+         <span class="num" data-ctl="时刻|时钟文本|屏内 RTC">${d.toLocaleTimeString('zh-CN',{hour12:false})}</span>
+         <small class="num" data-ctl="日期|时钟文本|屏内 RTC">${d.toLocaleDateString('sv-SE')}</small>
+       </span>
+     </div>`;
+}
+function renderTabs(){
+  const items = S.admin ? ADMIN_VIEWS.map(v => v[1]) : PAGES;
+  const cur = S.admin ? ADMIN_VIEWS.findIndex(v => v[0] === S.adminView) : S.page;
+  $('#tabs').innerHTML = items.map((t,i) =>
+    `<div class="tab ${i === cur ? 'on' : ''}"${i === cur ? ' data-ctl="当前页指示|选中高亮|屏内状态"' : ''}>${t}</div>`).join('');
+}
+function keys(){
+  const m = S.modal;
+  if (m && m.type === 'password') return [['▲','数字 +1'],['▼','数字 -1'],['OK','确认密码'],['↩','下一位｜长按返回']];
+  if (m && m.type === 'confirm')  return [['▲','切换选项'],['▼','切换选项'],['OK','执行所选'],['↩','取消返回']];
+  if (m && m.type === 'edit')     return m.options
+    ? [['▲','上一选项'],['▼','下一选项'],['OK','保存并提交'],['↩','长按取消']]
+    : [['▲','数值 +1'],['▼','数值 -1'],['OK','保存并提交'],['↩','下一位｜长按取消']];
+  if (S.admin) return [['▲','上一参数'],['▼','下一参数'],['OK','修改参数'],['↩','切换界面｜长按退出']];
+  if (S.page === 0) return [['▲','开始测量'],['▼','结束测量'],['OK','进入配置'],['↩','下一页 · 配置']];
+  if (S.page === 1) return S.sub === 'addr'
+    ? [['▲','上一地址'],['▼','下一地址'],['OK','修改｜长按新增'],['↩','返回｜长按删除']]
+    : S.sub === 'rf'
+      ? [['▲','上一条目'],['▼','下一条目'],['OK','修改参数'],['↩','返回配置']]
+      : [['▲','上一条目'],['▼','下一条目'],['OK','修改参数'],['↩','下一页 · 历史']];
+  if (S.page === 2) return S.histSub === 'tools'
+    ? [['▲','上一条目'],['▼','下一条目'],['OK','修改｜执行'],['↩','返回历史']]
+    : [['▲','上一页记录'],['▼','下一页记录'],['OK','查询与清除'],['↩','下一页 · 能谱']];
+  if (S.roiEdit)   return [['▲','左移 1｜长按 10'],['▼','右移 1｜长按 10'],['OK','切换起点/终点'],['↩','完成设置']];
+  if (S.specPanel) return [['▲','左移 1｜长按 10'],['▼','右移 1｜长按 10'],['OK','修改当前项'],['↩','下一项｜长按关闭']];
+  return [['▲','游标左移｜长按 10'],['▼','游标右移｜长按 10'],['OK','能谱操作'],['↩','下一页 · 监测']];
+}
+function renderKeybar(){
+  $('#keybar').innerHTML = keys().map(([k,a]) =>
+    `<div class="kcell"><span class="kcap">${k}</span><span class="kact">${a}</span></div>`).join('');
+}
+
+/* ── 01 主监测 ─────────────────────────────────────────────────────── */
+function workClass(){ return S.work === '测量中' ? 'c-ok' : 'c-mut'; }
+function renderMonitor(){
+  const alarming = isAlarm();
+  const art = artValue();
+  const thrShown = S.unit ? S.threshold/37 : S.threshold;
+  const artShown = S.unit ? art/37 : art;
+  const pct = Math.max(2, Math.min(100, artShown / thrShown * 100));
+  const bat = S.battery < 10 ? 'c-alarm' : S.battery < 20 ? 'c-warn' : '';
+  return `
+  <div class="metrics">
+    <section class="metric">
+      <div class="mhead"><h2>天然 α 活度浓度</h2></div>
+      <div class="mval"><b class="num" data-ctl="天然α浓度|数值文本|0x0101">${conc(S.natural)}</b><span data-ctl="浓度单位|状态文本|0x0201">${unit()}</span></div>
+      <div class="mfoot">本次测量周期累计</div>
+    </section>
+    <section class="metric ${alarming ? 'alarm' : ''}">
+      <div class="mhead"><h2>人工 α 活度浓度</h2><span>报警阈值 <span class="num" data-ctl="报警阈值|数值文本|0x0202">${thrText()}</span></span></div>
+      <div class="mval"><b class="num ${alarming ? 'c-alarm' : ''}" data-ctl="人工α浓度|数值文本|0x0101">${conc(art)}</b><span>${unit()}</span></div>
+      <div class="gauge">
+        <div class="gtrack" data-ctl="阈值刻度条|进度条|0x0101"><div class="gfill ${alarming ? 'alarm' : ''}" style="width:${pct}%"></div></div>
+        <div class="gscale"><span>0</span><span class="num">阈值 ${thrText()} ${unit()}</span></div>
+      </div>
+    </section>
+  </div>
+  <section class="panel status">
+    <div class="sgroup">
+      <div class="scap">运行状态</div>
+      <div class="fields">
+        ${field('工作状态', `<i class="dot"></i>${S.work}`, workClass(), '工作状态|状态文本|0x0101')}
+        ${field('已测时间', duration(S.elapsed), 'num', '已测时间|数值文本|0x0101')}
+        ${field('测量周期', duration(S.period), 'num', '测量周期|数值文本|0x0203')}
+        ${field('采样流量', `${S.running ? '30.12' : '0.00'}<small>L/min</small>`, 'num', '采样流量|数值文本|0x0101')}
+      </div>
+    </div>
+    <div class="sgroup">
+      <div class="scap">设备状态</div>
+      <div class="fields">
+        ${field('报警状态', alarming ? '报警' : '正常', alarming ? 'c-alarm' : '', '报警状态|状态文本|0x0101')}
+        ${field('故障类型', S.fault, faultBad() ? 'c-alarm' : '', '故障类型|状态文本|0x0101')}
+        ${field('电池电量', `${S.battery}<small>%</small>`, 'num ' + bat, '电池电量值|数值文本|0x0101')}
+        ${field('北斗定位', S.bd
+            ? `<span class="num">116.39128° E</span><br><span class="num">39.90735° N</span>`
+            : '关闭', S.bd ? 'two' : 'c-mut', '定位坐标|数值文本|0x0101')}
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ── 03 综合设置 ── 单列分组列表：▲▼ 就是上下，不再是两列 Z 字形 ─── */
+function configItems(){
+  return [
+    {g:'功能控制', name:'浓度单位切换', val:unit(),                        ctl:'浓度单位|状态文本|0x0201'},
+    {g:'功能控制', name:'屏幕亮度调整', val:`${S.bright} / 15`,            ctl:'屏幕亮度|数值文本|屏内设置'},
+    {g:'功能控制', name:'北斗定位启停', val:S.bd ? '开启' : '关闭',        ctl:'北斗开关|状态文本|0x0204'},
+    {g:'功能控制', name:'无线通信配置', val:S.rf ? '已开启' : '已关闭',    ctl:'无线开关|状态文本|0x0205'},
+    {g:'参数设置', name:'报警阈值设置', val:`${thrText()} ${unit()}`,      ctl:'报警阈值|数值文本|0x0202'},
+    {g:'参数设置', name:'测量周期设置', val:durationZh(S.period),          ctl:'测量周期|数值文本|0x0203'},
+    {g:'参数设置', name:'日期时间校准', val:now().toLocaleDateString('sv-SE'), ctl:'日期时间|数值文本|0x0002'}
+  ];
+}
+const rfItems = () => [
+  {name:'无线启停控制', val:S.rf ? '开启' : '关闭',        ctl:'无线开关|状态文本|0x0205'},
+  {name:'目标地址配置', val:`${S.addresses.length} 个地址`, ctl:'地址数量|数值文本|0x0206'},
+  {name:'传输速率设置', val:`${S.rate} bit/s`,              ctl:'传输速率|数值文本|0x0206'},
+  {name:'发送间隔设置', val:`${S.interval} s`,              ctl:'发送间隔|数值文本|0x0206'}
+];
+function listGroups(items){
+  const editing = S.modal && S.modal.type === 'edit' && S.modal.inline;
+  const out = []; let g = null;
+  items.forEach((it, i) => {
+    if (it.g && it.g !== g){ g = it.g; out.push(`</div></section><section class="lgroup"><div class="lcap">${g}</div><div class="rows">`); }
+    out.push(row(i, it.name, it.val, {on:S.sel === i, editing:editing && S.sel === i, ctl:it.ctl}));
+  });
+  return (`<section class="lgroup"><div class="rows">` + out.join('') + `</div></section>`)
+    .replace('<section class="lgroup"><div class="rows"></div></section>', '');
+}
+function renderConfig(){
+  if (S.sub === 'addr') return renderAddresses();
+  const items = S.sub === 'rf' ? rfItems() : configItems();
+  const head = S.sub === 'rf'
+    ? `<div class="tmeta"><div class="left">配置界面<span class="c-mut">›</span><b>无线通信配置</b></div>
+         <span class="pill">当前速率<b class="num">${S.rate}</b> bit/s</span></div>`
+    : '';
+  return head + listGroups(items);
+}
+function renderAddresses(){
+  const editing = S.modal && S.modal.type === 'edit' && S.modal.inline;
+  const list = [...S.addresses];
+  if (editing && S.modal.adding) list.push(null);
+  const active = editing && S.modal.adding ? list.length - 1 : S.addrSel;
+  const start = Math.floor(Math.max(0, active) / 6) * 6;
+  const pages = Math.max(1, Math.ceil(list.length / 6));
+  const rows = list.slice(start, start + 6).map((a, j) => {
+    const i = start + j;
+    const isEd = editing && ((S.modal.adding && a === null) || (!S.modal.adding && i === S.addrSel));
+    return row(i, `地址 ${i + 1}`, String(a).padStart(10,'0'),
+      {on:i === S.addrSel, editing:isEd, ctl:`目标地址${i+1}|数值文本|0x0206`});
+  }).join('');
+  return `<div class="tmeta"><div class="left">配置界面<span class="c-mut">›</span>无线通信<span class="c-mut">›</span><b>目标地址</b></div>
+      <span class="pill">共 <b class="num">${S.addresses.length}</b> 个 · 第 ${Math.floor(start/6)+1}/${pages} 页</span></div>`
+    + (list.length ? `<section class="lgroup"><div class="rows">${rows}</div></section>`
+        : `<div class="state">${IC.empty}<h3>暂无目标地址</h3><p>长按「设置」键新增一条无线通信目标地址。</p></div>`);
+}
+
+/* ── 04 历史记录 ───────────────────────────────────────────────────── */
+function histIntervalPill(){
+  const ed = S.modal && S.modal.type === 'edit' && S.modal.inline && S.modal.title === '历史存储间隔';
+  return ed ? `<span class="pill on">存储间隔 <span class="ed">${editor(S.modal)}</span></span>`
+            : `<span class="pill" data-hist-interval>存储间隔<b class="num" data-ctl="存储间隔|数值文本|0x0301">${durationZh(S.histInterval)}</b></span>`;
+}
+function renderHistory(){
+  if (S.histSub === 'tools') return renderHistTools();
+  const meta = `<div class="tmeta"><div class="left">${histIntervalPill()}
+      <span>设备共 <b class="num" data-ctl="记录总数|数值文本|0x0301">${records.length}</b> 条</span></div>
+      <span class="pill acc" data-hist-tools>查询与清除</span></div>`;
+  if (S.histLoading) return meta +
+    `<div class="state loading">${IC.search}<h3>正在读取历史记录</h3><p>查询指令 0x0301 已发出，等待主控分包返回。</p></div>`;
+  if (!S.histLoaded) return meta +
+    `<div class="state">${IC.warn}<h3>历史记录读取失败</h3><p>主控连续 5 次未应答。按「设置」键进入查询与清除，重新发起一次查询。</p></div>`;
+  const total = Math.min(records.length, S.histCount);
+  if (!total) return meta +
+    `<div class="state">${IC.empty}<h3>暂无历史记录</h3><p>主控当前没有可返回的历史数据。开始一次测量后，按存储间隔自动记录。</p></div>`;
+  const start = S.histPage * HPAGE;
+  const list = records.slice(start, Math.min(start + HPAGE, total));
+  const body = list.map((r, j) => `<tr>
+      <td class="num" data-ctl="记录${start+j+1}·时间|表格文本|0x0301">${r.date}　${r.time}</td>
+      <td class="r" data-ctl="记录${start+j+1}·人工α|表格文本|0x0301">${conc(r.art)}</td>
+      <td class="r" data-ctl="记录${start+j+1}·天然α|表格文本|0x0301">${conc(r.nat)}</td>
+      <td class="r" data-ctl="记录${start+j+1}·流量|表格文本|0x0301">${r.flow.toFixed(2)}</td>
+      <td class="m ${r.alarm ? 'c-alarm' : 'c-mut'}" data-ctl="记录${start+j+1}·报警|表格文本|0x0301">${r.alarm ? '报警' : '正常'}</td>
+      <td class="m ${r.fault !== '无故障' || r.power ? 'c-alarm' : 'c-mut'}" data-ctl="记录${start+j+1}·故障|表格文本|0x0301">${r.fault === '无故障' ? '正常' : r.fault}${r.power ? ' / 掉电' : ''}</td>
+    </tr>`).join('');
+  return meta + `<div class="tbox"><table class="tbl"><thead><tr>
+      <th style="width:310px">记录时间</th>
+      <th class="r">人工 α<small>${unit()}</small></th>
+      <th class="r">天然 α<small>${unit()}</small></th>
+      <th class="r">流量<small>L/min</small></th>
+      <th class="m" style="width:130px">报警</th>
+      <th class="m" style="width:210px">故障 / 掉电</th>
+    </tr></thead><tbody>${body}</tbody></table></div>
+    <div class="tfoot"><span class="warnline" id="histAlert"></span>
+      <span>本次查询 ${total} 条 · 第 ${S.histPage + 1} / ${Math.max(1, Math.ceil(total / HPAGE))} 页</span></div>`;
+}
+function histActions(){
+  return [
+    {g:'历史查询', name:'查询记录条数', val:String(S.histQuery),      ctl:'查询条数|数值文本|0x0301'},
+    {g:'历史查询', name:'执行历史查询', val:'',                        exec:true},
+    {g:'范围清除', name:'清除起始序号', val:String(S.histClearFrom),  ctl:'清除起始|数值文本|0x0302'},
+    {g:'范围清除', name:'清除记录条数', val:String(S.histClearCount), ctl:'清除条数|数值文本|0x0302'},
+    {g:'范围清除', name:'执行范围清除', val:'', exec:true, danger:true}
+  ];
+}
+function renderHistTools(){
+  const editing = S.modal && S.modal.type === 'edit' && S.modal.inline;
+  const items = histActions();
+  const out = []; let g = null;
+  items.forEach((it, i) => {
+    if (it.g !== g){ g = it.g; out.push(`</div></section><section class="lgroup"><div class="lcap">${g}</div><div class="rows">`); }
+    out.push(row(i, it.name, it.val, {on:S.histActSel === i, editing:editing && S.histActSel === i,
+      ctl:it.ctl, danger:it.danger, noChev:it.exec}));
+  });
+  return `<div class="tmeta"><div class="left">历史界面<span class="c-mut">›</span><b>查询与清除</b></div>
+      <span class="pill">设备共 <b class="num">${records.length}</b> 条</span></div>`
+    + (`<section class="lgroup"><div class="rows">` + out.join('') + `</div></section>`)
+        .replace('<section class="lgroup"><div class="rows"></div></section>', '');
+}
+
+/* ── 02 能谱（512 道） ─────────────────────────────────────────────── */
+const SPEC_MODES = ['能谱','慢成形和快成形','快成形和波形','慢成形和波形','采样数据和采样标识'];
+S.specMode = 0;
+function specRange(){
+  const count = CHANNELS >> S.specZoom;
+  const start = Math.max(0, Math.min(CHANNELS - count, S.channel - Math.floor(count/2)));
+  return {start, end:start + count - 1, count};
+}
+function niceMax(v){
+  if (v <= 0) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(v))), n = v / p;
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * p;
+}
+function demoWave(ch, series, mode){
+  const t = ch / 18;
+  switch (mode){
+    case 1: return series ? 1.5 + 1.2*Math.sin(t*2.4) + .25*Math.sin(t*7) : 700*Math.sin(t) + 180*Math.sin(t*3.1);
+    case 2: return series ? 1100*Math.sin(t*.72) + 260*Math.sin(t*4.2) : 1.6 + 1.35*Math.sin(t*2.5);
+    case 3: return series ? 1050*Math.sin(t*.68) + 220*Math.sin(t*3.7) : 720*Math.sin(t) + 170*Math.sin(t*2.8);
+    default: return series ? (ch % 37 < 5 ? 1 : 0) : 1900 + 850*Math.sin(t*.35) + 300*Math.sin(t*2.1);
+  }
+}
+function specMenu(){
+  const a = Math.min(S.roiStart, S.roiEnd), b = Math.max(S.roiStart, S.roiEnd);
+  return [
+    {id:'refresh', label:'实时刷新', val:S.specPaused ? '暂停' : '实时'},
+    {id:'mode',    label:'显示内容', val:SPEC_MODES[S.specMode]},
+    {id:'zoom',    label:'显示缩放', val:['全范围','2 倍','4 倍','8 倍'][S.specZoom]},
+    {id:'roi',     label:'区间统计', val:S.specMode ? '仅能谱可用' : (S.roiOn ? `开启 · ${a}–${b}` : '关闭')},
+    {id:'zones',   label:'能区标注', val:S.specMode ? '仅能谱可用' : (S.showZones ? '显示' : '隐藏')}
+  ];
+}
+function renderSpectrum(){
+  const spec = S.specMode === 0;
+  const a = Math.min(S.roiStart, S.roiEnd), b = Math.max(S.roiStart, S.roiEnd);
+  const roiTotal = spectrum.slice(a, b + 1).reduce((x,y) => x + y, 0);
+  const left = Math.round(demoWave(S.channel, 0, S.specMode)), right = demoWave(S.channel, 1, S.specMode);
+  const meta = `<div class="tmeta"><div class="left">
+      <span class="pill">${SPEC_MODES[S.specMode]}</span>
+      ${S.specPaused ? '<span class="pill warn">已暂停</span>' : ''}
+      <span>游标 <b class="num" data-ctl="游标道址|数值文本|屏内状态">${S.channel}</b> 道 ·
+      ${spec ? `计数 <b class="num" data-ctl="游标计数|数值文本|0x0401">${spectrum[S.channel].toLocaleString()}</b>`
+             : `左 <b class="num">${left.toLocaleString()}</b> · 右 <b class="num">${right.toFixed(1)}</b>`}</span>
+    </div>
+    ${spec && S.roiOn ? `<span class="pill warn">区间 ${a}–${b} · 总计数 <b class="num" data-ctl="区间总计数|数值文本|0x0401">${roiTotal.toLocaleString()}</b></span>` : ''}
+    ${S.roiEdit ? `<span class="pill warn">正在设置${S.roiEdge ? '终点' : '起点'}</span>` : ''}
+  </div>`;
+  const chart = `<div class="chart"><div class="chead">
+      <span class="grp"><span>${spec ? '计数' : '幅值'}</span>
+        <span class="pill">${S.specLog ? '对数显示' : '线性显示'}${spec && !S.specPanel && !S.roiEdit ? ' · 长按 OK 切换' : ''}</span></span>
+      <span class="grp"><span>道址 0 – ${CHANNELS - 1}${S.specZoom ? ` · 放大 ${1 << S.specZoom} 倍` : ''}</span></span>
+    </div><canvas id="plot" width="1224" height="352" data-ctl="能谱曲线|曲线图元|0x0401"></canvas></div>`;
+  const body = S.specPanel
+    ? `<section class="panel smenu"><h3>能谱操作</h3><div class="smenu-list">${specMenu().map((x,i) =>
+        `<button class="smenu-item ${i === S.specSel ? 'on' : ''}" data-smenu="${i}"><label>${x.label}</label><b>${x.val}</b></button>`).join('')}</div></section>`
+    : `<section class="panel params">
+        ${field('温度', '25.6<small>℃</small>', 'num', '多道温度|数值文本|0x0401')}
+        ${field('高压', '650.0<small>V</small>', 'num', '多道高压|数值文本|0x0401')}
+        ${field('阈值', A.mcaThreshold, 'num', '多道阈值|数值文本|0x0401')}
+        ${field('增益', '1.000', 'num', '多道增益|数值文本|0x0401')}
+        ${field('成形参数', '8', 'num', '成形参数|数值文本|0x0401')}
+        ${field('工作时间', duration(S.elapsed), 'num', '多道工作时间|数值文本|0x0401')}
+        ${field('触发计数', '1,286', 'num', '触发计数|数值文本|0x0401')}
+        ${field('刷新周期', S.specPaused ? '暂停' : '2<small>s</small>', 'num', '刷新周期|状态文本|屏内状态')}
+      </section>`;
+  return meta + chart + body;
+}
+function draw(){
+  const c = $('#plot'); if (!c) return;
+  const ctx = c.getContext('2d');
+  const cs = getComputedStyle($('#screen')), col = n => cs.getPropertyValue(n).trim();
+  const W = 1224, L = 82, R = S.specMode ? 1140 : 1206, T = 36, B = 306, PW = R - L, PH = B - T;
+  const rg = specRange();
+  ctx.clearRect(0, 0, W, 352);
+  ctx.font = '17px "Microsoft YaHei",sans-serif';
+  ctx.textBaseline = 'middle';
+  ctx.lineWidth = 1;
+  const xOf = ch => L + (ch - rg.start) * PW / Math.max(1, rg.count - 1);
+
+  if (S.specMode === 0){
+    const values = spectrum.slice(rg.start, rg.end + 1);
+    const max = niceMax(Math.max(...values));
+    const a = Math.min(S.roiStart, S.roiEnd), b = Math.max(S.roiStart, S.roiEnd);
+    /* 能区色带：只用明度做层级，人工 α 加重 —— 不引入装饰色 */
+    if (S.showZones){
+      A.mapping.slice(0, 5).forEach((m, i) => {
+        const z0 = Math.max(rg.start, +m[0]), z1 = Math.min(rg.end, +m[1]);
+        if (z1 <= z0) return;
+        const x0 = xOf(z0), x1 = xOf(z1);
+        ctx.fillStyle = i === 1 ? 'rgba(232,238,245,.085)' : 'rgba(232,238,245,.042)';
+        ctx.fillRect(x0, T, x1 - x0, PH);
+        ctx.strokeStyle = col('--line-2');
+        [x0, x1].forEach(x => { ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, B); ctx.stroke(); });
+        ctx.fillStyle = i === 1 ? col('--text-1') : col('--text-2');
+        ctx.textAlign = 'center';
+        if (x1 - x0 > 62) ctx.fillText(zoneNames[i], (x0 + x1) / 2, T + 15);
+      });
+    }
+    ctx.strokeStyle = col('--line-1'); ctx.fillStyle = col('--text-3'); ctx.textAlign = 'right';
+    for (let i = 0; i < 5; i++){
+      const ratio = 1 - i/4, y = T + i*PH/4;
+      const label = S.specLog ? Math.round(Math.expm1(Math.log1p(max)*ratio)) : Math.round(max*ratio);
+      ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(R, y); ctx.stroke();
+      ctx.fillText(label.toLocaleString(), L - 12, y);
+    }
+    const bw = PW / rg.count;
+    values.forEach((v, i) => {
+      const ch = rg.start + i;
+      const ratio = S.specLog ? Math.log1p(v)/Math.log1p(max) : v/max;
+      const h = Math.max(1, ratio * PH);
+      ctx.fillStyle = (S.roiOn && ch >= a && ch <= b) ? col('--warn') : col('--text-1');
+      ctx.fillRect(L + i*bw, B - h, Math.max(1, bw - .7), h);
+    });
+  } else {
+    const lv = Array.from({length:rg.count}, (_,i) => demoWave(rg.start + i, 0, S.specMode));
+    const rv = Array.from({length:rg.count}, (_,i) => demoWave(rg.start + i, 1, S.specMode));
+    const span = (mn, mx) => (mx - mn) * .08 || 1;
+    let lmin = Math.min(...lv), lmax = Math.max(...lv), rmin = Math.min(...rv), rmax = Math.max(...rv);
+    const lp = span(lmin, lmax), rp = span(rmin, rmax);
+    lmin -= lp; lmax += lp; rmin -= rp; rmax += rp;
+    for (let i = 0; i < 5; i++){
+      const y = T + i*PH/4, ratio = 1 - i/4;
+      ctx.strokeStyle = col('--line-1');
+      ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(R, y); ctx.stroke();
+      ctx.fillStyle = col('--text-1'); ctx.textAlign = 'right';
+      ctx.fillText(Math.round(lmin + (lmax - lmin)*ratio).toLocaleString(), L - 12, y);
+      ctx.fillStyle = col('--accent'); ctx.textAlign = 'left';
+      ctx.fillText((rmin + (rmax - rmin)*ratio).toFixed(rmax - rmin < 10 ? 1 : 0), R + 12, y);
+    }
+    [[lv, '--text-1', lmin, lmax], [rv, '--accent', rmin, rmax]].forEach(([arr, cn, mn, mx]) => {
+      ctx.strokeStyle = col(cn); ctx.lineWidth = 2; ctx.beginPath();
+      arr.forEach((v, i) => {
+        const px = L + i*PW/(arr.length - 1), py = B - (v - mn)/(mx - mn)*PH;
+        i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      });
+      ctx.stroke(); ctx.lineWidth = 1;
+    });
+  }
+  /* x 轴 */
+  ctx.fillStyle = col('--text-3'); ctx.textAlign = 'center';
+  for (let i = 0; i < 5; i++){
+    const px = L + i*PW/4, ch = Math.round(rg.start + i*(rg.count - 1)/4);
+    ctx.fillText(String(ch), px, 330);
+  }
+  /* 游标：accent 只用于「当前选中」，这里正是它的本职 */
+  const cx = xOf(S.channel);
+  ctx.strokeStyle = col('--accent'); ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(cx, T); ctx.lineTo(cx, B); ctx.stroke();
+  const tag = S.specMode === 0 ? `${S.channel} 道 · ${spectrum[S.channel].toLocaleString()}` : `${S.channel} 道`;
+  ctx.font = '600 17px "Microsoft YaHei",sans-serif';
+  const tw = ctx.measureText(tag).width + 18;
+  const tx = Math.max(L, Math.min(R - tw, cx - tw/2));
+  ctx.fillStyle = col('--accent');
+  ctx.fillRect(tx, 2, tw, 26);
+  ctx.fillStyle = '#04202f'; ctx.textAlign = 'center';
+  ctx.fillText(tag, tx + tw/2, 15);
+  ctx.lineWidth = 1;
+}
+
+/* ── 09–13 维护隐藏界面 ────────────────────────────────────────────── */
+A.bgDuration = '600';
+const TEMP_COLS = [['t','温度 ℃'],['th','阈值'],['g','增益'],['bg','本底计数'],['k','矫正系数'],['c','补偿系数']];
+function adminItems(){
+  const v = S.adminView;
+  if (v === 'calib') return [
+    {get:()=>A.mcaThreshold, set:x=>A.mcaThreshold=x, label:'多道阈值',     cmd:'0x0511'},
+    {get:()=>A.mcaGain,      set:x=>A.mcaGain=x,      label:'多道增益',     cmd:'0x0511'},
+    {get:()=>A.energy1,      set:x=>A.energy1=x,      label:'能量点1 keV',  cmd:'0x0512'},
+    {get:()=>A.channel1,     set:x=>A.channel1=x,     label:'道址1',        cmd:'0x0512'},
+    {get:()=>A.energy2,      set:x=>A.energy2=x,      label:'能量点2 keV',  cmd:'0x0512'},
+    {get:()=>A.channel2,     set:x=>A.channel2=x,     label:'道址2',        cmd:'0x0512'},
+    {get:()=>A.effDetect,    set:x=>A.effDetect=x,    label:'探测效率',     cmd:'0x0513'},
+    {get:()=>A.effAdsorb,    set:x=>A.effAdsorb=x,    label:'滤纸吸附效率', cmd:'0x0513'}
+  ];
+  if (v === 'zones') return Array.from({length:12}, (_,i) => {
+    const g = i >> 1, e = i & 1;
+    return {get:()=>A.zones[g][e], set:x=>A.zones[g][e]=x,
+            label:`${zoneNames[g]}${e ? '右' : '左'}边界能量`, cmd:'0x0521'};
+  });
+  if (v === 'temp') return [
+    ...A.temps.flatMap((_, r) => TEMP_COLS.map(([k, lb]) =>
+      ({get:()=>A.temps[r][k], set:x=>A.temps[r][k]=x, label:`第${r+1}组·${lb}`, cmd:'0x0531'}))),
+    {action:'add', label:'新增一组温度补偿'},
+    {action:'del', label:'删除最后一组'}
+  ];
+  if (v === 'bg') return [
+    ...bgNames.map((n,i) => ({get:()=>A.staBg[i], set:x=>A.staBg[i]=x, label:`静态本底·${n}`, cmd:'0x0543'})),
+    ...bgNames.map((n,i) => ({get:()=>A.bgK[i],   set:x=>A.bgK[i]=x,   label:`补偿系数·${n}`, cmd:'0x0542'})),
+    {get:()=>A.bgDuration, set:x=>A.bgDuration=x, label:'本底测量时长 s', cmd:'0x0542'}
+  ];
+  return [];
+}
+function aRow(i, name, value, cmd, ro){
+  const ed = S.modal && S.modal.type === 'edit' && S.modal.inline && S.adminSel === i && !ro;
+  const right = ed ? `<span class="ed">${editor(S.modal)}</span>`
+                   : `<span class="av"${attr(`${name}|数值文本|${cmd}`)}>${value}</span>`;
+  return `<button class="arow ${ro ? 'readonly' : ''} ${!ro && S.adminSel === i ? 'on' : ''}"${ro ? '' : ` data-admin="${i}"`}>
+      <span class="an">${name}</span>${right}</button>`;
+}
+function aCell(i, value, cmd, label, cls = ''){
+  const ro = i < 0;
+  const ed = !ro && S.modal && S.modal.type === 'edit' && S.modal.inline && S.adminSel === i;
+  const inner = ed ? `<span class="ed">${editor(S.modal)}</span>`
+                   : `<span${attr(`${label}|表格文本|${cmd}`)}>${value}</span>`;
+  return `<td><button class="cell ${cls} ${ro ? 'ro' : 'acc'} ${!ro && S.adminSel === i ? 'on' : ''}"${ro ? '' : ` data-admin="${i}"`}>${inner}</button></td>`;
+}
+function adminActionRow(i, name, danger){
+  return `<button class="row ${S.adminSel === i ? 'on' : ''} ${danger ? 'danger' : ''}" data-admin="${i}">
+      <span class="rname">${name}</span></button>`;
+}
+function adminMeta(text, right = ''){
+  return `<div class="tmeta"><div class="left">${text}</div>${right}</div>`;
+}
+function renderAdmin(){
+  const v = S.adminView;
+  if (v === 'version') return adminMeta('只读界面 · 版本号随主控固件烧录更新',
+      '<span class="pill">0x0501 / 0x0502</span>') + `
+    <div class="ver">
+      <section class="abox"><h3>主控 MCU 软件</h3>
+        <div class="vnum" data-ctl="MCU版本号|状态文本|0x0502">${A.mcuVer}</div>
+        <div class="vrow"><span>最近更新日期</span><b class="num" data-ctl="MCU更新日期|状态文本|0x0502">${A.mcuDate}</b></div>
+      </section>
+      <section class="abox"><h3>多道 FPGA 软件</h3>
+        <div class="vnum" data-ctl="多道版本号|状态文本|0x0501">${A.fpgaVer}</div>
+        <div class="vrow"><span>最近更新日期</span><b class="num" data-ctl="多道更新日期|状态文本|0x0501">${A.fpgaDate}</b></div>
+      </section>
+    </div>
+    <div class="afoot"><span>版本格式：版本号 + 日期，例 V2.1.0-20260531</span><span>按「移位」切换维护界面，长按退出至能谱界面</span></div>`;
+
+  if (v === 'calib'){
+    const it = adminItems();
+    return adminMeta('标定参数 · 修改后整项写回主控，由主控校验合理性',
+        '<span class="pill">0x0511 / 0x0512 / 0x0513</span>') + `
+      <div class="agroups" style="grid-template-columns:1fr 1.45fr 1fr">
+        <section class="abox"><h3>多道参数</h3>
+          ${aRow(0, '阈值', it[0].get(), '0x0511')}${aRow(1, '增益', it[1].get(), '0x0511')}</section>
+        <section class="abox"><h3>刻度参数</h3>
+          ${aRow(2, '能量点 1（keV）', it[2].get(), '0x0512')}${aRow(3, '道址 1', it[3].get(), '0x0512')}
+          ${aRow(4, '能量点 2（keV）', it[4].get(), '0x0512')}${aRow(5, '道址 2', it[5].get(), '0x0512')}</section>
+        <section class="abox"><h3>效率参数</h3>
+          ${aRow(6, '探测效率', it[6].get(), '0x0513')}${aRow(7, '滤纸吸附效率', it[7].get(), '0x0513')}</section>
+      </div>
+      <div class="afoot"><span>刻度参数用于能量–道址线性换算，修改后能区道址映射自动重算</span><span>共 8 项</span></div>`;
+  }
+
+  if (v === 'zones'){
+    const rows = Array.from({length:12}, (_,i) => {
+      const g = i >> 1, e = i & 1;
+      return `<tr>
+        <td><span class="cell ro m">${i + 1}</span></td>
+        <td><span class="cell ro">${zoneNames[g]}${e ? '右' : '左'}边界能量</span></td>
+        ${aCell(i, A.zones[g][e], '0x0521', `能区${i+1}能量`, 'm')}
+        ${aCell(-1, A.mapping[g][e], '0x0521', `能区${i+1}道址`, 'm')}
+      </tr>`;
+    }).join('');
+    return adminMeta('能区划分 · 能量可改，道址映射由主控换算后回读（只读）',
+        '<span class="pill">0x0521</span>') + `
+      <div class="tbox"><table class="grid-tbl dense"><thead><tr>
+        <th class="m" style="width:76px">序号</th><th>名称</th>
+        <th class="m" style="width:260px">能区划分（keV）</th>
+        <th class="m" style="width:260px">能区道址映射（只读）</th>
+      </tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  if (v === 'temp'){
+    const rows = A.temps.map((t, r) => `<tr>
+        <td><span class="cell ro m">第 ${r + 1} 组</span></td>
+        ${TEMP_COLS.map(([k], c) => aCell(r*6 + c, t[k], '0x0531', `第${r+1}组·${TEMP_COLS[c][1]}`, 'm')).join('')}
+      </tr>`).join('');
+    return adminMeta('温度补偿 · 每组六个参数，支持修改、增加与删除',
+        '<span class="pill">0x0531</span>') + `
+      <div class="tbox"><table class="grid-tbl"><thead><tr>
+        <th class="m" style="width:120px">分组</th>
+        ${TEMP_COLS.map(([,lb]) => `<th class="m">${lb}</th>`).join('')}
+      </tr></thead><tbody>${rows}</tbody></table></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+        ${adminActionRow(A.temps.length * 6, '新增一组温度补偿')}
+        ${adminActionRow(A.temps.length * 6 + 1, '删除最后一组', true)}
+      </div>
+      <div class="afoot"><span>修改后整组写回主控校验</span><span>共 ${A.temps.length} 组 · ${A.temps.length * 6} 项</span></div>`;
+  }
+
+  /* bg */
+  return adminMeta('本底补偿 · 动态本底只读回传，静态本底与补偿系数可改',
+      '<span class="pill">0x0541 / 0x0542 / 0x0543</span>') + `
+    <div class="agroups" style="grid-template-columns:1fr 1fr 1.15fr">
+      <section class="abox"><h3>动态本底计数（只读）</h3>
+        ${bgNames.map((n,i) => `<button class="arow readonly"><span class="an">${n}</span>
+          <span class="av"${attr(`动态本底·${n}|数值文本|0x0541`)}>${A.dynBg[i]}</span></button>`).join('')}</section>
+      <section class="abox"><h3>静态本底计数</h3>
+        ${bgNames.map((n,i) => aRow(i, n, A.staBg[i], '0x0543')).join('')}</section>
+      <section class="abox"><h3>本底补偿系数</h3>
+        ${bgNames.map((n,i) => aRow(5 + i, n, A.bgK[i], '0x0542')).join('')}</section>
+    </div>
+    <section class="abox" style="margin-top:16px"><h3>本底测量</h3>
+      ${aRow(10, '本底测量时长（s）', A.bgDuration, '0x0542')}</section>`;
+}
+
+/* ── 弹窗：只保留「破坏性确认」与「密码」两处挣来的打断 ───────────── */
+function renderModal(){
+  const m = S.modal, el = $('#modal');
+  el.innerHTML = '';
+  if (!m || (m.type === 'edit' && m.inline)) return;
+  if (m.type === 'password'){
+    el.innerHTML = `<div class="overlay"><section class="dialog">
+      <h2>管理员密码</h2>
+      <p>维护界面用于标定与补偿参数，误操作会直接影响测量结果。</p>
+      <div class="pw">${[...m.value].map((c,i) => `<div class="d ${i === m.pos ? 'cur' : ''}">${c}</div>`).join('')}</div>
+      <div class="dhint">▲▼ 调整当前位 · OK 确认 · ↩ 移到下一位，长按返回</div>
+    </section></div>`;
+    return;
+  }
+  if (m.type === 'confirm'){
+    el.innerHTML = `<div class="overlay"><section class="dialog">
+      <h2>${m.title}</h2>
+      <p>${m.desc || '此操作不可恢复。'}</p>
+      <div class="choices">
+        <button class="choice ${m.sel === 0 ? 'on' : ''}" data-choice="0">取消</button>
+        <button class="choice danger ${m.sel === 1 ? 'on' : ''}" data-choice="1">${m.okText || '确认执行'}</button>
+      </div>
+      <div class="dhint">▲▼ 切换选项 · OK 执行所选 · ↩ 取消返回</div>
+    </section></div>`;
+    el.querySelectorAll('[data-choice]').forEach(b => b.onclick = () => { m.sel = +b.dataset.choice; key(2); });
+  }
+}
+
+/* ── 编辑流程：先向主控读取当前值 → 就地修改 → 确认后整项写回 ─────── */
+let noticeTimer;
+function say(text, isError = false){
+  if (!isError) return;
+  S.feedback = text;
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => { S.feedback = ''; render(); }, 3500);
+  render();
+}
+function requestCurrent(label, next){
+  if (S.reading) return;
+  S.reading = label; render();
+  setTimeout(() => { S.reading = null; next(); }, 260);
+}
+function edit(title, value, options, save, opts = {}){
+  const text = String(value);
+  let pos = 0;
+  if (opts.trim && !options){
+    let end = text.indexOf('.'); if (end < 0) end = text.length;
+    while (pos < end - 1 && text[pos] === '0') pos++;
+  }
+  if (!options && !/\d/.test(text[pos])) { while (pos < text.length && !/\d/.test(text[pos])) pos++; }
+  S.modal = {type:'edit', title, value:text, initial:text, pos, options, save,
+             inline:true, suffix:opts.suffix || '', trim:!!opts.trim, step:opts.step,
+             min:opts.min, max:opts.max, adding:opts.adding};
+  render();
+}
+function activateConfig(i){
+  const it = configItems()[i];
+  requestCurrent(it.name, () => {
+    if (i === 0) edit('浓度单位切换', S.unit, ['Bq/m³','pCi/L'], v => S.unit = +v);
+    if (i === 1) edit('屏幕亮度调整', S.bright - 1, Array.from({length:15}, (_,k) => `${k+1} / 15`), v => S.bright = +v + 1);
+    if (i === 2) edit('北斗定位启停', +S.bd, ['关闭','开启'], v => S.bd = !!+v);
+    if (i === 3){ S.sub = 'rf'; S.sel = 0; render(); }
+    if (i === 4) edit('报警阈值设置', thrEdit(), null, v => {
+      const n = +v; if (!(n > 0)) throw Error('报警阈值必须大于 0');
+      if (n > 999999.99) throw Error('报警阈值超出范围');
+      S.threshold = n * (S.unit ? 37 : 1);
+    }, {suffix:unit(), trim:true});
+    if (i === 5) edit('测量周期设置', durationZh(S.period), null, v => {
+      const s = parseDurationZh(v); if (s < 60) throw Error('测量周期不得小于 60 秒'); S.period = s;
+    });
+    if (i === 6) edit('日期时间校准', dateTimeEdit(), null, v => {
+      const normal = v.replace('　', ' '), d = new Date(normal.replace(' ', 'T'));
+      if (isNaN(+d) || d.toLocaleString('sv-SE') !== normal) throw Error('日期或时间无效');
+      S.clockOffset = +d - Date.now();
+    });
+  });
+}
+function activateRf(i){
+  const rates = [1200,2400,4800,9600,19200,38400,57600,115200];
+  requestCurrent(rfItems()[i].name, () => {
+    if (i === 0) edit('无线启停控制', +S.rf, ['关闭','开启'], v => S.rf = !!+v);
+    if (i === 1){ S.sub = 'addr'; S.addrSel = Math.min(S.addrSel, Math.max(0, S.addresses.length - 1)); render(); }
+    if (i === 2) edit('传输速率设置', rates.indexOf(S.rate), rates.map(v => `${v} bit/s`), v => S.rate = rates[+v]);
+    if (i === 3) edit('发送间隔设置', String(S.interval).padStart(5,'0'), null, v => {
+      const n = +v; if (n < 30 || n > 86400) throw Error('发送间隔范围 30 – 86400 秒'); S.interval = n;
+    }, {suffix:'s', trim:true});
+  });
+}
+function editAddress(adding){
+  requestCurrent(adding ? '新增目标地址' : '目标地址', () => {
+    const index = S.addrSel;
+    const value = adding ? '0000000000' : String(S.addresses[index] ?? 0).padStart(10,'0');
+    edit(adding ? '新增目标地址' : '修改目标地址', value, null, v => {
+      if (+v > 4294967295) throw Error('目标地址超出 32 位范围');
+      if (adding){ S.addresses.push(+v); S.addrSel = S.addresses.length - 1; }
+      else S.addresses[index] = +v;
+    }, {trim:true, adding});
+  });
+}
+function deleteAddress(){
+  if (!S.addresses.length) return say('暂无可删除地址', true);
+  const index = S.addrSel, addr = String(S.addresses[index]).padStart(10,'0');
+  S.modal = {type:'confirm', title:`删除目标地址 ${addr}？`, okText:'确认删除', sel:0,
+    desc:'删除后该地址不再接收主动上报数据，需重新新增。',
+    save:() => { S.addresses.splice(index,1); S.addrSel = Math.min(index, Math.max(0, S.addresses.length - 1)); }};
+  render();
+}
+function requestHistory(page = 0){
+  S.modal = null; S.histSub = null; S.histLoading = true; S.histLoaded = false; S.histPage = page;
+  render();
+  setTimeout(() => {
+    S.histLoading = false; S.histLoaded = true;
+    S.histCount = Math.min(records.length, S.histQuery);
+    S.histPage = Math.min(page, Math.max(0, Math.ceil(S.histCount / HPAGE) - 1));
+    if (S.page === 2 && !S.admin) render();
+  }, 620);
+}
+function activateHistAction(i){
+  if (i === 0) edit('查询记录条数', String(S.histQuery).padStart(4,'0'), null, v => {
+    const n = +v; if (n < 1 || n > 1000) throw Error('查询条数范围 1 – 1000'); S.histQuery = n;
+  }, {trim:true});
+  if (i === 1) requestHistory(0);
+  if (i === 2) edit('清除起始序号', String(S.histClearFrom).padStart(4,'0'), null, v => {
+    const n = +v; if (n < 1 || n > 1000) throw Error('起始序号范围 1 – 1000'); S.histClearFrom = n;
+  }, {trim:true});
+  if (i === 3) edit('清除记录条数', String(S.histClearCount).padStart(4,'0'), null, v => {
+    const n = +v; if (n < 1 || n > 1000) throw Error('清除条数范围 1 – 1000'); S.histClearCount = n;
+  }, {trim:true});
+  if (i === 4){
+    const from = S.histClearFrom, count = S.histClearCount;
+    if (!records.length) return say('当前没有历史记录', true);
+    if (from > records.length) return say('清除起始序号超出记录总数', true);
+    if (from - 1 + count > records.length) return say('清除范围超出记录总数', true);
+    S.modal = {type:'confirm', title:`清除第 ${from} 条起的 ${count} 条记录？`, okText:'确认清除', sel:0,
+      desc:'清除指令 0x0302 一经主控执行，记录不可恢复。',
+      save:() => { records.splice(from - 1, count); S.histCount = Math.min(records.length, S.histQuery); S.histPage = 0; }};
+    render();
+  }
+}
+function editHistInterval(){
+  edit('历史存储间隔', durationZh(S.histInterval), null, v => {
+    const s = parseDurationZh(v); if (s < 30) throw Error('存储间隔不得小于 30 秒'); S.histInterval = s;
+  });
+}
+function activateAdmin(){
+  const it = adminItems()[S.adminSel];
+  if (!it) return;
+  if (it.action === 'add'){
+    if (A.temps.length >= 6) return say('温度补偿最多 6 组', true);
+    const last = A.temps[A.temps.length - 1];
+    A.temps.push({t:String((+last.t + 10).toFixed(2)), th:last.th, g:last.g, bg:last.bg, k:last.k, c:last.c});
+    S.adminSel = (A.temps.length - 1) * 6; render(); return;
+  }
+  if (it.action === 'del'){
+    if (A.temps.length <= 1) return say('至少保留一组温度补偿', true);
+    S.modal = {type:'confirm', title:`删除第 ${A.temps.length} 组温度补偿？`, okText:'确认删除', sel:0,
+      desc:'删除后该温度点不再参与补偿计算，需重新标定。',
+      save:() => { A.temps.pop(); S.adminSel = Math.min(S.adminSel, A.temps.length * 6 + 1); }};
+    render(); return;
+  }
+  requestCurrent(it.label, () => edit(it.label, it.get(), null, v => it.set(v), {trim:false}));
+}
+function activateSpecMenu(){
+  const it = specMenu()[S.specSel];
+  if (!it) return;
+  if (it.id === 'refresh') S.specPaused = !S.specPaused;
+  if (it.id === 'mode'){ S.specMode = (S.specMode + 1) % SPEC_MODES.length; S.specZoom = 0; S.roiOn = false; S.roiEdit = false; }
+  if (it.id === 'zoom') S.specZoom = (S.specZoom + 1) % 4;
+  if (it.id === 'roi' && S.specMode === 0) S.roiOn = !S.roiOn;
+  if (it.id === 'zones' && S.specMode === 0) S.showZones = !S.showZones;
+  render();
+}
+
+/* ── 渲染主循环 ────────────────────────────────────────────────────── */
+function bind(){
+  $$('#content [data-row]').forEach(b => b.onclick = () => {
+    const i = +b.dataset.row;
+    if (S.page === 1 && S.sub === 'addr'){ S.addrSel = i; editAddress(false); return; }
+    if (S.page === 1){ S.sel = i; S.sub === 'rf' ? activateRf(i) : activateConfig(i); return; }
+    if (S.page === 2 && S.histSub === 'tools'){ S.histActSel = i; activateHistAction(i); }
+  });
+  $$('#content [data-smenu]').forEach(b => b.onclick = () => { S.specSel = +b.dataset.smenu; activateSpecMenu(); });
+  $$('#content [data-admin]').forEach(b => b.onclick = () => { S.adminSel = +b.dataset.admin; activateAdmin(); });
+  const t = $('#content [data-hist-tools]');
+  if (t) t.onclick = () => { S.histSub = 'tools'; S.histActSel = 0; S.modal = null; render(); };
+  const iv = $('#content [data-hist-interval]');
+  if (iv) iv.onclick = editHistInterval;
+}
+function render(){
+  const sc = $('#screen');
+  sc.classList.toggle('alarm', isAlarm() && !S.admin);
+  sc.classList.toggle('annot-on', S.annot);
+  $('#annotKey').classList.toggle('on', S.annot);
+  renderTopbar(); renderTabs();
+  $('#content').innerHTML = S.admin ? renderAdmin()
+    : S.page === 0 ? renderMonitor()
+    : S.page === 1 ? renderConfig()
+    : S.page === 2 ? renderHistory()
+    : renderSpectrum();
+  bind();
+  if (!S.admin && S.page === 3) draw();
+  const fb = $('#fb');
+  fb.className = 'feedback' + (!S.feedback && S.reading ? ' info' : '');
+  fb.textContent = S.feedback || (S.reading ? `正在向主控读取「${S.reading}」当前值…` : '');
+  renderModal(); renderKeybar(); renderAnnot(); renderSpecTable();
+}
+function navigate(p){
+  if (p !== 3){ S.specMode = 0; S.specZoom = 0; S.specPaused = false; S.specPanel = false; S.roiOn = false; S.roiEdit = false; }
+  S.page = p; S.sel = 0; S.sub = null; S.modal = null; S.admin = false; S.feedback = '';
+  if (p === 2){ S.histSub = null; S.histActSel = 0; requestHistory(0); return; }
+  render();
+}
+function enterAdmin(){ S.admin = true; S.adminView = 'version'; S.adminSel = 0; S.modal = null; S.feedback = ''; render(); }
+function exitAdmin(){ S.admin = false; S.modal = null; S.page = 3; S.specMode = 0; S.specPanel = false; render(); }
+function switchAdminView(){
+  const i = ADMIN_VIEWS.findIndex(v => v[0] === S.adminView);
+  S.adminView = ADMIN_VIEWS[(i + 1) % ADMIN_VIEWS.length][0];
+  S.adminSel = 0; S.modal = null; render();
+}
+function nudge(k, amount){
+  if (S.roiEdit){
+    const f = S.roiEdge ? 'roiEnd' : 'roiStart';
+    S[f] = Math.max(0, Math.min(CHANNELS - 1, S[f] + (k ? amount : -amount)));
+  } else {
+    S.channel = Math.max(0, Math.min(CHANNELS - 1, S.channel + (k ? amount : -amount)));
+  }
+}
+
+/* ── 四键状态机 ────────────────────────────────────────────────────── */
+function key(k){
+  const m = S.modal;
+  if (m){
+    if (m.type === 'password'){
+      if (k < 2){ const c = [...m.value]; c[m.pos] = String((+c[m.pos] + (k ? 9 : 1)) % 10); m.value = c.join(''); renderModal(); }
+      if (k === 3){ m.pos = (m.pos + 1) % 6; renderModal(); }
+      if (k === 2){
+        if (m.value === '759759') enterAdmin();
+        else { m.value = '000000'; m.pos = 0; say('密码错误，请重新输入', true); }
+      }
+      return;
+    }
+    if (m.type === 'confirm'){
+      if (k < 2){ m.sel = 1 - m.sel; render(); }
+      if (k === 2){ if (m.sel === 1) m.save(); S.modal = null; render(); }
+      if (k === 3){ S.modal = null; render(); }
+      return;
+    }
+    if (m.type === 'edit'){
+      if (k < 2){
+        if (m.step) m.value = String(Math.max(m.min, Math.min(m.max, +m.value + (k ? -m.step : m.step))));
+        else if (m.options) m.value = String((+m.value + (k ? m.options.length - 1 : 1)) % m.options.length);
+        else { const c = [...m.value]; c[m.pos] = String((+c[m.pos] + (k ? 9 : 1)) % 10); m.value = c.join(''); }
+        render();
+      }
+      if (k === 3 && !m.options && !m.step){
+        do { m.pos = (m.pos + 1) % m.value.length; } while (!/\d/.test(m.value[m.pos]));
+        render();
+      }
+      if (k === 2){
+        try { m.save(m.value); S.modal = null; render(); }
+        catch (e){ say(e.message, true); }
+      }
+      return;
+    }
+  }
+  if (S.admin){
+    const items = adminItems();
+    if (k < 2 && items.length) S.adminSel = (S.adminSel + (k ? 1 : items.length - 1)) % items.length;
+    if (k === 2){ activateAdmin(); return; }
+    if (k === 3){ switchAdminView(); return; }
+    render(); return;
+  }
+  if (S.page === 0){
+    if (k === 0){ if (!S.running){ S.running = true; S.work = '测量中'; S.elapsed = 0; syncDemo(); } }
+    if (k === 1){ S.running = false; S.work = '待机'; syncDemo(); }
+    if (k === 2) return navigate(1);
+    if (k === 3) return navigate(1);
+    render(); return;
+  }
+  if (S.page === 1){
+    if (S.sub === 'addr'){
+      if (k < 2 && S.addresses.length) S.addrSel = (S.addrSel + (k ? 1 : S.addresses.length - 1)) % S.addresses.length;
+      if (k === 2) return editAddress(!S.addresses.length);
+      if (k === 3){ S.sub = 'rf'; S.sel = 1; render(); return; }
+    } else if (S.sub === 'rf'){
+      if (k < 2) S.sel = (S.sel + (k ? 1 : 3)) % 4;
+      if (k === 2) return activateRf(S.sel);
+      if (k === 3){ S.sub = null; S.sel = 3; render(); return; }
+    } else {
+      const n = configItems().length;
+      if (k < 2) S.sel = (S.sel + (k ? 1 : n - 1)) % n;
+      if (k === 2) return activateConfig(S.sel);
+      if (k === 3) return navigate(2);
+    }
+    render(); return;
+  }
+  if (S.page === 2){
+    if (S.histSub === 'tools'){
+      if (k < 2) S.histActSel = (S.histActSel + (k ? 1 : 4)) % 5;
+      if (k === 2) return activateHistAction(S.histActSel);
+      if (k === 3){ S.histSub = null; S.modal = null; render(); return; }
+    } else {
+      if (S.histLoading){ if (k === 3) return navigate(3); return; }
+      if (k < 2 && S.histLoaded){
+        const pages = Math.max(1, Math.ceil(S.histCount / HPAGE));
+        const next = Math.max(0, Math.min(pages - 1, S.histPage + (k ? 1 : -1)));
+        if (next !== S.histPage) return requestHistory(next);
+        return say(k ? '已是最后一页' : '已是第一页', true);
+      }
+      if (k === 2){ S.histSub = 'tools'; S.histActSel = 0; render(); return; }
+      if (k === 3) return navigate(3);
+    }
+    render(); return;
+  }
+  /* 能谱 */
+  if (S.roiEdit){
+    if (k < 2) nudge(k, 1);
+    if (k === 2) S.roiEdge = 1 - S.roiEdge;
+    if (k === 3){ S.roiEdit = false; S.specPanel = true; S.specSel = 3; }
+  } else if (S.specPanel){
+    if (k < 2) nudge(k, 1);
+    if (k === 2) return activateSpecMenu();
+    if (k === 3) S.specSel = (S.specSel + 1) % specMenu().length;
+  } else {
+    if (k < 2) nudge(k, 1);
+    if (k === 2){ S.specPanel = true; S.specSel = 0; }
+    if (k === 3) return navigate(0);
+  }
+  render();
+}
+
+/* ── 长按 / 组合键 ─────────────────────────────────────────────────── */
+const held = new Set(), downAt = {};
+let tBack, tAddr, tHist, tMove = [null,null], tScale, tPanel, tAdminIn, tAdminOut, tTemp;
+let adminArmed = false, combo = false;
+function clearAll(){ [tBack,tAddr,tHist,tMove[0],tMove[1],tScale,tPanel,tAdminIn,tAdminOut,tTemp].forEach(clearTimeout); tMove = [null,null]; }
+function down(k){
+  held.add(k); downAt[k] = Date.now();
+  const btn = document.querySelector(`[data-key="${k}"]`); if (btn) btn.classList.add('held');
+  const spec = !S.admin && S.page === 3 && !S.modal;
+  if (spec && S.specMode === 0 && !S.specPanel && !S.roiEdit && [0,1,2].every(x => held.has(x))
+      && Math.max(downAt[0],downAt[1],downAt[2]) - Math.min(downAt[0],downAt[1],downAt[2]) <= 150){
+    combo = true; clearAll();
+    tAdminIn = setTimeout(() => { adminArmed = true; }, 5000);
+    return;
+  }
+  if (spec && k < 2) tMove[k] = setTimeout(() => { combo = true; nudge(k, 10); render(); }, 650);
+  if (spec && k === 2 && !S.specPanel && !S.roiEdit && S.specMode === 0)
+    tScale = setTimeout(() => { combo = true; S.specLog = !S.specLog; render(); }, 650);
+  if (spec && k === 2 && S.specPanel && S.specMode === 0 && specMenu()[S.specSel].id === 'roi')
+    tScale = setTimeout(() => { combo = true; S.roiOn = true; S.roiEdit = true; S.roiEdge = 0; S.specPanel = false; render(); }, 650);
+  if (spec && k === 3 && S.specPanel) tPanel = setTimeout(() => { combo = true; S.specPanel = false; render(); }, 650);
+  if (S.modal && k === 3) tBack = setTimeout(() => { combo = true; S.modal = null; render(); }, 1000);
+  if (!S.admin && S.page === 1 && S.sub === 'addr' && !S.modal && k === 2)
+    tAddr = setTimeout(() => { combo = true; editAddress(true); }, 1000);
+  if (!S.admin && S.page === 1 && S.sub === 'addr' && !S.modal && k === 3)
+    tAddr = setTimeout(() => { combo = true; deleteAddress(); }, 1000);
+  if (!S.admin && S.page === 2 && !S.histSub && !S.histLoading && !S.modal && k === 2)
+    tHist = setTimeout(() => { combo = true; editHistInterval(); }, 1000);
+  if (S.admin && !S.modal && k === 3) tAdminOut = setTimeout(() => { combo = true; exitAdmin(); }, 1000);
+}
+function up(k){
+  held.delete(k);
+  const btn = document.querySelector(`[data-key="${k}"]`); if (btn) btn.classList.remove('held');
+  clearAll();
+  if (adminArmed && [0,1,2].includes(k) && [0,1,2].every(x => !held.has(x))){
+    adminArmed = false; combo = true;
+    S.modal = {type:'password', value:'000000', pos:0}; render();
+  } else if (!combo) key(k);
+  if (!held.size) combo = false;
+}
+
+/* ── 标注模式与控件清单：把「烘焙静态层」和「动态控件」分开 ───────── */
+function ctlRects(){
+  const sr = $('#screen').getBoundingClientRect(), k = S.scale || 1;
+  return $$('#screen [data-ctl]').map(el => {
+    const r = el.getBoundingClientRect();
+    const [name, type, cmd] = el.dataset.ctl.split('|');
+    return {name, type, cmd,
+      x:Math.round((r.left - sr.left) / k), y:Math.round((r.top - sr.top) / k),
+      w:Math.round(r.width / k), h:Math.round(r.height / k)};
+  }).filter(r => r.w > 3 && r.h > 3);
+}
+function renderAnnot(){
+  const layer = $('#annot');
+  if (!S.annot){ layer.innerHTML = ''; return; }
+  let html = '';
+  ctlRects().forEach(r => {
+    const below = r.y < 16;
+    html += `<div class="abx" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px"></div>`
+         +  `<div class="alb" style="left:${r.x}px;top:${below ? r.y + r.h + 1 : r.y - 1}px${below ? ';transform:none' : ''}">${r.name} · ${r.w}×${r.h}</div>`;
+  });
+  layer.innerHTML = html;
+}
+function pageTitle(){
+  if (S.admin) return '维护 · ' + ADMIN_VIEWS.find(v => v[0] === S.adminView)[1];
+  return PAGES[S.page] + '界面' + (S.sub === 'rf' ? ' › 无线通信' : S.sub === 'addr' ? ' › 目标地址'
+    : S.histSub === 'tools' ? ' › 查询与清除' : S.specPanel ? ' › 能谱操作' : '');
+}
+function renderSpecTable(){
+  const rows = ctlRects();
+  $('#spec').innerHTML = `<h2>当前页动态控件清单 —— ${pageTitle()}
+      <span>共 ${rows.length} 个控件；画面其余像素全部属于烘焙静态层</span></h2>
+    <table><thead><tr>
+      <th style="width:27%">控件</th><th style="width:15%">类型</th>
+      <th style="width:26%">坐标 x, y, w, h</th><th>数据源 / 命令码</th>
+    </tr></thead><tbody>${rows.map(r =>
+      `<tr><td>${r.name}</td><td>${r.type}</td><td><code>${r.x}, ${r.y}, ${r.w}, ${r.h}</code></td><td><code>${r.cmd}</code></td></tr>`
+    ).join('')}</tbody></table>`;
+}
+
+/* ── 外壳交互（设备之外） ──────────────────────────────────────────── */
+function syncDemo(){ $('#workDemo').value = S.work; }
+function reset(){
+  S.modal = null; S.admin = false; S.sub = null; S.histSub = null; S.specPanel = false;
+  S.roiEdit = false; S.sel = 0; S.feedback = ''; S.reading = null;
+}
+const JUMPS = [
+  ['01 · 主监测',              () => { reset(); S.page = 0; S.alarm = false; }],
+  ['01b · 主监测 · 报警态',     () => { reset(); S.page = 0; S.alarm = true; }],
+  ['02 · 能谱（512 道）',       () => { reset(); S.page = 3; }],
+  ['02b · 能谱 · 区间统计',     () => { reset(); S.page = 3; S.roiOn = true; S.channel = 244; }],
+  ['02c · 能谱 · 操作菜单',     () => { reset(); S.page = 3; S.specPanel = true; S.specSel = 0; }],
+  ['03 · 综合设置',            () => { reset(); S.page = 1; }],
+  ['03b · 设置 · 无线通信',     () => { reset(); S.page = 1; S.sub = 'rf'; }],
+  ['03c · 设置 · 目标地址',     () => { reset(); S.page = 1; S.sub = 'addr'; }],
+  ['04 · 历史记录',            () => { reset(); S.page = 2; S.histLoaded = true; S.histLoading = false; S.histCount = Math.min(records.length, S.histQuery); S.histPage = 0; }],
+  ['04b · 历史 · 查询与清除',   () => { reset(); S.page = 2; S.histLoaded = true; S.histSub = 'tools'; S.histActSel = 0; }],
+  ['04c · 历史 · 读取中',       () => { reset(); S.page = 2; S.histLoading = true; S.histLoaded = false; }],
+  ['04d · 历史 · 空记录',       () => { reset(); S.page = 2; S.histLoading = false; S.histLoaded = true; S.histCount = 0; }],
+  ['05 · 清除历史确认',        () => { reset(); S.page = 2; S.histLoaded = true; S.histSub = 'tools'; S.histActSel = 4; S.modal = {type:'confirm', title:`清除第 1 条起的 1 条记录？`, okText:'确认清除', sel:0, desc:'清除指令 0x0302 一经主控执行，记录不可恢复。', save:()=>{}}; }],
+  ['06 · 管理员密码',          () => { reset(); S.page = 3; S.modal = {type:'password', value:'759000', pos:3}; }],
+  ['07 · 维护 · 软件版本',      () => { reset(); S.admin = true; S.adminView = 'version'; S.adminSel = 0; }],
+  ['08 · 维护 · 参数标定',      () => { reset(); S.admin = true; S.adminView = 'calib'; S.adminSel = 0; }],
+  ['09 · 维护 · 能区划分',      () => { reset(); S.admin = true; S.adminView = 'zones'; S.adminSel = 2; }],
+  ['10 · 维护 · 温度补偿',      () => { reset(); S.admin = true; S.adminView = 'temp'; S.adminSel = 7; }],
+  ['11 · 维护 · 本底补偿',      () => { reset(); S.admin = true; S.adminView = 'bg'; S.adminSel = 5; }],
+  ['12 · 附图 · 参数编辑态',    () => { reset(); S.page = 1; S.sel = 4;
+      S.modal = {type:'edit', title:'报警阈值设置', value:thrEdit(), initial:thrEdit(), pos:4, options:null,
+                 save:v => { S.threshold = +v * (S.unit ? 37 : 1); }, inline:true, suffix:unit(), trim:true}; }],
+  ['13 · 附图 · 校时编辑态',    () => { reset(); S.page = 1; S.sel = 6;
+      S.modal = {type:'edit', title:'日期时间校准', value:dateTimeEdit(), initial:dateTimeEdit(), pos:2, options:null,
+                 save:v => {}, inline:true, suffix:'', trim:false}; }]
+];
+function resize(){
+  const bench = document.querySelector('.bench');
+  const avail = bench.clientWidth - 52;
+  const k = $('#zoom').value === '1' ? 1 : Math.min(1, avail / 1280);
+  S.scale = k;
+  $('#screen').style.transform = `scale(${k})`;
+  const vp = $('#viewport');
+  vp.style.width = Math.round(1280 * k) + 'px';
+  vp.style.height = Math.round(800 * k) + 'px';
+  renderAnnot(); renderSpecTable();
+}
+$('#jump').innerHTML = JUMPS.map(([t], i) => `<option value="${i}">${t}</option>`).join('');
+$('#jump').onchange = e => { JUMPS[+e.target.value][1](); render(); };
+$('#zoom').onchange = resize;
+$('#workDemo').onchange = e => { S.work = e.target.value; S.running = e.target.value === '测量中'; render(); };
+$('#faultDemo').onchange = e => { S.fault = e.target.value; render(); };
+$('#alarmDemo').onclick = () => { S.alarm = !S.alarm; $('#alarmDemo').classList.toggle('on', S.alarm); render(); };
+$('#annotBtn').onclick = () => { S.annot = !S.annot; $('#annotBtn').classList.toggle('on', S.annot); render(); };
+window.addEventListener('resize', resize);
+
+document.querySelectorAll('[data-key]').forEach(b => {
+  const k = +b.dataset.key;
+  b.onpointerdown = e => { e.preventDefault(); b.setPointerCapture(e.pointerId); down(k); };
+  b.onpointerup = () => up(k);
+  b.onpointercancel = () => { held.delete(k); clearAll(); adminArmed = false; b.classList.remove('held'); };
+});
+const KEYMAP = {ArrowUp:0, ArrowDown:1, Enter:2, ArrowRight:3};
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+  if (e.key === 'Escape'){ S.modal = null; S.specPanel = false; S.roiEdit = false; render(); return; }
+  if (KEYMAP[e.key] !== undefined && !e.repeat){ e.preventDefault(); down(KEYMAP[e.key]); }
+});
+document.addEventListener('keyup', e => {
+  if (KEYMAP[e.key] !== undefined && held.has(KEYMAP[e.key])){ e.preventDefault(); up(KEYMAP[e.key]); }
+});
+setInterval(() => {
+  if (S.running && !S.admin) S.elapsed++;
+  renderTopbar();
+  const el = document.querySelector('#content [data-ctl^="已测时间"]');
+  if (el) el.textContent = duration(S.elapsed);
+}, 1000);
+
+S.histLoaded = true; S.histCount = Math.min(records.length, S.histQuery);
+resize(); render();
+</script>
+</body>
+</html>
