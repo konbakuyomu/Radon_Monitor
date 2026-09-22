@@ -47,14 +47,15 @@ button,select{cursor:pointer}
 /* 顶栏 64px */
 .topbar{height:64px;display:flex;align-items:center;justify-content:space-between;
   padding:0 28px;background:var(--ink-1);border-bottom:1px solid var(--line-1)}
-.brand{display:flex;align-items:center;gap:14px;min-width:0}
-.brand .wm{font-size:24px;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+.brand{display:flex;align-items:center;gap:14px;min-width:0;flex:1;overflow:hidden}
+.brand .wm{font-size:24px;font-weight:600;letter-spacing:.01em;white-space:nowrap;flex-shrink:0}
 .brand .wm i{font-style:normal;font-weight:400;font-size:27px;margin-right:2px}
-.brand .co{font-size:18px;color:var(--text-3);white-space:nowrap}
-.brand .sn{font-size:18px;color:var(--text-2);white-space:nowrap;padding-left:14px;border-left:1px solid var(--line-2)}
-.badge-admin{font-size:17px;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:3px 9px;white-space:nowrap}
-.badge-alarm{font-size:19px;font-weight:600;color:var(--ink-0);background:var(--alarm);border-radius:4px;padding:4px 12px;white-space:nowrap}
-.sigs{display:flex;align-items:center;gap:20px;flex-shrink:0}
+.brand .co{font-size:18px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.brand .sn{font-size:18px;color:var(--text-2);white-space:nowrap;padding-left:14px;border-left:1px solid var(--line-2);flex-shrink:0}
+.badge-admin{font-size:17px;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:3px 9px;white-space:nowrap;flex-shrink:0}
+.badge-alarm{font-size:19px;font-weight:600;color:var(--ink-0);background:var(--alarm);border-radius:4px;padding:4px 12px;white-space:nowrap;flex-shrink:0}
+.badge-warn{font-size:17px;color:var(--warn);border:1px solid var(--warn);border-radius:4px;padding:3px 9px;white-space:nowrap;flex-shrink:0}
+.sigs{display:flex;align-items:center;gap:20px;flex-shrink:0;margin-left:22px}
 .sig{display:flex;align-items:center;gap:7px;font-size:19px;color:var(--text-3)}
 .sig.on{color:var(--ok)}
 .sig svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -129,6 +130,8 @@ button,select{cursor:pointer}
 .row.on{background:var(--ink-2);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .row.editing{background:var(--ink-2);border-color:var(--accent)}
 .row.danger .rname{color:var(--alarm)}
+.row.act{height:52px}
+.row.act .rname{font-size:22px}
 .chev{width:13px;height:13px;stroke:var(--text-3);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .row.on .chev{stroke:var(--accent)}
 
@@ -164,6 +167,39 @@ button,select{cursor:pointer}
 .pill.acc{color:var(--accent);border-color:var(--accent)}
 .pill.warn{color:var(--warn);border-color:var(--warn)}
 
+/* 历史：列表 + 选中记录详情（真机形态，11 个字段一个不丢） */
+.hist{display:grid;grid-template-columns:470px 1fr;gap:20px;height:534px}
+.hist-list{background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px;overflow:hidden}
+.hl-head,.hl-row{display:grid;grid-template-columns:74px 1fr 128px;align-items:center;gap:10px;padding:0 18px}
+.hl-head{height:46px;background:var(--ink-2);color:var(--text-2);font-size:19px}
+.hl-row{height:76px;width:100%;border:0;border-top:1px solid var(--line-1);background:transparent;
+  color:var(--text-1);font-size:22px;text-align:left}
+.hl-row.on{background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--accent)}
+.hl-no{color:var(--text-3);font-variant-numeric:tabular-nums}
+.hl-t{font-variant-numeric:tabular-nums;white-space:nowrap}
+.hl-v{text-align:right;font-variant-numeric:tabular-nums}
+.hl-v.na{color:var(--text-3)}
+.hist-detail{background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px;padding:18px 24px}
+.hd-head{display:flex;justify-content:space-between;align-items:baseline;height:40px;
+  border-bottom:1px solid var(--line-1);margin-bottom:14px}
+.hd-head h3{font-size:22px;font-weight:500;color:var(--text-2)}
+.hd-head span{font-size:19px;color:var(--text-3)}
+.hd-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:0}
+.hd-item{display:flex;align-items:baseline;justify-content:space-between;gap:14px;height:72px;
+  border-bottom:1px solid var(--line-1);min-width:0}
+.hd-item:nth-child(odd):not(.wide){border-right:1px solid var(--line-1);padding-right:26px}
+.hd-item:nth-child(even){padding-left:26px}
+.hd-item.wide{grid-column:1/-1;border-bottom:0;border-right:0;padding-right:0}
+.hd-item > label{font-size:20px;color:var(--text-2);white-space:nowrap}
+.hd-item .v{font-size:24px;color:var(--text-1);font-variant-numeric:tabular-nums;
+  text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd-item .v small{font-size:19px;color:var(--text-2);margin-left:6px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.chip-fault{font-size:19px;color:var(--alarm);border:1px solid var(--alarm);border-radius:4px;
+  padding:3px 10px;white-space:nowrap}
+.note-warn{display:inline-flex;align-items:center;gap:8px;font-size:19px;color:var(--warn)}
+.note-warn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
 /* 空 / 加载 / 失败 三态 */
 .state{height:496px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
   background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px}
@@ -178,11 +214,13 @@ button,select{cursor:pointer}
 .chead{display:flex;justify-content:space-between;align-items:center;height:30px;padding:0 16px;font-size:19px;color:var(--text-3)}
 .chead .grp{display:flex;align-items:center;gap:10px}
 .chead .pill{height:28px;font-size:18px;padding:0 10px}
-canvas{display:block;width:1224px;height:352px}
-.params{margin-top:14px;padding:16px 0;display:grid;grid-template-columns:repeat(8,1fr)}
-.params .field{padding:0 14px}
-.params .field > label{font-size:18px;margin-bottom:9px}
-.params .field .v{font-size:22px}
+canvas{display:block;width:1224px;height:296px}
+.params{margin-top:14px;padding:14px 0;display:grid;grid-template-columns:repeat(5,1fr);row-gap:12px}
+.params .field{padding:0 16px;border-right:1px solid var(--line-1)}
+.params .field:nth-child(5n+1){padding-left:18px}
+.params .field:nth-child(5n){border-right:0;padding-right:18px}
+.params .field > label{font-size:17px;margin-bottom:7px}
+.params .field .v{font-size:21px}
 .smenu{margin-top:14px;padding:14px 18px;display:grid;grid-template-columns:118px 1fr;align-items:center;gap:14px}
 .smenu h3{font-size:21px;font-weight:500;color:var(--text-2)}
 .smenu-list{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px}
@@ -194,6 +232,21 @@ canvas{display:block;width:1224px;height:352px}
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .smenu-item.on b{color:var(--accent)}
 
+/* 维护隐藏页：左侧栏 + 右内容区（真机形态，避免与主导航四页页签混淆） */
+.tabs.crumb-bar{justify-content:space-between;padding:0 28px}
+.crumb-main{font-size:21px;color:var(--text-1)}
+.crumb-main i{font-style:normal;color:var(--text-3);margin:0 10px}
+.crumb-main b{font-weight:500;color:var(--accent)}
+.crumb-state{font-size:19px;color:var(--text-3)}
+.adm{display:grid;grid-template-columns:208px 1fr;gap:18px;height:588px}
+.adm-side{background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px;
+  padding:10px;display:flex;flex-direction:column;gap:6px}
+.adm-side .sv{height:72px;border:0;border-radius:8px;background:transparent;color:var(--text-2);
+  font-size:22px;text-align:left;padding:0 18px;width:100%}
+.adm-side .sv.on{background:var(--ink-2);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.adm-side .sv-foot{margin-top:auto;padding:12px 18px;font-size:18px;color:var(--text-3);
+  border-top:1px solid var(--line-1)}
+.adm-main{min-width:0;display:flex;flex-direction:column}
 /* 维护隐藏页 */
 .agroups{display:grid;gap:16px}
 .abox{background:var(--ink-1);border:1px solid var(--line-1);border-radius:10px;padding:16px 18px;min-width:0}
@@ -224,6 +277,10 @@ canvas{display:block;width:1224px;height:352px}
 .grid-tbl .cell.on{background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--accent)}
 .grid-tbl.dense td,.grid-tbl.dense .cell{height:38px}
 .grid-tbl.dense .cell{font-size:18px}
+.grid-tbl.tall td,.grid-tbl.tall .cell{height:72px}
+.grid-tbl.tall .cell{font-size:22px}
+.grid-tbl th{height:50px}
+.grid-tbl td,.grid-tbl .cell{height:60px}
 .grid-tbl .cell .ed{font-size:19px;min-height:32px;padding:1px 7px;border-radius:4px}
 .grid-tbl .cell .ed .d{min-width:12px}
 .afoot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:19px;color:var(--text-3)}
@@ -283,7 +340,7 @@ canvas{display:block;width:1224px;height:352px}
   <div class="bar">
     <div>
       <h1>α气溶胶快速测量仪 · 串口屏界面示例</h1>
-      <p>1280 × 800 · 显示区域 150.72 × 94.20 mm · 深色单主题 · 背景图烘焙 + 控件叠加 · 画面为演示数据</p>
+      <p>1280 × 800 · 显示区域 150.72 × 94.20 mm · 深色单主题 · 256 道能谱 · 背景图烘焙 + 控件叠加 · 画面为演示数据</p>
     </div>
     <div class="tools">
       <select id="jump" aria-label="跳转页面"></select>
@@ -296,9 +353,14 @@ canvas{display:block;width:1224px;height:352px}
         <option>本底模式</option><option>效率模式</option><option>K值模式</option><option>温补模式</option>
       </select>
       <select id="faultDemo" aria-label="故障类型">
-        <option selected>无故障</option><option>走纸故障</option><option>采样故障</option>
-        <option>高压故障</option><option>电路故障</option><option>通信故障</option>
+        <option value="">无故障</option>
+        <option value="采样故障">采样故障</option><option value="电路故障">电路故障</option>
+        <option value="走纸故障">走纸故障</option><option value="计数故障">计数故障</option>
+        <option value="探测故障">探测故障</option><option value="存储故障">存储故障</option>
+        <option value="高压故障">高压故障</option><option value="通信故障">通信故障</option>
+        <option value="高压故障,通信故障">高压 + 通信（多故障）</option>
       </select>
+      <button id="clockDemo">切换校时状态</button>
       <button id="alarmDemo">模拟报警</button>
       <button id="annotBtn">标注模式</button>
     </div>
@@ -334,57 +396,64 @@ canvas{display:block;width:1224px;height:352px}
   <section class="spec" id="spec"></section>
 
   <div class="notes" id="notes">
-    <h3>这一版改了什么</h3>
+    <h3>第二轮：对照真机截图后的修订</h3>
+    <p>第一轮是对着参考原型做的，真机截图到手后发现<b>真机在四处信息架构上更对</b>，这一版向它看齐；同时真机有一批调试信息外泄与交互缺陷，是这一版要解决的。</p>
+    <h3>向真机看齐的六处</h3>
     <ul>
-      <li><b>颜色只表达状态，不做装饰。</b>数值一律用主文本色，只有越限才变红；绿色只给「在线 / 运行中」，红色只给「报警 / 故障」，蓝色（accent）只给「当前选中 / 当前页 / 可编辑值」。原先天然 α 绿、人工 α 蓝属于装饰用色，且与顶栏「绿＝正常」的含义打架。报警与故障的正常态按需求文档不着色。</li>
-      <li><b>每页 60px 的大标题换成 40px 页签条。</b>800px 高的屏，顶栏＋标题＋按键条原先吃掉约 180px。页签条同时把「移位键在四页之间循环」这件事教给了用户。</li>
-      <li><b>一屏只用一套组件语言。</b>主界面原先横排三段式、四个 tile、五列分隔栏三种排法并存且卡片套卡片；现在全部收敛为同一个「标签在上、数值在下」的字段组件，分「运行状态 / 设备状态」两组，组间留白加一条分隔线。</li>
-      <li><b>报警升级为整屏事件。</b>屏幕四周 4px 红框 ＋ 顶栏红色「报警」徽标 ＋ 人工 α 面板红框 ＋ 数值与刻度条变红，三米外可辨。</li>
-      <li><b>人工 α 数值下方新增「当前值 vs 报警阈值」线性刻度。</b>天然 α 没有阈值判定，因此没有这条刻度 —— 两块面板等大，靠功能差异而不是色块装饰来区分身份。</li>
-      <li><b>配置页从两列网格改为单列分组列表，修掉一个操作逻辑缺陷。</b>原先按「下一条目」在视觉上是往右跳而不是往下；同时恢复了需求文档里「功能控制 / 参数设置」的分组，并去掉了文档中没有的「显示主题切换」（本版只做深色）。</li>
-      <li><b>能谱图叠加能区标注。</b>β / 人工 α / 天然 α1·2·3 五个能区按维护页的道址映射画成色带并标注名称，人工 α 能区加重一档。能区参数本来就在维护页里配置，却从没画到谱上 —— 这是这次信息量提升最大的一处。游标改为实线并带读数标签。</li>
-      <li><b>图标全部为手绘 SVG，统一 2px 描边</b>，不再用「›」这类文本字符冒充图标。</li>
-      <li><b>参数修改就地进行，不弹全屏窗口。</b>只有「清除历史确认」「删除目标地址」「删除温补分组」和「管理员密码」保留弹窗 —— 前者是破坏性操作，后者需要保护性焦点。</li>
+      <li><b>历史页改「列表 + 选中详情」。</b>真机一条记录有 11 个字段（编号 / 开始 / 结束 / 时长 / 结束原因 / 人工α / 天然α / 流量 / 报警 / 故障 / 是否掉电），第一轮的 6 列宽表丢掉了其中 5 个。现在左侧 ▲▼ 走记录，右侧展开全字段，跨页自动翻页。</li>
+      <li><b>维护页改左侧栏。</b>五个维护页竖排在左，表格拿到整幅宽度。顶部换成面包屑条，避免与主导航的四页页签长得一样却含义不同。</li>
+      <li><b>能区划分改 6 行成对</b>（能区 | 左边界 keV | 右边界 keV | 开始道址 | 结束道址），取代第一轮照文档做的 12 行单边界。</li>
+      <li><b>本底补偿改单表</b>，5 行计数对象 × 动态本底（只读）/ 静态本底 / 补偿系数 三列，取代第一轮把 5 个标签重复三遍的三个并排盒子。</li>
+      <li><b>温度补偿加分页</b>，12 组每页 5 行，与真机一致；新增与删除做成可被 ▲▼ 选中的正式条目，而不是真机那样的纯文字「新增（待定）」。</li>
+      <li><b>主界面改为人工 α 在左、天然 α 在右</b>，与真机一致——人工 α 是触发报警的量，理应先读到。</li>
     </ul>
-
-    <h3>设计基准</h3>
+    <h3>修掉的真机问题</h3>
     <ul>
-      <li><b>色板</b>（全部从同一蓝墨色相调出，不用无色相灰）：屏幕场 <code>#070B10</code> · 面板 <code>#0D141D</code> · 分区 <code>#131D28</code> · 细线 <code>#1E2A38</code> · 边框 <code>#2A3A4C</code> · 主文本 <code>#E8EEF5</code> · 标签 <code>#9FB0C3</code> · 弱化 <code>#6B7E93</code> · accent <code>#38A9E8</code> · 正常 <code>#35C08A</code> · 警告 <code>#E9A23B</code> · 报警 <code>#FF4D57</code>。全部前景/背景组合均达到 WCAG 正文 4.5:1（弱化色仅用于 ≥19px，按大字 3:1 计）。</li>
-      <li><b>字阶</b>（固定 px，比例约 1.2）：标签 20 / 次级 22 / 表格 24 / 字段值 28 / 行标题 26 / 主数值 96。7 英寸实机可读性下限：常用小字不低于 18px，关键标签不低于 20px。所有数字启用等宽数字（tabular-nums）。</li>
-      <li><b>间距节奏</b>：组内 8–12px，组间 18–24px，标题上方留白大于下方。</li>
-      <li><b>屏幕分区</b>：顶栏 64 ＋ 页签 40 ＋ 内容 624 ＋ 按键条 72 ＝ 800px；内容区左右安全边距 28px。</li>
+      <li><b>调试信息不再出现在产品界面。</b>删掉能谱页的 <code>MID:42 SEQ:7 T:60 Y:5000000000</code>；历史故障字段不再把位域拼成 <code>未知0x8000/采样/电路/…</code> 全类型字符串，改为只列生效故障的红色标签；α/β 粒子计数遇到 <code>4294967295</code>（0xFFFFFFFF）、<code>2147483648</code>（0x80000000）等未初始化值一律显示「—」并弱化，不当作真实读数。</li>
+      <li><b>能谱 Y 轴不再用 10 位数字。</b>按量级自动缩写（k / M / G），同一条轴统一量级，横向省出约 130px 给谱图。</li>
+      <li><b>编辑不再与被改的值分离。</b>真机改阈值时上面那行仍显示旧值 20.00、真正的编辑器却在屏幕最底部显示 <code>0020.0[1]</code>，当前位用 ASCII 方括号标记还得配一句话解释。这里是选中行本身变成编辑器、当前位反白。</li>
+      <li><b>页头从三条横带压到两条。</b>真机的居中品牌块 + 标题行 + 状态行吃掉 150–180px，现在是顶栏 64 + 页签 40。</li>
+      <li><b>删掉复述按键条的常驻说明</b>：「按底部提示操作」「上下选择，设置编辑，移位返回」「上下改值，设置提交」。</li>
+      <li><b>「未校时」按数据完整性警告处理</b>：顶栏琥珀色标签常驻，历史页再加一行「设备未校时，记录时间可能不准」——那才是它真正起作用的地方。</li>
+      <li><b>能谱页 ▲▼ 不再是「无操作」</b>，恢复游标移动（长按走 10 道）并带读数标签。</li>
+      <li><b>历史页的翻页与清除不再是无提示的纯文字</b>：▲▼ 走记录跨页自动翻，OK 进「查询与清除」，四个键各司其职。</li>
+      <li><b>单位统一为 Bq/m³</b>（真机混用 <code>Bq/m3</code>，且主界面 Bq/m3、历史页 pCi/L 两页不一致）。</li>
     </ul>
-
+    <h3>设计系统（两轮不变）</h3>
+    <ul>
+      <li><b>颜色只表达状态</b>：数值默认主文本色、越限才变红；绿＝在线·运行中，红＝报警·故障，琥珀＝警告·未校时·区间统计，accent＝当前选中·当前页·可编辑值。真机的绿色同时担了数值、开关、选中、可编辑、谱线五种含义，等于没有语义。</li>
+      <li><b>色板</b>：屏幕场 <code>#070B10</code> · 面板 <code>#0D141D</code> · 分区 <code>#131D28</code> · 细线 <code>#1E2A38</code> · 边框 <code>#2A3A4C</code> · 主文本 <code>#E8EEF5</code> · 标签 <code>#9FB0C3</code> · 弱化 <code>#6B7E93</code> · accent <code>#38A9E8</code> · 正常 <code>#35C08A</code> · 警告 <code>#E9A23B</code> · 报警 <code>#FF4D57</code>。全部前景/背景组合达到 WCAG 正文 4.5:1（弱化色仅用于 ≥19px，按大字 3:1 计）。</li>
+      <li><b>字阶</b>固定 px，比例约 1.2：标签 20 / 次级 22 / 表格 24 / 字段值 28 / 行标题 26 / 主数值 96。7 英寸实机可读性下限：小字不低于 18px、关键标签不低于 20px。所有数字等宽（tabular-nums）。</li>
+      <li><b>屏幕分区</b>：顶栏 64 ＋ 页签/面包屑 40 ＋ 内容 624 ＋ 按键条 72 ＝ 800px，内容区左右安全边距 28px。</li>
+      <li><b>表格里的 ▲▼ 按「列内向下、到底跳下一列顶」走</b>，每一次 ▼ 都是视觉向下或右上跳，不会出现「按下一条目却往右跑」。</li>
+    </ul>
     <h3>串口屏落地（背景图烘焙 ＋ 控件叠加）</h3>
     <ul>
-      <li>点「标注模式」查看：虚线框住的是<b>动态控件</b>，需要在屏厂工程里逐个建立；画面其余像素全部属于<b>烘焙静态层</b>，整页导出为一张背景 PNG 即可，运行时零开销。上方「当前页动态控件清单」给出每个控件的坐标与对应命令码，可直接作为建控件的依据。</li>
-      <li><b>动态数字必须使用等宽数字字库</b>（固定字宽），否则数值跳动时会左右抖动。中文静态标签已经烘焙进背景，不占字库。</li>
-      <li><b>选中高亮做成图片控件</b>：预先烘焙一张「选中行」底图（深一档底色 ＋ 1px accent 描边），按行切换位置显示，比逐帧画矩形省事也更稳。</li>
-      <li><b>图标做成两态图片</b>：北斗 / 无线各备「亮（#35C08A）」「灰（#6B7E93）」两张；电池按电量分档备图或用一个矩形控件改宽度。</li>
-      <li><b>能谱曲线</b>用屏厂的曲线 / 波形控件绘制，能区色带与坐标轴刻度烘焙进背景（能区边界改动频率极低，若需随参数变化，则改为五个可移动的半透明矩形控件）。</li>
-      <li><b>报警整屏态</b>建议单独烘焙一张背景（带红框、红色人工 α 面板边框），报警时整页切背景图，比逐控件改色可靠。</li>
+      <li>点「标注模式」：虚线框住的是<b>动态控件</b>，画面其余像素属于<b>烘焙静态层</b>，整页导出为一张背景 PNG 即可。下方「当前页动态控件清单」给出每个控件的坐标与命令码，可直接作为屏厂工程建控件的依据。</li>
+      <li><b>动态数字必须用等宽数字字库</b>（固定字宽），否则数值跳动时会左右抖动。</li>
+      <li><b>选中高亮做成图片控件</b>：预烘焙一张「选中行 / 选中单元格」底图，按位置切换显示。</li>
+      <li><b>图标做两态图片</b>：北斗 / 无线各备亮（<code>#35C08A</code>）灰（<code>#6B7E93</code>）两张；未校时、管理员徽标同理。</li>
+      <li><b>报警整屏态单独烘焙一张背景</b>（带红框、人工 α 面板红边框），报警时整页切图，比逐控件改色可靠。</li>
+      <li><b>能区色带与坐标轴烘焙进背景</b>；若能区参数要随维护页改动实时变化，则改为 5 个可移动的半透明矩形控件。</li>
     </ul>
-
-    <h3>需要和需求文档对齐的三处</h3>
+    <h3>仍需回文档确认的三处</h3>
     <ul>
-      <li><b>能谱道数</b>：需求文档写 512 道，旧截图目录写「256 道能谱」。本示例按 <b>512 道</b>实现。</li>
-      <li><b>故障类型</b>：文档正文写「一共 5 种」却列了 6 项。本示例按 <b>6 种</b>实现（无故障 / 走纸故障 / 采样故障 / 高压故障 / 电路故障 / 通信故障）。</li>
-      <li><b>工作状态</b>：需求正文写「本地模式」，协议表写「本底模式（0x0200）」。本示例取 <b>本底模式</b>，共 7 种。</li>
+      <li><b>能谱道数</b>：本版按真机的 <b>256 道</b>实现（X 轴 0–255，能区道址 32/48/64/80/96/112/128）。需求文档写 512，建议同步改掉，否则后续还会反复撞。</li>
+      <li><b>故障类型种数</b>：文档正文写 5 种、文档列表列了 6 种、真机详情里出现 8 种（采样 / 电路 / 走纸 / 计数 / 探测 / 存储 / 高压 / 通信）。本版取真机的 8 种。</li>
+      <li><b>单位</b>：真机主界面 Bq/m3、历史页 pCi/L 两页不一致。本版按全局单一单位实现；若真机是有意分页设置，请告知。</li>
     </ul>
-
     <h3>操作</h3>
     <ul>
       <li>四个实体键：<b>运行 ▲</b> / <b>停止 ▼</b> / <b>设置 OK</b> / <b>移位 ↩</b>，键盘 ↑ ↓ Enter → 等效。</li>
-      <li><b>移位</b>短按在 监测 → 配置 → 历史 → 能谱 → 监测 之间循环；在子页面中为返回上一级。</li>
-      <li>编辑参数时：▲▼ 调整当前位，↩ 移到下一位，OK 保存并提交，长按 ↩ 取消。进入编辑前显示屏会先向主控读取当前值。</li>
-      <li>能谱界面：▲▼ 移动游标（长按一次走 10 道），OK 打开能谱操作菜单，长按 OK 切换线性 / 对数。</li>
-      <li>隐藏界面：能谱主界面同时长按 运行＋停止＋设置 满 5 秒，输入管理员密码 <b>759759</b>；维护界面内短按移位切换五个页面，长按移位退出。</li>
-      <li>顶部的「跳转页面」下拉可直接查看全部 13 个物理页与各状态附图，不必逐步操作。</li>
+      <li><b>移位</b>短按在 监测 → 配置 → 历史 → 能谱 → 监测 之间循环；子页面中为返回上一级；维护界面中为切换五个维护页，长按退出。</li>
+      <li>编辑参数：▲▼ 调整当前位，↩ 移到下一位，OK 保存并提交，长按 ↩ 取消。进入编辑前显示屏先向主控读取当前值。</li>
+      <li>能谱界面：▲▼ 移动游标（长按走 10 道），OK 打开能谱操作菜单，长按 OK 切换线性 / 对数。</li>
+      <li>隐藏界面：能谱主界面同时长按 运行＋停止＋设置 满 5 秒，输入管理员密码 <b>759759</b>。</li>
+      <li>顶部「跳转页面」下拉可直接查看全部 13 个物理页与各状态附图；「切换校时状态」「模拟报警」「故障类型」可切出对应状态。</li>
     </ul>
 
     <p style="margin-top:18px;color:#68727f">本示例仅用于评审界面与操作逻辑，不连接设备，画面均为演示数据。模拟金属按键、工具栏与本说明位于设备画布之外，不参与移植。</p>
   </div>
-</div>
 <script>
 /* =====================================================================
    α气溶胶快速测量仪 · 串口屏界面示例
@@ -395,43 +464,54 @@ const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const PAGES = ['监测', '配置', '历史', '能谱'];
 const ADMIN_VIEWS = [['version','软件版本'],['calib','参数标定'],['zones','能区划分'],['temp','温度补偿'],['bg','本底补偿']];
-const HPAGE = 5;
-const CHANNELS = 512;
+const HPAGE = 6;
+const CHANNELS = 256;
+const FAULTS = ['采样故障','电路故障','走纸故障','计数故障','探测故障','存储故障','高压故障','通信故障'];
 
 const S = {
   page:0, sel:0, sub:null, scale:1, annot:false,
-  running:true, work:'测量中', fault:'无故障', elapsed:96, alarm:false, battery:86,
+  running:true, work:'测量中', faults:[], elapsed:96, alarm:false, battery:86, clockSynced:false,
   unit:0, threshold:12.5, period:600, bd:true, rf:true, bright:10,
   interval:60, rate:9600, addresses:[1001,1002], addrSel:0,
   clockOffset:0, modal:null, reading:null,
   natural:8.426, artificial:0.218,
-  channel:242, specLog:false, specZoom:0, specPaused:false, specPanel:false, specSel:0,
-  roiOn:false, roiEdit:false, roiEdge:0, roiStart:230, roiEnd:258, showZones:true,
-  histLoaded:false, histLoading:false, histCount:0, histPage:0, histSub:null,
-  histActSel:0, histQuery:5, histClearFrom:1, histClearCount:1, histInterval:600,
-  admin:false, adminView:'version', adminSel:0
+  channel:72, specLog:false, specZoom:0, specPaused:false, specPanel:false, specSel:0,
+  roiOn:false, roiEdit:false, roiEdge:0, roiStart:64, roiEnd:80, showZones:true,
+  histLoaded:false, histLoading:false, histCount:0, histPage:0, histSub:null, histSel:0,
+  histActSel:0, histQuery:12, histClearFrom:1, histClearCount:1, histInterval:600,
+  admin:false, adminView:'version', adminSel:0, adminPane:0, tempPage:0,
+  alphaCount:1284523, betaCount:4294967295
 };
 
 /* ── 演示数据 ──────────────────────────────────────────────────────── */
-const records = Array.from({length:36}, (_,i) => ({
-  date:'2026-09-' + String(17 - Math.floor(i/12)).padStart(2,'0'),
-  time:`${String(14 - Math.floor(i%12/6)).padStart(2,'0')}:${String(50 - i%6*10).padStart(2,'0')}:00`,
-  art: i%7===3 ? 14.62 : 0.16 + (i%8)*0.017,
-  nat: 7.6 + (i%9)*0.42,
-  flow: 30 + (i%4)*0.12,
-  alarm: i%7===3,
-  fault: i===9 ? '采样故障' : '无故障',
-  power: i===12
-}));
+/* 一条历史记录 11 个字段，与真机数据模型一致 */
+const records = Array.from({length:36}, (_,i) => {
+  const start = new Date(2026, 8, 17, 14, 50, 0);
+  start.setMinutes(start.getMinutes() - i * 5);
+  const dur = 120;
+  const power = i === 12;
+  return {
+    no: 36 - i,
+    start, end: new Date(+start + dur * 1000), dur,
+    reason: power ? '掉电中断' : (i % 11 === 5 ? '手动停止' : '正常完成'),
+    art: i === 4 ? null : (i % 7 === 3 ? 14.62 : 0.16 + (i % 8) * 0.017),
+    nat: 7.6 + (i % 9) * 0.42,
+    flow: 30 + (i % 4) * 0.12,
+    alarm: i % 7 === 3,
+    faults: i === 9 ? ['采样故障'] : i === 21 ? ['高压故障','通信故障'] : [],
+    power
+  };
+});
 
-/* 谱形按能区布置：β 连续谱 + 人工α + 天然α1/2/3 各一峰 */
+/* 256 道演示谱形：峰位落在各能区之内（β 32–48 / 人工α 48–64 / 天然α1·2·3 64–112） */
 const spectrum = Array.from({length:CHANNELS}, (_,i) => {
-  let v = 14 + 9 * Math.sin(i*1.7)**2;
-  v += 1400 * Math.exp(-Math.pow((i-96)/16, 2));
-  v += 2600 * Math.exp(-Math.pow((i-172)/9, 2));
-  v += 5200 * Math.exp(-Math.pow((i-242)/8, 2));
-  v += 3400 * Math.exp(-Math.pow((i-294)/8, 2));
-  v += 6400 * Math.exp(-Math.pow((i-345)/9, 2));
+  let v = 9 + 6 * Math.sin(i * 1.7) ** 2;
+  v += 1500 * Math.exp(-Math.pow((i - 40) / 7, 2));
+  v += 2600 * Math.exp(-Math.pow((i - 56) / 4, 2));
+  v += 5200 * Math.exp(-Math.pow((i - 72) / 4, 2));
+  v += 3400 * Math.exp(-Math.pow((i - 88) / 4, 2));
+  v += 6400 * Math.exp(-Math.pow((i - 104) / 4.5, 2));
+  if (i > 108) v += 760 * Math.exp(-(i - 108) / 52);
   return Math.round(v);
 });
 
@@ -439,17 +519,19 @@ const zoneNames = ['β 能区','人工 α','天然 α1','天然 α2','天然 α3
 const bgNames = ['β','人工 α','天然 α1','天然 α2','天然 α3'];
 const A = {
   mcaThreshold:'120', mcaGain:'1000',
-  energy1:'4000', channel1:'180', energy2:'7000', channel2:'350',
+  energy1:'4000', channel1:'90', energy2:'7000', channel2:'175',
   effDetect:'0.2500', effAdsorb:'0.9800',
-  zones:  [['1000','1600'],['2000','2700'],['3000','3600'],['3700','4300'],['4400','5000'],['3000','5000']],
-  mapping:[['73','118'],['147','198'],['220','264'],['272','316'],['323','367'],['220','367']],
-  temps:[
-    {t:'25.00', th:'120', g:'1000', bg:'15', k:'1.000000', c:'1.000000'},
-    {t:'35.00', th:'124', g:'1018', bg:'17', k:'1.012000', c:'0.995000'},
-    {t:'45.00', th:'129', g:'1041', bg:'20', k:'1.026000', c:'0.988000'}
-  ],
+  /* 能区：一行一个能区，左右边界成对（真机形态） */
+  zones:   [['0','1000'],['1000','2000'],['2000','3000'],['3000','4000'],['4000','5000'],['5000','6000']],
+  mapping: [['32','48'],['48','64'],['64','80'],['80','96'],['96','112'],['112','128']],
+  /* 温度补偿 12 组，每页 5 行 */
+  temps: Array.from({length:12}, (_,i) => ({
+    t:(20 + i).toFixed(1), th:String(100 + i), g:(1 + i * 0.018).toFixed(3),
+    bg:String(12000 + i * 130), k:(1 + i * 0.012).toFixed(3), c:(1 - i * 0.006).toFixed(3)
+  })),
+  /* 本底补偿：一行一个计数对象，三个值列 */
   dynBg:['12','25','18','11','8'], staBg:['10','22','15','9','7'],
-  bgK:['1.000000','-0.250000','12.500000','0.980000','-10.250000'],
+  bgK:['1.000','0.980','1.025','0.995','1.010'],
   mcuVer:'V2.1.0', mcuDate:'2026-05-31', fpgaVer:'V2.1.0', fpgaDate:'2026-05-31'
 };
 
@@ -485,7 +567,25 @@ const now = () => new Date(Date.now() + S.clockOffset);
 const dateTimeEdit = () => now().toLocaleString('sv-SE').replace(' ','　');
 const artValue = () => S.alarm ? 16.82 : S.artificial;
 const isAlarm = () => S.alarm;
-const faultBad = () => S.fault !== '无故障';
+const faultBad = () => S.faults.length > 0;
+const faultText = () => S.faults.length ? S.faults.join(' · ') : '无故障';
+const fmtDT = d => `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())} ${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}`;
+const fmtMD = d => `${p2(d.getMonth()+1)}-${p2(d.getDate())} ${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}`;
+/* 未初始化值（0xFFFFFFFF / 0x80000000）不当作真实读数显示 */
+const INVALID = [4294967295, 2147483648, 0xFFFF, -1];
+function countText(v){
+  if (v === null || v === undefined || INVALID.includes(v)) return '—';
+  return v.toLocaleString();
+}
+/* 轴刻度用量级缩写，避免 10 位数字吃掉横向空间；同一条轴统一量级 */
+function axisFmt(max){
+  const m = Math.abs(max);
+  if (m >= 1e9) return v => (v / 1e9).toFixed(Math.abs(v) % 1e9 ? 1 : 0) + ' G';
+  if (m >= 1e6) return v => (v / 1e6).toFixed(Math.abs(v) % 1e6 ? 1 : 0) + ' M';
+  if (m >= 1e4) return v => (v / 1e3).toFixed(Math.abs(v) % 1e3 ? 1 : 0) + ' k';
+  return v => v.toLocaleString();
+}
+const axisText = v => axisFmt(v)(v);
 
 /* ── 通用组件 ──────────────────────────────────────────────────────── */
 const attr = c => c ? ` data-ctl="${c}"` : '';
@@ -520,9 +620,10 @@ function renderTopbar(){
   $('#topbar').innerHTML =
     `<div class="brand">
        <div class="wm"><i>α</i>气溶胶快速测量仪</div>
-       <div class="co">重庆建安仪器有限责任公司</div>
+       ${S.admin ? '' : '<div class="co">重庆建安仪器有限责任公司</div>'}
        <div class="sn" data-ctl="设备编号|静态文本|出厂写入">2026-09-0001</div>
        ${S.admin ? '<div class="badge-admin">管理员</div>' : ''}
+       ${S.clockSynced ? '' : '<div class="badge-warn" data-ctl="未校时标识|图标两态|0x0002">未校时</div>'}
        ${isAlarm() ? '<div class="badge-alarm" data-ctl="报警徽标|图标两态|0x0101">报警</div>' : ''}
      </div>
      <div class="sigs">
@@ -536,11 +637,18 @@ function renderTopbar(){
      </div>`;
 }
 function renderTabs(){
-  const items = S.admin ? ADMIN_VIEWS.map(v => v[1]) : PAGES;
-  const cur = S.admin ? ADMIN_VIEWS.findIndex(v => v[0] === S.adminView) : S.page;
-  $('#tabs').innerHTML = items.map((t,i) =>
-    `<div class="tab ${i === cur ? 'on' : ''}"${i === cur ? ' data-ctl="当前页指示|选中高亮|屏内状态"' : ''}>${t}</div>`).join('');
+  const el = $('#tabs');
+  if (S.admin){
+    el.className = 'tabs crumb-bar';
+    el.innerHTML = `<span class="crumb-main">维护中心<i>›</i><b data-ctl="当前维护页|状态文本|屏内状态">${adminTitle()}</b></span>
+      <span class="crumb-state">参数先回读、改后整项写回，由主控校验</span>`;
+    return;
+  }
+  el.className = 'tabs';
+  el.innerHTML = PAGES.map((t,i) =>
+    `<div class="tab ${i === S.page ? 'on' : ''}"${i === S.page ? ' data-ctl="当前页指示|选中高亮|屏内状态"' : ''}>${t}</div>`).join('');
 }
+const adminTitle = () => (ADMIN_VIEWS.find(v => v[0] === S.adminView) || ADMIN_VIEWS[0])[1];
 function keys(){
   const m = S.modal;
   if (m && m.type === 'password') return [['▲','数字 +1'],['▼','数字 -1'],['OK','确认密码'],['↩','下一位｜长按返回']];
@@ -557,7 +665,7 @@ function keys(){
       : [['▲','上一条目'],['▼','下一条目'],['OK','修改参数'],['↩','下一页 · 历史']];
   if (S.page === 2) return S.histSub === 'tools'
     ? [['▲','上一条目'],['▼','下一条目'],['OK','修改｜执行'],['↩','返回历史']]
-    : [['▲','上一页记录'],['▼','下一页记录'],['OK','查询与清除'],['↩','下一页 · 能谱']];
+    : [['▲','上一条记录'],['▼','下一条记录'],['OK','查询与清除'],['↩','下一页 · 能谱']];
   if (S.roiEdit)   return [['▲','左移 1｜长按 10'],['▼','右移 1｜长按 10'],['OK','切换起点/终点'],['↩','完成设置']];
   if (S.specPanel) return [['▲','左移 1｜长按 10'],['▼','右移 1｜长按 10'],['OK','修改当前项'],['↩','下一项｜长按关闭']];
   return [['▲','游标左移｜长按 10'],['▼','游标右移｜长按 10'],['OK','能谱操作'],['↩','下一页 · 监测']];
@@ -578,18 +686,18 @@ function renderMonitor(){
   const bat = S.battery < 10 ? 'c-alarm' : S.battery < 20 ? 'c-warn' : '';
   return `
   <div class="metrics">
-    <section class="metric">
-      <div class="mhead"><h2>天然 α 活度浓度</h2></div>
-      <div class="mval"><b class="num" data-ctl="天然α浓度|数值文本|0x0101">${conc(S.natural)}</b><span data-ctl="浓度单位|状态文本|0x0201">${unit()}</span></div>
-      <div class="mfoot">本次测量周期累计</div>
-    </section>
     <section class="metric ${alarming ? 'alarm' : ''}">
       <div class="mhead"><h2>人工 α 活度浓度</h2><span>报警阈值 <span class="num" data-ctl="报警阈值|数值文本|0x0202">${thrText()}</span></span></div>
-      <div class="mval"><b class="num ${alarming ? 'c-alarm' : ''}" data-ctl="人工α浓度|数值文本|0x0101">${conc(art)}</b><span>${unit()}</span></div>
+      <div class="mval"><b class="num ${alarming ? 'c-alarm' : ''}" data-ctl="人工α浓度|数值文本|0x0101">${conc(art)}</b><span data-ctl="浓度单位|状态文本|0x0201">${unit()}</span></div>
       <div class="gauge">
         <div class="gtrack" data-ctl="阈值刻度条|进度条|0x0101"><div class="gfill ${alarming ? 'alarm' : ''}" style="width:${pct}%"></div></div>
         <div class="gscale"><span>0</span><span class="num">阈值 ${thrText()} ${unit()}</span></div>
       </div>
+    </section>
+    <section class="metric">
+      <div class="mhead"><h2>天然 α 活度浓度</h2></div>
+      <div class="mval"><b class="num" data-ctl="天然α浓度|数值文本|0x0101">${conc(S.natural)}</b><span>${unit()}</span></div>
+      <div class="mfoot">本次测量周期累计 · 不参与报警判定</div>
     </section>
   </div>
   <section class="panel status">
@@ -606,7 +714,7 @@ function renderMonitor(){
       <div class="scap">设备状态</div>
       <div class="fields">
         ${field('报警状态', alarming ? '报警' : '正常', alarming ? 'c-alarm' : '', '报警状态|状态文本|0x0101')}
-        ${field('故障类型', S.fault, faultBad() ? 'c-alarm' : '', '故障类型|状态文本|0x0101')}
+        ${field('故障类型', faultText(), faultBad() ? 'c-alarm' : '', '故障类型|状态文本|0x0101')}
         ${field('电池电量', `${S.battery}<small>%</small>`, 'num ' + bat, '电池电量值|数值文本|0x0101')}
         ${field('北斗定位', S.bd
             ? `<span class="num">116.39128° E</span><br><span class="num">39.90735° N</span>`
@@ -680,36 +788,59 @@ function histIntervalPill(){
 }
 function renderHistory(){
   if (S.histSub === 'tools') return renderHistTools();
+  const total = Math.min(records.length, S.histCount);
+  const clockNote = S.clockSynced ? '' :
+    `<span class="note-warn">${IC.warn}设备未校时，记录时间可能不准</span>`;
   const meta = `<div class="tmeta"><div class="left">${histIntervalPill()}
-      <span>设备共 <b class="num" data-ctl="记录总数|数值文本|0x0301">${records.length}</b> 条</span></div>
+      <span>已存 <b class="num" data-ctl="记录总数|数值文本|0x0301">${records.length}</b> / 10000</span>
+      ${clockNote}</div>
       <span class="pill acc" data-hist-tools>查询与清除</span></div>`;
   if (S.histLoading) return meta +
     `<div class="state loading">${IC.search}<h3>正在读取历史记录</h3><p>查询指令 0x0301 已发出，等待主控分包返回。</p></div>`;
   if (!S.histLoaded) return meta +
     `<div class="state">${IC.warn}<h3>历史记录读取失败</h3><p>主控连续 5 次未应答。按「设置」键进入查询与清除，重新发起一次查询。</p></div>`;
-  const total = Math.min(records.length, S.histCount);
   if (!total) return meta +
     `<div class="state">${IC.empty}<h3>暂无历史记录</h3><p>主控当前没有可返回的历史数据。开始一次测量后，按存储间隔自动记录。</p></div>`;
-  const start = S.histPage * HPAGE;
+
+  S.histSel = Math.max(0, Math.min(total - 1, S.histSel));
+  const page = Math.floor(S.histSel / HPAGE);
+  const start = page * HPAGE;
   const list = records.slice(start, Math.min(start + HPAGE, total));
-  const body = list.map((r, j) => `<tr>
-      <td class="num" data-ctl="记录${start+j+1}·时间|表格文本|0x0301">${r.date}　${r.time}</td>
-      <td class="r" data-ctl="记录${start+j+1}·人工α|表格文本|0x0301">${conc(r.art)}</td>
-      <td class="r" data-ctl="记录${start+j+1}·天然α|表格文本|0x0301">${conc(r.nat)}</td>
-      <td class="r" data-ctl="记录${start+j+1}·流量|表格文本|0x0301">${r.flow.toFixed(2)}</td>
-      <td class="m ${r.alarm ? 'c-alarm' : 'c-mut'}" data-ctl="记录${start+j+1}·报警|表格文本|0x0301">${r.alarm ? '报警' : '正常'}</td>
-      <td class="m ${r.fault !== '无故障' || r.power ? 'c-alarm' : 'c-mut'}" data-ctl="记录${start+j+1}·故障|表格文本|0x0301">${r.fault === '无故障' ? '正常' : r.fault}${r.power ? ' / 掉电' : ''}</td>
-    </tr>`).join('');
-  return meta + `<div class="tbox"><table class="tbl"><thead><tr>
-      <th style="width:310px">记录时间</th>
-      <th class="r">人工 α<small>${unit()}</small></th>
-      <th class="r">天然 α<small>${unit()}</small></th>
-      <th class="r">流量<small>L/min</small></th>
-      <th class="m" style="width:130px">报警</th>
-      <th class="m" style="width:210px">故障 / 掉电</th>
-    </tr></thead><tbody>${body}</tbody></table></div>
-    <div class="tfoot"><span class="warnline" id="histAlert"></span>
-      <span>本次查询 ${total} 条 · 第 ${S.histPage + 1} / ${Math.max(1, Math.ceil(total / HPAGE))} 页</span></div>`;
+  const rows = list.map((rec, j) => {
+    const i = start + j;
+    return `<button class="hl-row ${i === S.histSel ? 'on' : ''}" data-hrow="${i}">
+      <span class="hl-no" data-ctl="记录${i+1}·编号|表格文本|0x0301">${rec.no}</span>
+      <span class="hl-t" data-ctl="记录${i+1}·时间|表格文本|0x0301">${fmtMD(rec.start)}</span>
+      <span class="hl-v ${rec.art === null ? 'na' : ''} ${rec.alarm ? 'c-alarm' : ''}" data-ctl="记录${i+1}·人工α|表格文本|0x0301">${rec.art === null ? '—' : conc(rec.art)}</span>
+    </button>`;
+  }).join('');
+
+  const r = records[S.histSel];
+  const dItem = (label, value, cls = '', ctl = '', wide = false) =>
+    `<div class="hd-item ${wide ? 'wide' : ''}"><label>${label}</label><div class="v ${cls}"${attr(ctl)}>${value}</div></div>`;
+  const faultCell = r.faults.length
+    ? `<div class="chips">${r.faults.map(f => `<span class="chip-fault">${f}</span>`).join('')}</div>`
+    : '无故障';
+  const detail = `<section class="hist-detail">
+    <div class="hd-head"><h3>选中记录详情</h3><span>第 ${S.histSel + 1} / ${total} 条 · 第 ${page + 1} / ${Math.ceil(total / HPAGE)} 页</span></div>
+    <div class="hd-grid">
+      ${dItem('编号', r.no, 'num', '详情·编号|数值文本|0x0301')}
+      ${dItem('人工 α', `${r.art === null ? '—' : conc(r.art)}<small>${unit()}</small>`, r.art === null ? 'c-mut' : (r.alarm ? 'c-alarm' : ''), '详情·人工α|数值文本|0x0301')}
+      ${dItem('开始', fmtDT(r.start), 'num', '详情·开始时间|数值文本|0x0301')}
+      ${dItem('天然 α', `${conc(r.nat)}<small>${unit()}</small>`, 'num', '详情·天然α|数值文本|0x0301')}
+      ${dItem('结束', fmtDT(r.end), 'num', '详情·结束时间|数值文本|0x0301')}
+      ${dItem('流量', `${r.flow.toFixed(2)}<small>L/min</small>`, 'num', '详情·流量|数值文本|0x0301')}
+      ${dItem('时长', `${r.dur}<small>s</small>`, 'num', '详情·时长|数值文本|0x0301')}
+      ${dItem('报警', r.alarm ? '报警' : '无报警', r.alarm ? 'c-alarm' : '', '详情·报警|状态文本|0x0301')}
+      ${dItem('结束原因', r.reason, r.reason === '正常完成' ? '' : 'c-warn', '详情·结束原因|状态文本|0x0301')}
+      ${dItem('是否掉电', r.power ? '是' : '否', r.power ? 'c-alarm' : '', '详情·掉电标识|状态文本|0x0301')}
+      ${dItem('故障', faultCell, r.faults.length ? '' : 'c-mut', '详情·故障位域|状态文本|0x0301', true)}
+    </div></section>`;
+
+  return meta + `<div class="hist"><section class="hist-list">
+      <div class="hl-head"><span>编号</span><span>测量时间</span><span class="hl-v">人工 α</span></div>
+      ${rows}
+    </section>${detail}</div>`;
 }
 function histActions(){
   return [
@@ -773,7 +904,7 @@ function renderSpectrum(){
   const roiTotal = spectrum.slice(a, b + 1).reduce((x,y) => x + y, 0);
   const left = Math.round(demoWave(S.channel, 0, S.specMode)), right = demoWave(S.channel, 1, S.specMode);
   const meta = `<div class="tmeta"><div class="left">
-      <span class="pill">${SPEC_MODES[S.specMode]}</span>
+      <span class="pill">${SPEC_MODES[S.specMode]} · ${CHANNELS} 道</span>
       ${S.specPaused ? '<span class="pill warn">已暂停</span>' : ''}
       <span>游标 <b class="num" data-ctl="游标道址|数值文本|屏内状态">${S.channel}</b> 道 ·
       ${spec ? `计数 <b class="num" data-ctl="游标计数|数值文本|0x0401">${spectrum[S.channel].toLocaleString()}</b>`
@@ -786,18 +917,20 @@ function renderSpectrum(){
       <span class="grp"><span>${spec ? '计数' : '幅值'}</span>
         <span class="pill">${S.specLog ? '对数显示' : '线性显示'}${spec && !S.specPanel && !S.roiEdit ? ' · 长按 OK 切换' : ''}</span></span>
       <span class="grp"><span>道址 0 – ${CHANNELS - 1}${S.specZoom ? ` · 放大 ${1 << S.specZoom} 倍` : ''}</span></span>
-    </div><canvas id="plot" width="1224" height="352" data-ctl="能谱曲线|曲线图元|0x0401"></canvas></div>`;
+    </div><canvas id="plot" width="1224" height="296" data-ctl="能谱曲线|曲线图元|0x0401"></canvas></div>`;
   const body = S.specPanel
     ? `<section class="panel smenu"><h3>能谱操作</h3><div class="smenu-list">${specMenu().map((x,i) =>
         `<button class="smenu-item ${i === S.specSel ? 'on' : ''}" data-smenu="${i}"><label>${x.label}</label><b>${x.val}</b></button>`).join('')}</div></section>`
     : `<section class="panel params">
-        ${field('温度', '25.6<small>℃</small>', 'num', '多道温度|数值文本|0x0401')}
         ${field('高压', '650.0<small>V</small>', 'num', '多道高压|数值文本|0x0401')}
+        ${field('温度', '25.6<small>℃</small>', 'num', '多道温度|数值文本|0x0401')}
         ${field('阈值', A.mcaThreshold, 'num', '多道阈值|数值文本|0x0401')}
         ${field('增益', '1.000', 'num', '多道增益|数值文本|0x0401')}
         ${field('成形参数', '8', 'num', '成形参数|数值文本|0x0401')}
         ${field('工作时间', duration(S.elapsed), 'num', '多道工作时间|数值文本|0x0401')}
         ${field('触发计数', '1,286', 'num', '触发计数|数值文本|0x0401')}
+        ${field('α 粒子计数', countText(S.alphaCount), 'num ' + (countText(S.alphaCount) === '—' ? 'c-mut' : ''), 'α粒子计数|数值文本|0x0401')}
+        ${field('β 粒子计数', countText(S.betaCount), 'num ' + (countText(S.betaCount) === '—' ? 'c-mut' : ''), 'β粒子计数|数值文本|0x0401')}
         ${field('刷新周期', S.specPaused ? '暂停' : '2<small>s</small>', 'num', '刷新周期|状态文本|屏内状态')}
       </section>`;
   return meta + chart + body;
@@ -806,9 +939,9 @@ function draw(){
   const c = $('#plot'); if (!c) return;
   const ctx = c.getContext('2d');
   const cs = getComputedStyle($('#screen')), col = n => cs.getPropertyValue(n).trim();
-  const W = 1224, L = 82, R = S.specMode ? 1140 : 1206, T = 36, B = 306, PW = R - L, PH = B - T;
+  const W = 1224, L = 76, R = S.specMode ? 1146 : 1206, T = 30, B = 254, PW = R - L, PH = B - T;
   const rg = specRange();
-  ctx.clearRect(0, 0, W, 352);
+  ctx.clearRect(0, 0, W, 296);
   ctx.font = '17px "Microsoft YaHei",sans-serif';
   ctx.textBaseline = 'middle';
   ctx.lineWidth = 1;
@@ -834,11 +967,12 @@ function draw(){
       });
     }
     ctx.strokeStyle = col('--line-1'); ctx.fillStyle = col('--text-3'); ctx.textAlign = 'right';
+    const fmt = axisFmt(max);
     for (let i = 0; i < 5; i++){
       const ratio = 1 - i/4, y = T + i*PH/4;
       const label = S.specLog ? Math.round(Math.expm1(Math.log1p(max)*ratio)) : Math.round(max*ratio);
       ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(R, y); ctx.stroke();
-      ctx.fillText(label.toLocaleString(), L - 12, y);
+      ctx.fillText(fmt(label), L - 11, y);
     }
     const bw = PW / rg.count;
     values.forEach((v, i) => {
@@ -855,12 +989,13 @@ function draw(){
     let lmin = Math.min(...lv), lmax = Math.max(...lv), rmin = Math.min(...rv), rmax = Math.max(...rv);
     const lp = span(lmin, lmax), rp = span(rmin, rmax);
     lmin -= lp; lmax += lp; rmin -= rp; rmax += rp;
+    const lf = axisFmt(Math.max(Math.abs(lmin), Math.abs(lmax)));
     for (let i = 0; i < 5; i++){
       const y = T + i*PH/4, ratio = 1 - i/4;
       ctx.strokeStyle = col('--line-1');
       ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(R, y); ctx.stroke();
       ctx.fillStyle = col('--text-1'); ctx.textAlign = 'right';
-      ctx.fillText(Math.round(lmin + (lmax - lmin)*ratio).toLocaleString(), L - 12, y);
+      ctx.fillText(lf(Math.round(lmin + (lmax - lmin)*ratio)), L - 11, y);
       ctx.fillStyle = col('--accent'); ctx.textAlign = 'left';
       ctx.fillText((rmin + (rmax - rmin)*ratio).toFixed(rmax - rmin < 10 ? 1 : 0), R + 12, y);
     }
@@ -876,14 +1011,14 @@ function draw(){
   /* x 轴 */
   ctx.fillStyle = col('--text-3'); ctx.textAlign = 'center';
   for (let i = 0; i < 5; i++){
-    const px = L + i*PW/4, ch = Math.round(rg.start + i*(rg.count - 1)/4);
-    ctx.fillText(String(ch), px, 330);
+    const px = L + i*PW/4, ch = i === 4 ? rg.end : Math.round(rg.start + i*rg.count/4);
+    ctx.fillText(String(ch), px, 278);
   }
   /* 游标：accent 只用于「当前选中」，这里正是它的本职 */
   const cx = xOf(S.channel);
   ctx.strokeStyle = col('--accent'); ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(cx, T); ctx.lineTo(cx, B); ctx.stroke();
-  const tag = S.specMode === 0 ? `${S.channel} 道 · ${spectrum[S.channel].toLocaleString()}` : `${S.channel} 道`;
+  const tag = S.specMode === 0 ? `${S.channel} 道 · ${axisText(spectrum[S.channel])}` : `${S.channel} 道`;
   ctx.font = '600 17px "Microsoft YaHei",sans-serif';
   const tw = ctx.measureText(tag).width + 18;
   const tx = Math.max(L, Math.min(R - tw, cx - tw/2));
@@ -895,8 +1030,11 @@ function draw(){
 }
 
 /* ── 09–13 维护隐藏界面 ────────────────────────────────────────────── */
-A.bgDuration = '600';
 const TEMP_COLS = [['t','温度 ℃'],['th','阈值'],['g','增益'],['bg','本底计数'],['k','矫正系数'],['c','补偿系数']];
+const TEMP_ROWS = 5;                     /* 每页 5 组，与真机一致 */
+const BG_COLS = [['staBg','静态本底'],['bgK','补偿系数']];
+
+/* ▲▼ 在表格里按「列内向下、到底跳下一列顶」走，每一次 ▼ 都是视觉向下 */
 function adminItems(){
   const v = S.adminView;
   if (v === 'calib') return [
@@ -909,24 +1047,45 @@ function adminItems(){
     {get:()=>A.effDetect,    set:x=>A.effDetect=x,    label:'探测效率',     cmd:'0x0513'},
     {get:()=>A.effAdsorb,    set:x=>A.effAdsorb=x,    label:'滤纸吸附效率', cmd:'0x0513'}
   ];
-  if (v === 'zones') return Array.from({length:12}, (_,i) => {
-    const g = i >> 1, e = i & 1;
-    return {get:()=>A.zones[g][e], set:x=>A.zones[g][e]=x,
-            label:`${zoneNames[g]}${e ? '右' : '左'}边界能量`, cmd:'0x0521'};
-  });
-  if (v === 'temp') return [
-    ...A.temps.flatMap((_, r) => TEMP_COLS.map(([k, lb]) =>
-      ({get:()=>A.temps[r][k], set:x=>A.temps[r][k]=x, label:`第${r+1}组·${lb}`, cmd:'0x0531'}))),
-    {action:'add', label:'新增一组温度补偿'},
-    {action:'del', label:'删除最后一组'}
-  ];
-  if (v === 'bg') return [
-    ...bgNames.map((n,i) => ({get:()=>A.staBg[i], set:x=>A.staBg[i]=x, label:`静态本底·${n}`, cmd:'0x0543'})),
-    ...bgNames.map((n,i) => ({get:()=>A.bgK[i],   set:x=>A.bgK[i]=x,   label:`补偿系数·${n}`, cmd:'0x0542'})),
-    {get:()=>A.bgDuration, set:x=>A.bgDuration=x, label:'本底测量时长 s', cmd:'0x0542'}
-  ];
+  if (v === 'zones'){
+    const out = [];
+    for (let c = 0; c < 2; c++) for (let r = 0; r < A.zones.length; r++)
+      out.push({row:r, col:c, get:()=>A.zones[r][c], set:x=>A.zones[r][c]=x,
+                label:`${zoneNames[r]}${c ? '右' : '左'}边界能量`, cmd:'0x0521'});
+    return out;
+  }
+  if (v === 'bg'){
+    const out = [];
+    for (let c = 0; c < BG_COLS.length; c++) for (let r = 0; r < bgNames.length; r++){
+      const key = BG_COLS[c][0];
+      out.push({row:r, col:c, get:()=>A[key][r], set:x=>A[key][r]=x,
+                label:`${BG_COLS[c][1]}·${bgNames[r]}`, cmd:c ? '0x0542' : '0x0543'});
+    }
+    return out;
+  }
+  if (v === 'temp'){
+    const out = [], pages = Math.max(1, Math.ceil(A.temps.length / TEMP_ROWS));
+    for (let pg = 0; pg < pages; pg++){
+      const rows = [];
+      for (let r = pg * TEMP_ROWS; r < Math.min(A.temps.length, (pg + 1) * TEMP_ROWS); r++) rows.push(r);
+      for (let c = 0; c < TEMP_COLS.length; c++) for (const r of rows){
+        const key = TEMP_COLS[c][0];
+        out.push({page:pg, row:r, col:c, get:()=>A.temps[r][key], set:x=>A.temps[r][key]=x,
+                  label:`第${r+1}组·${TEMP_COLS[c][1]}`, cmd:'0x0531'});
+      }
+    }
+    out.push({action:'add', label:'新增一组温度补偿', page:pages - 1});
+    out.push({action:'del', label:'删除最后一组',     page:pages - 1});
+    return out;
+  }
   return [];
 }
+function tempPage(){
+  const it = adminItems()[S.adminSel];
+  return it && it.page !== undefined ? it.page : 0;
+}
+function idxAt(items, r, c){ return items.findIndex(it => it.row === r && it.col === c); }
+
 function aRow(i, name, value, cmd, ro){
   const ed = S.modal && S.modal.type === 'edit' && S.modal.inline && S.adminSel === i && !ro;
   const right = ed ? `<span class="ed">${editor(S.modal)}</span>`
@@ -942,15 +1101,25 @@ function aCell(i, value, cmd, label, cls = ''){
   return `<td><button class="cell ${cls} ${ro ? 'ro' : 'acc'} ${!ro && S.adminSel === i ? 'on' : ''}"${ro ? '' : ` data-admin="${i}"`}>${inner}</button></td>`;
 }
 function adminActionRow(i, name, danger){
-  return `<button class="row ${S.adminSel === i ? 'on' : ''} ${danger ? 'danger' : ''}" data-admin="${i}">
+  return `<button class="row act ${S.adminSel === i ? 'on' : ''} ${danger ? 'danger' : ''}" data-admin="${i}">
       <span class="rname">${name}</span></button>`;
 }
 function adminMeta(text, right = ''){
   return `<div class="tmeta"><div class="left">${text}</div>${right}</div>`;
 }
+
 function renderAdmin(){
-  const v = S.adminView;
-  if (v === 'version') return adminMeta('只读界面 · 版本号随主控固件烧录更新',
+  const side = `<nav class="adm-side">
+    ${ADMIN_VIEWS.map(([k, t]) => `<div class="sv ${k === S.adminView ? 'on' : ''}"${k === S.adminView ? ' data-ctl="维护页指示|选中高亮|屏内状态"' : ''}>${t}</div>`).join('')}
+    <div class="sv-foot">移位键切换<br>长按退出至能谱</div>
+  </nav>`;
+  return `<div class="adm">${side}<div class="adm-main">${adminPane()}</div></div>`;
+}
+
+function adminPane(){
+  const v = S.adminView, it = adminItems();
+
+  if (v === 'version') return adminMeta('版本号随主控固件烧录更新，本页只读',
       '<span class="pill">0x0501 / 0x0502</span>') + `
     <div class="ver">
       <section class="abox"><h3>主控 MCU 软件</h3>
@@ -962,12 +1131,10 @@ function renderAdmin(){
         <div class="vrow"><span>最近更新日期</span><b class="num" data-ctl="多道更新日期|状态文本|0x0501">${A.fpgaDate}</b></div>
       </section>
     </div>
-    <div class="afoot"><span>版本格式：版本号 + 日期，例 V2.1.0-20260531</span><span>按「移位」切换维护界面，长按退出至能谱界面</span></div>`;
+    <div class="afoot"><span>版本格式：版本号 + 日期，例 V2.1.0-20260531</span></div>`;
 
-  if (v === 'calib'){
-    const it = adminItems();
-    return adminMeta('标定参数 · 修改后整项写回主控，由主控校验合理性',
-        '<span class="pill">0x0511 / 0x0512 / 0x0513</span>') + `
+  if (v === 'calib') return adminMeta('标定参数 · 修改后整项写回，由主控校验合理性',
+      '<span class="pill">0x0511 / 0x0512 / 0x0513</span>') + `
       <div class="agroups" style="grid-template-columns:1fr 1.45fr 1fr">
         <section class="abox"><h3>多道参数</h3>
           ${aRow(0, '阈值', it[0].get(), '0x0511')}${aRow(1, '增益', it[1].get(), '0x0511')}</section>
@@ -977,60 +1144,63 @@ function renderAdmin(){
         <section class="abox"><h3>效率参数</h3>
           ${aRow(6, '探测效率', it[6].get(), '0x0513')}${aRow(7, '滤纸吸附效率', it[7].get(), '0x0513')}</section>
       </div>
-      <div class="afoot"><span>刻度参数用于能量–道址线性换算，修改后能区道址映射自动重算</span><span>共 8 项</span></div>`;
-  }
+      <div class="afoot"><span>刻度参数用于能量–道址线性换算，修改后能区道址映射由主控重算</span><span>共 8 项</span></div>`;
 
   if (v === 'zones'){
-    const rows = Array.from({length:12}, (_,i) => {
-      const g = i >> 1, e = i & 1;
-      return `<tr>
-        <td><span class="cell ro m">${i + 1}</span></td>
-        <td><span class="cell ro">${zoneNames[g]}${e ? '右' : '左'}边界能量</span></td>
-        ${aCell(i, A.zones[g][e], '0x0521', `能区${i+1}能量`, 'm')}
-        ${aCell(-1, A.mapping[g][e], '0x0521', `能区${i+1}道址`, 'm')}
-      </tr>`;
-    }).join('');
-    return adminMeta('能区划分 · 能量可改，道址映射由主控换算后回读（只读）',
+    const rows = A.zones.map((z, r) => `<tr>
+        <td><span class="cell ro">${zoneNames[r]}</span></td>
+        ${aCell(idxAt(it, r, 0), z[0], '0x0521', `${zoneNames[r]}左边界`, 'm')}
+        ${aCell(idxAt(it, r, 1), z[1], '0x0521', `${zoneNames[r]}右边界`, 'm')}
+        ${aCell(-1, A.mapping[r][0], '0x0521', `${zoneNames[r]}开始道址`, 'm')}
+        ${aCell(-1, A.mapping[r][1], '0x0521', `${zoneNames[r]}结束道址`, 'm')}
+      </tr>`).join('');
+    return adminMeta('能区划分 · 能量可改，道址由主控按刻度参数换算后回读',
         '<span class="pill">0x0521</span>') + `
-      <div class="tbox"><table class="grid-tbl dense"><thead><tr>
-        <th class="m" style="width:76px">序号</th><th>名称</th>
-        <th class="m" style="width:260px">能区划分（keV）</th>
-        <th class="m" style="width:260px">能区道址映射（只读）</th>
-      </tr></thead><tbody>${rows}</tbody></table></div>`;
+      <div class="tbox"><table class="grid-tbl tall"><thead><tr>
+        <th style="width:240px">能区</th>
+        <th class="m">左边界 keV</th><th class="m">右边界 keV</th>
+        <th class="m">开始道址</th><th class="m">结束道址</th>
+      </tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="afoot"><span>道址为只读，共 ${CHANNELS} 道</span><span>共 6 个能区 · 12 项可改</span></div>`;
   }
 
   if (v === 'temp'){
-    const rows = A.temps.map((t, r) => `<tr>
-        <td><span class="cell ro m">第 ${r + 1} 组</span></td>
-        ${TEMP_COLS.map(([k], c) => aCell(r*6 + c, t[k], '0x0531', `第${r+1}组·${TEMP_COLS[c][1]}`, 'm')).join('')}
-      </tr>`).join('');
+    const pg = tempPage(), pages = Math.max(1, Math.ceil(A.temps.length / TEMP_ROWS));
+    const from = pg * TEMP_ROWS, to = Math.min(A.temps.length, from + TEMP_ROWS);
+    const rows = A.temps.slice(from, to).map((t, j) => {
+      const r = from + j;
+      return `<tr><td><span class="cell ro m">第 ${r + 1} 组</span></td>
+        ${TEMP_COLS.map((_, c) => aCell(idxAt(it, r, c), t[TEMP_COLS[c][0]], '0x0531', `第${r+1}组·${TEMP_COLS[c][1]}`, 'm')).join('')}
+      </tr>`;
+    }).join('');
+    const addIdx = it.findIndex(x => x.action === 'add');
     return adminMeta('温度补偿 · 每组六个参数，支持修改、增加与删除',
-        '<span class="pill">0x0531</span>') + `
+        `<span class="pill">第 ${from + 1}–${to} 组 / 共 <b class="num">${A.temps.length}</b> 组</span>`) + `
       <div class="tbox"><table class="grid-tbl"><thead><tr>
-        <th class="m" style="width:120px">分组</th>
+        <th class="m" style="width:116px">分组</th>
         ${TEMP_COLS.map(([,lb]) => `<th class="m">${lb}</th>`).join('')}
       </tr></thead><tbody>${rows}</tbody></table></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
-        ${adminActionRow(A.temps.length * 6, '新增一组温度补偿')}
-        ${adminActionRow(A.temps.length * 6 + 1, '删除最后一组', true)}
+        ${adminActionRow(addIdx, '新增一组温度补偿')}
+        ${adminActionRow(addIdx + 1, '删除最后一组', true)}
       </div>
-      <div class="afoot"><span>修改后整组写回主控校验</span><span>共 ${A.temps.length} 组 · ${A.temps.length * 6} 项</span></div>`;
+      <div class="afoot"><span></span><span>第 ${pg + 1} / ${pages} 页</span></div>`;
   }
 
   /* bg */
+  const rows = bgNames.map((n, r) => `<tr>
+      <td><span class="cell ro">${n}</span></td>
+      ${aCell(-1, A.dynBg[r], '0x0541', `动态本底·${n}`, 'm')}
+      ${aCell(idxAt(it, r, 0), A.staBg[r], '0x0543', `静态本底·${n}`, 'm')}
+      ${aCell(idxAt(it, r, 1), A.bgK[r], '0x0542', `补偿系数·${n}`, 'm')}
+    </tr>`).join('');
   return adminMeta('本底补偿 · 动态本底只读回传，静态本底与补偿系数可改',
       '<span class="pill">0x0541 / 0x0542 / 0x0543</span>') + `
-    <div class="agroups" style="grid-template-columns:1fr 1fr 1.15fr">
-      <section class="abox"><h3>动态本底计数（只读）</h3>
-        ${bgNames.map((n,i) => `<button class="arow readonly"><span class="an">${n}</span>
-          <span class="av"${attr(`动态本底·${n}|数值文本|0x0541`)}>${A.dynBg[i]}</span></button>`).join('')}</section>
-      <section class="abox"><h3>静态本底计数</h3>
-        ${bgNames.map((n,i) => aRow(i, n, A.staBg[i], '0x0543')).join('')}</section>
-      <section class="abox"><h3>本底补偿系数</h3>
-        ${bgNames.map((n,i) => aRow(5 + i, n, A.bgK[i], '0x0542')).join('')}</section>
-    </div>
-    <section class="abox" style="margin-top:16px"><h3>本底测量</h3>
-      ${aRow(10, '本底测量时长（s）', A.bgDuration, '0x0542')}</section>`;
+    <div class="tbox"><table class="grid-tbl tall"><thead><tr>
+      <th style="width:240px">计数对象</th>
+      <th class="m">动态本底（只读）</th><th class="m">静态本底</th><th class="m">补偿系数</th>
+    </tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="afoot"><span>动态本底由主控实时回传，不可修改</span><span>共 10 项可改</span></div>`;
 }
 
 /* ── 弹窗：只保留「破坏性确认」与「密码」两处挣来的打断 ───────────── */
@@ -1141,11 +1311,12 @@ function deleteAddress(){
   render();
 }
 function requestHistory(page = 0){
-  S.modal = null; S.histSub = null; S.histLoading = true; S.histLoaded = false; S.histPage = page;
+  S.modal = null; S.histSub = null; S.histLoading = true; S.histLoaded = false; S.histPage = page; S.histSel = 0;
   render();
   setTimeout(() => {
     S.histLoading = false; S.histLoaded = true;
     S.histCount = Math.min(records.length, S.histQuery);
+    S.histSel = 0;
     S.histPage = Math.min(page, Math.max(0, Math.ceil(S.histCount / HPAGE) - 1));
     if (S.page === 2 && !S.admin) render();
   }, 620);
@@ -1178,19 +1349,21 @@ function editHistInterval(){
   });
 }
 function activateAdmin(){
-  const it = adminItems()[S.adminSel];
+  const items = adminItems(), it = items[S.adminSel];
   if (!it) return;
   if (it.action === 'add'){
-    if (A.temps.length >= 6) return say('温度补偿最多 6 组', true);
+    if (A.temps.length >= 20) return say('温度补偿最多 20 组', true);
     const last = A.temps[A.temps.length - 1];
-    A.temps.push({t:String((+last.t + 10).toFixed(2)), th:last.th, g:last.g, bg:last.bg, k:last.k, c:last.c});
-    S.adminSel = (A.temps.length - 1) * 6; render(); return;
+    A.temps.push({t:(+last.t + 1).toFixed(1), th:last.th, g:last.g, bg:last.bg, k:last.k, c:last.c});
+    const next = adminItems();
+    S.adminSel = Math.max(0, next.findIndex(x => x.row === A.temps.length - 1 && x.col === 0));
+    render(); return;
   }
   if (it.action === 'del'){
     if (A.temps.length <= 1) return say('至少保留一组温度补偿', true);
     S.modal = {type:'confirm', title:`删除第 ${A.temps.length} 组温度补偿？`, okText:'确认删除', sel:0,
       desc:'删除后该温度点不再参与补偿计算，需重新标定。',
-      save:() => { A.temps.pop(); S.adminSel = Math.min(S.adminSel, A.temps.length * 6 + 1); }};
+      save:() => { A.temps.pop(); S.adminSel = Math.min(S.adminSel, adminItems().length - 1); }};
     render(); return;
   }
   requestCurrent(it.label, () => edit(it.label, it.get(), null, v => it.set(v), {trim:false}));
@@ -1214,6 +1387,7 @@ function bind(){
     if (S.page === 1){ S.sel = i; S.sub === 'rf' ? activateRf(i) : activateConfig(i); return; }
     if (S.page === 2 && S.histSub === 'tools'){ S.histActSel = i; activateHistAction(i); }
   });
+  $$('#content [data-hrow]').forEach(b => b.onclick = () => { S.histSel = +b.dataset.hrow; render(); });
   $$('#content [data-smenu]').forEach(b => b.onclick = () => { S.specSel = +b.dataset.smenu; activateSpecMenu(); });
   $$('#content [data-admin]').forEach(b => b.onclick = () => { S.adminSel = +b.dataset.admin; activateAdmin(); });
   const t = $('#content [data-hist-tools]');
@@ -1337,10 +1511,12 @@ function key(k){
     } else {
       if (S.histLoading){ if (k === 3) return navigate(3); return; }
       if (k < 2 && S.histLoaded){
-        const pages = Math.max(1, Math.ceil(S.histCount / HPAGE));
-        const next = Math.max(0, Math.min(pages - 1, S.histPage + (k ? 1 : -1)));
-        if (next !== S.histPage) return requestHistory(next);
-        return say(k ? '已是最后一页' : '已是第一页', true);
+        const total = Math.min(records.length, S.histCount);
+        if (!total) return say('当前没有可浏览的记录', true);
+        const next = S.histSel + (k ? 1 : -1);
+        if (next < 0) return say('已是第一条记录', true);
+        if (next > total - 1) return say('已是最后一条记录', true);
+        S.histSel = next; render(); return;
       }
       if (k === 2){ S.histSub = 'tools'; S.histActSel = 0; render(); return; }
       if (k === 3) return navigate(3);
@@ -1453,23 +1629,27 @@ function reset(){
 const JUMPS = [
   ['01 · 主监测',              () => { reset(); S.page = 0; S.alarm = false; }],
   ['01b · 主监测 · 报警态',     () => { reset(); S.page = 0; S.alarm = true; }],
-  ['02 · 能谱（512 道）',       () => { reset(); S.page = 3; }],
-  ['02b · 能谱 · 区间统计',     () => { reset(); S.page = 3; S.roiOn = true; S.channel = 244; }],
+  ['01c · 主监测 · 多故障',     () => { reset(); S.page = 0; S.faults = ['高压故障','通信故障']; }],
+  ['02 · 能谱（256 道）',       () => { reset(); S.page = 3; S.channel = 72; }],
+  ['02b · 能谱 · 区间统计',     () => { reset(); S.page = 3; S.roiOn = true; S.channel = 72; }],
   ['02c · 能谱 · 操作菜单',     () => { reset(); S.page = 3; S.specPanel = true; S.specSel = 0; }],
   ['03 · 综合设置',            () => { reset(); S.page = 1; }],
   ['03b · 设置 · 无线通信',     () => { reset(); S.page = 1; S.sub = 'rf'; }],
   ['03c · 设置 · 目标地址',     () => { reset(); S.page = 1; S.sub = 'addr'; }],
-  ['04 · 历史记录',            () => { reset(); S.page = 2; S.histLoaded = true; S.histLoading = false; S.histCount = Math.min(records.length, S.histQuery); S.histPage = 0; }],
-  ['04b · 历史 · 查询与清除',   () => { reset(); S.page = 2; S.histLoaded = true; S.histSub = 'tools'; S.histActSel = 0; }],
-  ['04c · 历史 · 读取中',       () => { reset(); S.page = 2; S.histLoading = true; S.histLoaded = false; }],
-  ['04d · 历史 · 空记录',       () => { reset(); S.page = 2; S.histLoading = false; S.histLoaded = true; S.histCount = 0; }],
-  ['05 · 清除历史确认',        () => { reset(); S.page = 2; S.histLoaded = true; S.histSub = 'tools'; S.histActSel = 4; S.modal = {type:'confirm', title:`清除第 1 条起的 1 条记录？`, okText:'确认清除', sel:0, desc:'清除指令 0x0302 一经主控执行，记录不可恢复。', save:()=>{}}; }],
+  ['04 · 历史记录',            () => { reset(); S.page = 2; loadHist(); S.histSel = 0; }],
+  ['04b · 历史 · 故障记录',     () => { reset(); S.page = 2; loadHist(); S.histSel = 9; }],
+  ['04c · 历史 · 查询与清除',   () => { reset(); S.page = 2; loadHist(); S.histSub = 'tools'; S.histActSel = 0; }],
+  ['04d · 历史 · 读取中',       () => { reset(); S.page = 2; S.histLoading = true; S.histLoaded = false; }],
+  ['04e · 历史 · 空记录',       () => { reset(); S.page = 2; S.histLoading = false; S.histLoaded = true; S.histCount = 0; }],
+  ['05 · 清除历史确认',        () => { reset(); S.page = 2; loadHist(); S.histSub = 'tools'; S.histActSel = 4;
+      S.modal = {type:'confirm', title:'清除第 1 条起的 1 条记录？', okText:'确认清除', sel:0,
+                 desc:'清除指令 0x0302 一经主控执行，记录不可恢复。', save:()=>{}}; }],
   ['06 · 管理员密码',          () => { reset(); S.page = 3; S.modal = {type:'password', value:'759000', pos:3}; }],
   ['07 · 维护 · 软件版本',      () => { reset(); S.admin = true; S.adminView = 'version'; S.adminSel = 0; }],
-  ['08 · 维护 · 参数标定',      () => { reset(); S.admin = true; S.adminView = 'calib'; S.adminSel = 0; }],
-  ['09 · 维护 · 能区划分',      () => { reset(); S.admin = true; S.adminView = 'zones'; S.adminSel = 2; }],
+  ['08 · 维护 · 参数标定',      () => { reset(); S.admin = true; S.adminView = 'calib'; S.adminSel = 2; }],
+  ['09 · 维护 · 能区划分',      () => { reset(); S.admin = true; S.adminView = 'zones'; S.adminSel = 1; }],
   ['10 · 维护 · 温度补偿',      () => { reset(); S.admin = true; S.adminView = 'temp'; S.adminSel = 7; }],
-  ['11 · 维护 · 本底补偿',      () => { reset(); S.admin = true; S.adminView = 'bg'; S.adminSel = 5; }],
+  ['11 · 维护 · 本底补偿',      () => { reset(); S.admin = true; S.adminView = 'bg'; S.adminSel = 2; }],
   ['12 · 附图 · 参数编辑态',    () => { reset(); S.page = 1; S.sel = 4;
       S.modal = {type:'edit', title:'报警阈值设置', value:thrEdit(), initial:thrEdit(), pos:4, options:null,
                  save:v => { S.threshold = +v * (S.unit ? 37 : 1); }, inline:true, suffix:unit(), trim:true}; }],
@@ -1477,6 +1657,7 @@ const JUMPS = [
       S.modal = {type:'edit', title:'日期时间校准', value:dateTimeEdit(), initial:dateTimeEdit(), pos:2, options:null,
                  save:v => {}, inline:true, suffix:'', trim:false}; }]
 ];
+function loadHist(){ S.histLoading = false; S.histLoaded = true; S.histCount = Math.min(records.length, S.histQuery); }
 function resize(){
   const bench = document.querySelector('.bench');
   const avail = bench.clientWidth - 52;
@@ -1492,7 +1673,8 @@ $('#jump').innerHTML = JUMPS.map(([t], i) => `<option value="${i}">${t}</option>
 $('#jump').onchange = e => { JUMPS[+e.target.value][1](); render(); };
 $('#zoom').onchange = resize;
 $('#workDemo').onchange = e => { S.work = e.target.value; S.running = e.target.value === '测量中'; render(); };
-$('#faultDemo').onchange = e => { S.fault = e.target.value; render(); };
+$('#faultDemo').onchange = e => { S.faults = e.target.value ? e.target.value.split(',') : []; render(); };
+$('#clockDemo').onclick = () => { S.clockSynced = !S.clockSynced; $('#clockDemo').classList.toggle('on', S.clockSynced); render(); };
 $('#alarmDemo').onclick = () => { S.alarm = !S.alarm; $('#alarmDemo').classList.toggle('on', S.alarm); render(); };
 $('#annotBtn').onclick = () => { S.annot = !S.annot; $('#annotBtn').classList.toggle('on', S.annot); render(); };
 window.addEventListener('resize', resize);
@@ -1519,7 +1701,7 @@ setInterval(() => {
   if (el) el.textContent = duration(S.elapsed);
 }, 1000);
 
-S.histLoaded = true; S.histCount = Math.min(records.length, S.histQuery);
+loadHist();
 resize(); render();
 </script>
 </body>
